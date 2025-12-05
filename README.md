@@ -11,12 +11,12 @@
 
 **Run the following command in your terminal once logged into Hyprland:**
 ```bash
-curl -fsSL get.axeni.de/ax-shell | bash
+curl -fsSL (mettre le GET) | bash
 ```
 
 **Alternative:**
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Axenide/Ax-Shell/main/install.sh | bash
+curl -fsSL (mettre le installe.sh) | bash
 ```
 
 ### NixOS
@@ -73,6 +73,7 @@ cd <project>
     </td>
   </tr>
 </table>
+
 
 
 

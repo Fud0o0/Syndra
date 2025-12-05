@@ -46,10 +46,11 @@ curl -fsSL (mettre le installe.sh) | bash
 
         
 
-1. Download and run SyndraShell :
-   ```bash
-git clone (https://github.com/<username>/<project>.git)
-cd <project>
+2. Download and run Ax-Shell:
+    ```bash
+    git clone git clone (https://github.com/<username>/<project>.git)
+    cd <project>
+    ```
 
 
 <h2><sub><img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Rocket.png" alt="Rocket" width="25" height="25" /></sub> Roadmap</h2>
@@ -73,6 +74,7 @@ cd <project>
     </td>
   </tr>
 </table>
+
 
 
 

@@ -25,97 +25,38 @@ curl -fsSL https://raw.githubusercontent.com/Axenide/Ax-Shell/main/install.sh | 
 
 ### Manual Installation
 1. Install dependencies:
-    - [Fabric](https://github.com/Fabric-Development/fabric)
-    - [fabric-cli](https://github.com/Fabric-Development/fabric-cli)
-    - [Gray](https://github.com/Fabric-Development/gray)
-    - [Matugen](https://github.com/InioX/matugen)
-    - `awww`
-    - `brightnessctl`
-    - `cava`
-    - `cliphist`
-    - `ddcutil`
-    - `gnome-bluetooth-3.0`
-    - `gobject-introspection`
-    - `gpu-screen-recorder`
-    - `grimblast`
-    - `hypridle`
-    - `hyprlock`
-    - `hyprpicker`
-    - `hyprshot`
-    - `hyprsunset`
-    - `imagemagick`
-    - `libnotify`
-    - `networkmanager`
-    - `network-manager-applet`
-    - `nm-connection-editor`
-    - `noto-fonts-emoji`
-    - `nvtop`
-    - `playerctl`
-    - `swappy`
-    - `tesseract`
-    - `tesseract-data-eng`
-    - `tesseract-data-spa`
-    - `tmux`
-    - `unzip`
-    - `upower`
-    - `uwsm`
-    - `vte3`
-    - `webp-pixbuf-loader`
-    - `wl-clipboard`
-    - Python dependencies:
-        - PyGObject
-        - ijson
-        - numpy
-        - pillow
-        - psutil
-        - pywayland
-        - requests
-        - setproctitle
-        - toml
-        - watchdog
-    - Fonts (automated on first run):
-        - Zed Sans
-        - Tabler Icons
 
-2. Download and run Ax-Shell:
-    ```bash
-    git clone https://github.com/Axenide/Ax-Shell.git ~/.config/Ax-Shell
-    uwsm -- app python ~/.config/Ax-Shell/main.py > /dev/null 2>&1 & disown
-    ```
+
+
+
+
+
+
+
+
+
+    - Python dependencies:
+
+
+
+
+
+
+    - Fonts (automated on first run):
+
+
+        
+
+1. Download and run SyndraShell :
+   ```bash
+git clone https://github.com/<username>/<project>.git
+cd <project>
+
 
 <h2><sub><img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Rocket.png" alt="Rocket" width="25" height="25" /></sub> Roadmap</h2>
 
-- [x] App Launcher
-- [x] Bluetooth Manager
-- [x] Calculator
-- [x] Calendar
-- [x] Clipboard Manager
-- [x] Color Picker
-- [x] Customizable UI
-- [x] Dashboard
-- [x] Dock
-- [x] Emoji Picker
-- [x] Kanban Board
-- [x] Network Manager
-- [x] Notifications
-- [x] OCR
-- [x] Pins
-- [x] Power Manager
-- [x] Power Menu
-- [x] Screen Recorder
-- [x] Screenshot
-- [x] Settings
-- [x] System Tray
-- [x] Terminal
-- [x] Tmux Session Manager
-- [x] Update checker
-- [x] Vertical Layout
-- [x] Wallpaper Selector
-- [x] Workspaces Overview
-- [x] Multi-monitor support
-- [ ] Multimodal AI Assistant
-- [ ] OSD
-- [ ] OTP Manager
+- [] App Launcher
+- 
 
 ---
 
@@ -133,3 +74,4 @@ curl -fsSL https://raw.githubusercontent.com/Axenide/Ax-Shell/main/install.sh | 
     </td>
   </tr>
 </table>
+

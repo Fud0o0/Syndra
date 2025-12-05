@@ -20,7 +20,7 @@ curl -fsSL https://raw.githubusercontent.com/Axenide/Ax-Shell/main/install.sh | 
 ```
 
 ### NixOS
-👉 [Try it out!]([https://github.com/poogas/Ax-Shell](https://github.com/Fud0o0/SyndraShell) 👈
+👉 [Try it out!](https://github.com/Fud0o0/SyndraShell) 👈
 
 ### Manual Installation
 1. Install dependencies:
@@ -73,5 +73,6 @@ cd <project>
     </td>
   </tr>
 </table>
+
 
 

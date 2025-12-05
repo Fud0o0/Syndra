@@ -56,7 +56,36 @@ curl -fsSL (mettre le installe.sh) | bash
 <h2><sub><img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Rocket.png" alt="Rocket" width="25" height="25" /></sub> Roadmap</h2>
 
 - [ ] App Launcher
-- 
+- [ ] Bluetooth Manager
+- [ ] Calculator
+- [ ] Calendar
+- [ ] Clipboard Manager
+- [ ] Color Picker
+- [ ] Customizable UI
+- [ ] Dashboard
+- [ ] Dock
+- [ ] Emoji Picker
+- [ ] Kanban Board
+- [ ] Network Manager
+- [ ] Notifications
+- [ ] OCR
+- [ ] Pins
+- [ ] Power Manager
+- [ ] Power Menu
+- [ ] Screen Recorder
+- [ ] Screenshot
+- [ ] Settings
+- [ ] System Tray
+- [ ] Terminal
+- [ ] Tmux Session Manager
+- [ ] Update checker
+- [ ] Vertical Layout
+- [ ] Wallpaper Selector
+- [ ] Workspaces Overview
+- [ ] Multi-monitor support
+- [ ] Multimodal AI Assistant
+- [ ] OSD
+- [ ] OTP Manager
 
 ---
 
@@ -74,6 +103,7 @@ curl -fsSL (mettre le installe.sh) | bash
     </td>
   </tr>
 </table>
+
 
 
 

@@ -11,11 +11,6 @@
 
 **Run the following command in your terminal once logged into Hyprland:**
 ```bash
-curl -fsSL (mettre le GET) | bash
-```
-
-**Alternative:**
-```bash
 curl -fsSL https://raw.githubusercontent.com/SyndraShell/syndrashell/main/install.sh | bash
 ```
 

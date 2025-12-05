@@ -22,36 +22,36 @@ curl -fsSL https://raw.githubusercontent.com/Fud0o0/SyndraShell/main/install.sh 
 #### System Dependencies
 
 **Core Framework:**
-- [Fabric](https://github.com/Fabric-Development/fabric) - Python GTK3 framework for Wayland
-- [fabric-cli](https://github.com/Fabric-Development/fabric-cli) - CLI tools for Fabric
-- [Matugen](https://github.com/InioX/matugen) - Material Design color generation
+- [Fabric](https://github.com/Fabric-Development/fabric)
+- [fabric-cli](https://github.com/Fabric-Development/fabric-cli)
+- [Matugen](https://github.com/InioX/matugen)
 
 **Hyprland & Wayland:**
-- [Hyprland](https://github.com/hyprwm/Hyprland) - Dynamic tiling Wayland compositor
-- [hypridle](https://github.com/hyprwm/hypridle) - Idle daemon for Hyprland
-- [hyprlock](https://github.com/hyprwm/hyprlock) - Screen locker for Hyprland
-- [hyprshot](https://github.com/Gustash/Hyprshot) - Screenshot utility for Hyprland
-- [hyprpicker](https://github.com/hyprwm/hyprpicker) - Color picker for Hyprland
+- [Hyprland](https://github.com/hyprwm/Hyprland)
+- [hypridle](https://github.com/hyprwm/hypridle)
+- [hyprlock](https://github.com/hyprwm/hyprlock)
+- [hyprshot](https://github.com/Gustash/Hyprshot)
+- [hyprpicker](https://github.com/hyprwm/hyprpicker)
 
 **Screenshot & Recording:**
-- [gpu-screen-recorder](https://git.dec05eba.com/gpu-screen-recorder/about/) - GPU-accelerated screen recording
-- [tesseract](https://github.com/tesseract-ocr/tesseract) - OCR engine for text extraction
-- [ImageMagick](https://imagemagick.org/) - Image manipulation (mockup effects)
-- [swappy](https://github.com/jtheoof/swappy) - Wayland screenshot editor
+- [gpu-screen-recorder](https://git.dec05eba.com/gpu-screen-recorder/about/)
+- [tesseract](https://github.com/tesseract-ocr/tesseract)
+- [ImageMagick](https://imagemagick.org/)
+- [swappy](https://github.com/jtheoof/swappy)
 
 **System Utilities:**
-- `brightnessctl` - Brightness control
-- `networkmanager` - Network management
-- `network-manager-applet` - NetworkManager applet
-- `playerctl` - Media player control
-- `wl-clipboard` - Wayland clipboard utilities
-- `cliphist` - Clipboard history manager
+- `brightnessctl`
+- `networkmanager`
+- `network-manager-applet`
+- `playerctl`
+- `wl-clipboard`
+- `cliphist`
 
 **Terminals & UI:**
-- [kitty](https://sw.kovidgoyal.net/kitty/) - GPU-accelerated terminal emulator
-- [wofi](https://hg.sr.ht/~scoopta/wofi) - Wayland application launcher
-- [waybar](https://github.com/Alexays/Waybar) - Status bar (optional, not used by default)
-- [dunst](https://dunst-project.org/) - Notification daemon (optional, not used by default)
+- [kitty](https://sw.kovidgoyal.net/kitty/)
+- [wofi](https://hg.sr.ht/~scoopta/wofi)
+- [waybar](https://github.com/Alexays/Waybar)
+- [dunst](https://dunst-project.org/)
 
 #### Python Dependencies
 
@@ -64,9 +64,9 @@ curl -fsSL https://raw.githubusercontent.com/Fud0o0/SyndraShell/main/install.sh 
 
 #### Fonts (Auto-downloaded on first run)
 
-- [Zed Sans](https://github.com/zed-industries/zed-fonts) - UI font
-- [JetBrainsMono Nerd Font](https://www.nerdfonts.com/) - Monospace font with icons
-- [Tabler Icons](https://tabler-icons.io/) - Icon font
+- [Zed Sans](https://github.com/zed-industries/zed-fonts)
+- [JetBrainsMono Nerd Font](https://www.nerdfonts.com/)
+- [Tabler Icons](https://tabler-icons.io/)
 
 2. Download and run SyndraShell:
     ```bash
@@ -76,29 +76,12 @@ curl -fsSL https://raw.githubusercontent.com/Fud0o0/SyndraShell/main/install.sh 
     uwsm app -- python ~/.config/SyndraShell/main.py > /dev/null 2>&1 & disown
     ```
 
-## Features
-
-- 🎨 **Modern UI** - Built with Fabric framework
-- 🌈 **Dynamic Theming** - Powered by Matugen
-- ⚡ **Fast & Lightweight** - Optimized for performance
-- 🎯 **Wayland Native** - Full Hyprland integration
-- 🔒 **Secure** - Git-crypt protected sensitive files
-- 🖼️ **Wallpaper Selector** - Thumbnail preview with thumbnail caching
-- 📸 **Screenshot Tools** - Region, window, fullscreen, and mockup modes
-- 🎬 **Screen Recording** - Built-in screen recorder
-- 📝 **OCR** - Extract text from screenshots
-- 🎨 **Color Picker** - Pick colors from screen
-- ⚡ **Game Mode** - Disable effects for better performance
-
 ## Components
 
-- **Bar** - Top status bar with workspace indicators and system info
-- **Dock** - Application launcher at the bottom
-- **Notch** - Dynamic dropdown menu for quick access
-- **Dashboard** - Centralized control panel with:
-  - **Wallpaper Selector** - Browse and set wallpapers with preview
-  - **Toolbox** - Screenshot, recording, OCR, and utilities
-  - **Widgets** - System information and controls
+- **Bar**
+- **Dock**
+- **Notch**
+- **Dashboard**
 
 ## Keybinds
 

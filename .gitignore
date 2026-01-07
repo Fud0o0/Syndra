@@ -1,0 +1,29 @@
+# Fichiers sensibles
+config/.env
+config/secrets/
+*.secret
+*.key
+*.pem
+.env
+.env.local
+
+# Fichiers de configuration personnelle
+config/hypr/hyprland.conf.local
+config/user-config/
+
+# Tokens et clés API
+api_keys.json
+tokens.json
+
+# Fichiers temporaires et cache
+*.log
+*.tmp
+__pycache__/
+*.pyc
+.cache/
+.DS_Store
+
+# Fichiers utilisateur spécifiques
+user_data/
+*.db
+*.sqlite

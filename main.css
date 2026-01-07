@@ -1,0 +1,107 @@
+/* SyndraShell - Main CSS */
+
+* {
+    all: unset;
+    font-family: "JetBrainsMono Nerd Font", "Zed Sans", sans-serif;
+    font-size: 13px;
+}
+
+/* Import colors from matugen */
+@import url("./styles/colors.css");
+
+/* Bar Styling */
+#bar-container {
+    background-color: rgba(30, 30, 46, 0.9);
+    color: #cdd6f4;
+    padding: 4px 12px;
+}
+
+#shell-logo {
+    font-size: 18px;
+    color: #89b4fa;
+    font-weight: bold;
+    padding: 0 8px;
+}
+
+#clock {
+    font-weight: bold;
+    padding: 0 12px;
+}
+
+#user-info {
+    padding: 0 8px;
+}
+
+/* Dock Styling */
+#dock-container {
+    background-color: rgba(30, 30, 46, 0.95);
+    padding: 8px;
+    border-radius: 16px 16px 0 0;
+}
+
+#dock-apps {
+    padding: 4px 8px;
+}
+
+#dock-app {
+    background-color: rgba(69, 71, 90, 0.5);
+    border-radius: 12px;
+    padding: 12px 16px;
+    margin: 0 4px;
+    transition: all 200ms ease;
+    font-size: 20px;
+}
+
+#dock-app:hover {
+    background-color: rgba(137, 180, 250, 0.3);
+    transform: scale(1.1);
+}
+
+/* Notch Styling */
+#notch-container {
+    background-color: rgba(30, 30, 46, 0.95);
+    border-radius: 0 0 16px 16px;
+    padding: 16px;
+    min-width: 600px;
+    min-height: 400px;
+}
+
+#notch-stack {
+    padding: 12px;
+}
+
+#dashboard-title,
+#launcher-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #89b4fa;
+    padding: 12px;
+}
+
+/* Catppuccin Mocha Colors */
+@define-color base #1e1e2e;
+@define-color mantle #181825;
+@define-color crust #11111b;
+
+@define-color text #cdd6f4;
+@define-color subtext0 #a6adc8;
+@define-color subtext1 #bac2de;
+
+@define-color surface0 #313244;
+@define-color surface1 #45475a;
+@define-color surface2 #585b70;
+
+@define-color blue #89b4fa;
+@define-color lavender #b4befe;
+@define-color sapphire #74c7ec;
+@define-color sky #89dceb;
+@define-color teal #94e2d5;
+@define-color green #a6e3a1;
+@define-color yellow #f9e2af;
+@define-color peach #fab387;
+@define-color maroon #eba0ac;
+@define-color red #f38ba8;
+@define-color mauve #cba6f7;
+@define-color pink #f5c2e7;
+@define-color flamingo #f2cdcd;
+@define-color rosewater #f5e0dc;

@@ -1,0 +1,16 @@
+# Fichiers sensibles - cryptés pour les collaborateurs
+config/.env filter=git-crypt diff=git-crypt
+config/secrets/** filter=git-crypt diff=git-crypt
+*.secret filter=git-crypt diff=git-crypt
+*.key filter=git-crypt diff=git-crypt
+api_keys.json filter=git-crypt diff=git-crypt
+tokens.json filter=git-crypt diff=git-crypt
+
+# Fichiers binaires
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.ttf binary
+*.otf binary

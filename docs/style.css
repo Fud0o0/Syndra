@@ -43,9 +43,15 @@ html {
     overflow-x: hidden;
     overflow-y: scroll;
     position: relative;
-    scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+
+/* Smooth scroll only on desktop */
+@media (min-width: 769px) {
+    html {
+        scroll-behavior: smooth;
+    }
 }
 
 body {
@@ -66,9 +72,8 @@ body::before {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
-    max-width: 100%;
+    width: 100%;
+    height: 100%;
     pointer-events: none;
     z-index: 1000;
     /* Enhanced Scanlines effect */
@@ -79,7 +84,13 @@ body::before {
         transparent 2px,
         rgba(0, 0, 0, 0.03) 3px
     );
-    animation: scanline-move 10s linear infinite;
+}
+
+/* Disable heavy animations on mobile */
+@media (min-width: 769px) {
+    body::before {
+        animation: scanline-move 10s linear infinite;
+    }
 }
 
 @keyframes scanline-move {
@@ -96,14 +107,19 @@ body::after {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
-    max-width: 100%;
+    width: 100%;
+    height: 100%;
     pointer-events: none;
     z-index: 999;
     /* Screen grain/noise */
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.02'/%3E%3C/svg%3E");
-    animation: grain 1s steps(3) infinite;
+}
+
+@media (min-width: 769px) {
+    body::after {
+        animation: grain 1s steps(3) infinite;
+    }
+}
 }
 
 
@@ -132,39 +148,58 @@ body::after {
 
 /* Theme Backgrounds */
 .red-theme {
-    background:
-        radial-gradient(circle at 20% 50%, rgba(255, 0, 102, 0.15) 0%, transparent 50%),
-        radial-gradient(circle at 80% 80%, rgba(255, 51, 133, 0.1) 0%, transparent 50%),
-        radial-gradient(ellipse at center, var(--red-bg-end) 0%, var(--red-bg-start) 100%),
-        linear-gradient(135deg, var(--red-bg-start) 0%, var(--red-bg-end) 100%);
-    background-attachment: fixed;
+    background: linear-gradient(135deg, var(--red-bg-start) 0%, var(--red-bg-end) 100%);
 }
 
 .blue-theme {
-    background:
-        radial-gradient(circle at 20% 50%, rgba(0, 212, 255, 0.15) 0%, transparent 50%),
-        radial-gradient(circle at 80% 80%, rgba(0, 153, 255, 0.1) 0%, transparent 50%),
-        radial-gradient(ellipse at center, var(--blue-bg-end) 0%, var(--blue-bg-start) 100%),
-        linear-gradient(135deg, var(--blue-bg-start) 0%, var(--blue-bg-end) 100%);
-    background-attachment: fixed;
+    background: linear-gradient(135deg, var(--blue-bg-start) 0%, var(--blue-bg-end) 100%);
 }
 
 .purple-theme {
-    background:
-        radial-gradient(circle at 20% 50%, rgba(179, 102, 255, 0.15) 0%, transparent 50%),
-        radial-gradient(circle at 80% 80%, rgba(214, 153, 255, 0.1) 0%, transparent 50%),
-        radial-gradient(ellipse at center, var(--purple-bg-end) 0%, var(--purple-bg-start) 100%),
-        linear-gradient(135deg, var(--purple-bg-start) 0%, var(--purple-bg-end) 100%);
-    background-attachment: fixed;
+    background: linear-gradient(135deg, var(--purple-bg-start) 0%, var(--purple-bg-end) 100%);
 }
 
 .root-theme {
-    background:
-        radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.08) 0%, transparent 50%),
-        radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.05) 0%, transparent 50%),
-        radial-gradient(ellipse at center, var(--root-bg-end) 0%, var(--root-bg-start) 100%),
-        linear-gradient(135deg, var(--root-bg-start) 0%, var(--root-bg-end) 100%);
-    background-attachment: fixed;
+    background: linear-gradient(135deg, var(--root-bg-start) 0%, var(--root-bg-end) 100%);
+}
+
+/* Complex backgrounds only on desktop */
+@media (min-width: 769px) {
+    .red-theme {
+        background:
+            radial-gradient(circle at 20% 50%, rgba(255, 0, 102, 0.15) 0%, transparent 50%),
+            radial-gradient(circle at 80% 80%, rgba(255, 51, 133, 0.1) 0%, transparent 50%),
+            radial-gradient(ellipse at center, var(--red-bg-end) 0%, var(--red-bg-start) 100%),
+            linear-gradient(135deg, var(--red-bg-start) 0%, var(--red-bg-end) 100%);
+        background-attachment: fixed;
+    }
+
+    .blue-theme {
+        background:
+            radial-gradient(circle at 20% 50%, rgba(0, 212, 255, 0.15) 0%, transparent 50%),
+            radial-gradient(circle at 80% 80%, rgba(0, 153, 255, 0.1) 0%, transparent 50%),
+            radial-gradient(ellipse at center, var(--blue-bg-end) 0%, var(--blue-bg-start) 100%),
+            linear-gradient(135deg, var(--blue-bg-start) 0%, var(--blue-bg-end) 100%);
+        background-attachment: fixed;
+    }
+
+    .purple-theme {
+        background:
+            radial-gradient(circle at 20% 50%, rgba(179, 102, 255, 0.15) 0%, transparent 50%),
+            radial-gradient(circle at 80% 80%, rgba(214, 153, 255, 0.1) 0%, transparent 50%),
+            radial-gradient(ellipse at center, var(--purple-bg-end) 0%, var(--purple-bg-start) 100%),
+            linear-gradient(135deg, var(--purple-bg-start) 0%, var(--purple-bg-end) 100%);
+        background-attachment: fixed;
+    }
+
+    .root-theme {
+        background:
+            radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.08) 0%, transparent 50%),
+            radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.05) 0%, transparent 50%),
+            radial-gradient(ellipse at center, var(--root-bg-end) 0%, var(--root-bg-start) 100%),
+            linear-gradient(135deg, var(--root-bg-start) 0%, var(--root-bg-end) 100%);
+        background-attachment: fixed;
+    }
 }
 
 /* CRT Vignette Effect - Disabled to remove dark borders */
@@ -193,9 +228,8 @@ html::after {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
-    max-width: 100%;
+    width: 100%;
+    height: 100%;
     pointer-events: none;
     z-index: 997;
     background: linear-gradient(
@@ -206,7 +240,12 @@ html::after {
         transparent 60%,
         transparent 100%
     );
-    animation: screen-reflection 12s linear infinite;
+}
+
+@media (min-width: 769px) {
+    html::after {
+        animation: screen-reflection 12s linear infinite;
+    }
 }
 
 @keyframes screen-reflection {
@@ -1077,6 +1116,13 @@ html::after {
 @media (max-width: 480px) {
     body {
         font-size: 14px;
+    }
+    
+    /* Disable heavy effects on mobile */
+    body::before,
+    body::after,
+    html::after {
+        display: none;
     }
     
     .container {

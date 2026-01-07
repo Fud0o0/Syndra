@@ -3,105 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SyndraShell - Cybersecurity Dashboard</title>
+    <title>SyndraShell - Cybersecurity Environment</title>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
-        <!-- Header with GitHub Profile -->
-        <header class="header">
-            <div class="profile-section">
-                <a href="https://github.com/Fud0o0" target="_blank" class="profile-link">
-                    <img src="https://github.com/Fud0o0.png" alt="Fud0o0" class="profile-img">
-                    <div class="profile-info">
-                        <h1 class="profile-name">Fud0o0</h1>
-                        <p class="profile-subtitle">Cybersecurity Specialist</p>
-                    </div>
-                </a>
-            </div>
+        <!-- Main Title -->
+        <header class="main-header">
+            <h1 class="big-title">SyndraShell</h1>
         </header>
 
-        <!-- Team Selector -->
-        <section class="team-selector">
-            <h2 class="selector-title">Choose Your Team</h2>
-            <div class="team-buttons">
-                <button class="team-btn purple-btn" data-team="purple">
-                    <span class="emoji">💜</span>
-                    <span class="team-name">Purple Team</span>
-                    <span class="team-desc">Full Spectrum Security</span>
-                </button>
-                <button class="team-btn blue-btn" data-team="blue">
-                    <span class="emoji">💙</span>
-                    <span class="team-name">Blue Team</span>
-                    <span class="team-desc">Defensive Operations</span>
-                </button>
-            </div>
+        <!-- Intro Text -->
+        <section class="intro">
+            <p>A powerful cybersecurity environment designed for Red, Blue, and Purple Team operations.</p>
+            <p>Built with Python, GTK, and modern web technologies.</p>
         </section>
 
-        <!-- Dashboard Content -->
-        <section class="dashboard">
-            <div class="dashboard-grid">
-                <!-- About Section -->
-                <div class="card">
-                    <h3 class="card-title">⚡ About SyndraShell</h3>
-                    <p class="card-content">
-                        A powerful cybersecurity environment designed for Red, Blue, and Purple Team operations. 
-                        Built with Python and modern web technologies.
-                    </p>
-                </div>
+        <!-- Team Selector Pills -->
+        <section class="team-selector">
+            <button class="team-pill red-pill" data-team="red">
+                <span class="pill-emoji">🔴</span>
+                <span class="pill-text">Red Team</span>
+            </button>
+            <button class="team-pill blue-pill" data-team="blue">
+                <span class="pill-emoji">🔵</span>
+                <span class="pill-text">Blue Team</span>
+            </button>
+            <button class="team-pill purple-pill" data-team="purple">
+                <span class="pill-emoji">🟣</span>
+                <span class="pill-text">Purple Team</span>
+            </button>
+        </section>
 
-                <!-- Skills Section -->
-                <div class="card">
-                    <h3 class="card-title">🛠️ Technologies</h3>
-                    <div class="tech-stack">
-                        <span class="tech-badge">Python</span>
-                        <span class="tech-badge">Linux</span>
-                        <span class="tech-badge">Bash</span>
-                        <span class="tech-badge">GTK</span>
-                        <span class="tech-badge">Wayland</span>
-                        <span class="tech-badge">CSS</span>
-                    </div>
-                </div>
+        <!-- Social Links -->
+        <section class="social-links">
+            <a href="https://github.com/Fud0o0" target="_blank" class="social-btn" title="Fud0o0">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+                </svg>
+            </a>
+            <a href="https://github.com/Ax0-0" target="_blank" class="social-btn" title="Ax0-0">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+                </svg>
+            </a>
+        </section>
 
-                <!-- Projects Section -->
-                <div class="card">
-                    <h3 class="card-title">📦 Features</h3>
-                    <ul class="feature-list">
-                        <li>🎨 Dynamic Wallpaper Manager</li>
-                        <li>📊 System Monitoring Dashboard</li>
-                        <li>🔧 Security Toolbox Integration</li>
-                        <li>🌐 Network Management Tools</li>
-                        <li>⚙️ Custom Configuration System</li>
-                    </ul>
-                </div>
-
-                <!-- Stats Section -->
-                <div class="card">
-                    <h3 class="card-title">📈 GitHub Stats</h3>
-                    <div class="stats-grid">
-                        <div class="stat-item">
-                            <div class="stat-value">10+</div>
-                            <div class="stat-label">Repositories</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-value">500+</div>
-                            <div class="stat-label">Commits</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-value">5+</div>
-                            <div class="stat-label">Projects</div>
-                        </div>
-                    </div>
-                </div>
+        <!-- Creators -->
+        <section class="creators">
+            <div class="creator-card">
+                <img src="https://github.com/Fud0o0.png" alt="Fud0o0" class="creator-avatar">
+                <p class="creator-name">Fud0o0</p>
+            </div>
+            <div class="creator-card">
+                <img src="https://github.com/Ax0-0.png" alt="Ax0-0" class="creator-avatar">
+                <p class="creator-name">Ax0-0</p>
             </div>
         </section>
 
         <!-- Footer -->
         <footer class="footer">
-            <p>⚡ SyndraShell © 2026 | Made with 💜 by <a href="https://github.com/Fud0o0" target="_blank">Fud0o0</a></p>
+            <p>© 2026 SyndraShell</p>
+            <p class="footer-subtitle">Powered by <a href="https://github.com/Fud0o0/SyndraShell" target="_blank">GitHub Pages</a></p>
         </footer>
     </div>
 

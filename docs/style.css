@@ -1,27 +1,26 @@
-/* SyndraShell - Modern Cybersecurity Dashboard */
+/* SyndraShell - Minimal Design inspired by axeni.de */
 
 :root {
-    /* Purple Team Colors */
-    --purple-primary: #8b5cf6;
-    --purple-secondary: #7c3aed;
-    --purple-dark: #6d28d9;
-    --purple-light: #a78bfa;
-    --purple-glow: rgba(139, 92, 246, 0.3);
+    /* Red Team Colors */
+    --red-primary: #ef4444;
+    --red-hover: #dc2626;
+    --red-glow: rgba(239, 68, 68, 0.3);
     
     /* Blue Team Colors */
     --blue-primary: #3b82f6;
-    --blue-secondary: #2563eb;
-    --blue-dark: #1d4ed8;
-    --blue-light: #60a5fa;
+    --blue-hover: #2563eb;
     --blue-glow: rgba(59, 130, 246, 0.3);
     
+    /* Purple Team Colors */
+    --purple-primary: #a855f7;
+    --purple-hover: #9333ea;
+    --purple-glow: rgba(168, 85, 247, 0.3);
+    
     /* Base Colors */
-    --bg-dark: #0f0f1e;
-    --bg-darker: #0a0a15;
-    --text-primary: #e2e8f0;
-    --text-secondary: #94a3b8;
-    --card-bg: rgba(30, 30, 46, 0.6);
-    --card-border: rgba(255, 255, 255, 0.1);
+    --bg: #0a0a0a;
+    --text: #e5e5e5;
+    --text-dim: #a3a3a3;
+    --border: #262626;
 }
 
 * {
@@ -32,25 +31,284 @@
 
 body {
     font-family: 'JetBrains Mono', monospace;
-    background: linear-gradient(135deg, var(--bg-darker) 0%, var(--bg-dark) 100%);
-    color: var(--text-primary);
+    background: var(--bg);
+    color: var(--text);
     min-height: 100vh;
-    overflow-x: hidden;
-    transition: background 0.6s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.4s ease;
 }
 
-body.purple-theme {
-    background: linear-gradient(135deg, #0a0a15 0%, #1e0f3d 50%, #2d1b4e 100%);
+body.red-theme {
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a0a0a 100%);
 }
 
 body.blue-theme {
-    background: linear-gradient(135deg, #0a0a15 0%, #0f1e3d 50%, #1a2d4e 100%);
+    background: linear-gradient(135deg, #0a0a0a 0%, #0a0f1a 100%);
+}
+
+body.purple-theme {
+    background: linear-gradient(135deg, #0a0a0a 0%, #150a1a 100%);
 }
 
 .container {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 2rem;
+    max-width: 600px;
+    width: 100%;
+    padding: 3rem 2rem;
+    text-align: center;
+}
+
+/* Main Header */
+.main-header {
+    margin-bottom: 2rem;
+}
+
+.big-title {
+    font-size: clamp(3rem, 10vw, 5rem);
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    line-height: 1;
+    margin-bottom: 0;
+    background: linear-gradient(135deg, var(--text) 0%, var(--text-dim) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Intro Text */
+.intro {
+    margin-bottom: 3rem;
+}
+
+.intro p {
+    font-size: 1rem;
+    color: var(--text-dim);
+    line-height: 1.6;
+    margin-bottom: 0.5rem;
+}
+
+/* Team Selector Pills */
+.team-selector {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 3rem;
+    flex-wrap: wrap;
+}
+
+.team-pill {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: transparent;
+    border: 2px solid var(--border);
+    border-radius: 50px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.team-pill:hover {
+    transform: translateY(-2px);
+    border-color: var(--text-dim);
+}
+
+.red-pill:hover,
+.red-pill.active {
+    border-color: var(--red-primary);
+    color: var(--red-primary);
+    box-shadow: 0 0 20px var(--red-glow);
+}
+
+.blue-pill:hover,
+.blue-pill.active {
+    border-color: var(--blue-primary);
+    color: var(--blue-primary);
+    box-shadow: 0 0 20px var(--blue-glow);
+}
+
+.purple-pill:hover,
+.purple-pill.active {
+    border-color: var(--purple-primary);
+    color: var(--purple-primary);
+    box-shadow: 0 0 20px var(--purple-glow);
+}
+
+.pill-emoji {
+    font-size: 1.2rem;
+}
+
+.pill-text {
+    font-weight: 600;
+}
+
+/* Social Links */
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 3rem;
+}
+
+.social-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    background: transparent;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    color: var(--text-dim);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.social-btn:hover {
+    border-color: var(--text);
+    color: var(--text);
+    transform: translateY(-2px);
+}
+
+body.red-theme .social-btn:hover {
+    border-color: var(--red-primary);
+    color: var(--red-primary);
+    box-shadow: 0 0 20px var(--red-glow);
+}
+
+body.blue-theme .social-btn:hover {
+    border-color: var(--blue-primary);
+    color: var(--blue-primary);
+    box-shadow: 0 0 20px var(--blue-glow);
+}
+
+body.purple-theme .social-btn:hover {
+    border-color: var(--purple-primary);
+    color: var(--purple-primary);
+    box-shadow: 0 0 20px var(--purple-glow);
+}
+
+/* Creators */
+.creators {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.creator-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.creator-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 3px solid var(--border);
+    transition: all 0.3s ease;
+}
+
+.creator-avatar:hover {
+    transform: scale(1.05);
+    border-color: var(--text-dim);
+}
+
+body.red-theme .creator-avatar:hover {
+    border-color: var(--red-primary);
+    box-shadow: 0 0 20px var(--red-glow);
+}
+
+body.blue-theme .creator-avatar:hover {
+    border-color: var(--blue-primary);
+    box-shadow: 0 0 20px var(--blue-glow);
+}
+
+body.purple-theme .creator-avatar:hover {
+    border-color: var(--purple-primary);
+    box-shadow: 0 0 20px var(--purple-glow);
+}
+
+.creator-name {
+    font-size: 0.9rem;
+    color: var(--text-dim);
+    font-weight: 500;
+}
+
+/* Footer */
+.footer {
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+}
+
+.footer p {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    margin-bottom: 0.25rem;
+}
+
+.footer a {
+    color: var(--text-dim);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer a:hover {
+    color: var(--text);
+}
+
+body.red-theme .footer a:hover {
+    color: var(--red-primary);
+}
+
+body.blue-theme .footer a:hover {
+    color: var(--blue-primary);
+}
+
+body.purple-theme .footer a:hover {
+    color: var(--purple-primary);
+}
+
+.footer-subtitle {
+    font-size: 0.75rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .container {
+        padding: 2rem 1.5rem;
+    }
+    
+    .big-title {
+        font-size: 2.5rem;
+    }
+    
+    .team-selector {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    .team-pill {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .creators {
+        gap: 1.5rem;
+    }
+    
+    .creator-avatar {
+        width: 64px;
+        height: 64px;
+    }
 }
 
 /* Header Styles */
@@ -60,8 +318,26 @@ body.blue-theme {
     position: relative;
 }
 
+.main-title {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(135deg, var(--purple-primary), var(--blue-primary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.main-subtitle {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+}
+
 .profile-section {
-    display: inline-block;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
 }
 
 .profile-link {
@@ -102,6 +378,7 @@ body.blue-theme .profile-link:hover {
     border-radius: 50%;
     border: 3px solid var(--purple-primary);
     transition: all 0.3s ease;
+    animation: glow 2s ease-in-out infinite;
 }
 
 body.blue-theme .profile-img {
@@ -113,14 +390,14 @@ body.blue-theme .profile-img {
 }
 
 .profile-name {
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-weight: 700;
     color: var(--text-primary);
     margin-bottom: 0.3rem;
 }
 
 .profile-subtitle {
-    font-size: 1rem;
+    font-size: 0.9rem;
     color: var(--text-secondary);
     font-weight: 400;
 }

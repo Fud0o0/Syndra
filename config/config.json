@@ -3,6 +3,12 @@
     "name": "SyndraShell",
     "version": "1.0.0"
   },
+  "user": {
+    "github_username": "Fud0o0",
+    "name": "Fud0o0",
+    "profile_image": "https://github.com/Fud0o0.png"
+  },
+  "team": "purple",
   "appearance": {
     "theme": "catppuccin",
     "bar_position": "Top",

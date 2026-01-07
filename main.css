@@ -105,3 +105,96 @@
 @define-color pink #f5c2e7;
 @define-color flamingo #f2cdcd;
 @define-color rosewater #f5e0dc;
+/* Dashboard Styling */
+#dashboard {
+    padding: 20px;
+    transition: background-color 400ms ease;
+}
+
+#dashboard-purple {
+    background: linear-gradient(135deg, #1e1e2e 0%, #2d1b4e 50%, #3d2766 100%);
+}
+
+#dashboard-blue {
+    background: linear-gradient(135deg, #1e1e2e 0%, #1b3d5f 50%, #1a4d7a 100%);
+}
+
+#dashboard-header {
+    padding: 20px;
+    margin-bottom: 12px;
+}
+
+#dashboard-profile {
+    padding: 16px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    margin-bottom: 12px;
+}
+
+#github-link {
+    background-color: rgba(137, 180, 250, 0.2);
+    border-radius: 12px;
+    padding: 12px 24px;
+    transition: all 200ms ease;
+    border: 2px solid rgba(137, 180, 250, 0.3);
+}
+
+#github-link:hover {
+    background-color: rgba(137, 180, 250, 0.4);
+    border-color: rgba(137, 180, 250, 0.6);
+    transform: scale(1.05);
+}
+
+#profile-icon {
+    font-size: 24px;
+}
+
+#profile-name {
+    font-size: 18px;
+    font-weight: bold;
+    color: #cdd6f4;
+}
+
+/* Team Selector */
+#team-selector {
+    padding: 16px;
+    margin-bottom: 16px;
+}
+
+#team-purple-btn,
+#team-blue-btn {
+    padding: 12px 32px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    transition: all 200ms ease;
+    border: 2px solid transparent;
+}
+
+#team-purple-btn {
+    background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%);
+    color: white;
+}
+
+#team-purple-btn:hover {
+    background: linear-gradient(135deg, #7c3aed 0%, #8b5cf6 100%);
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(139, 92, 246, 0.4);
+}
+
+#team-blue-btn {
+    background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+    color: white;
+}
+
+#team-blue-btn:hover {
+    background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(59, 130, 246, 0.4);
+}
+
+#dashboard-notebook {
+    padding: 12px;
+    background-color: rgba(255, 255, 255, 0.03);
+    border-radius: 16px;
+}

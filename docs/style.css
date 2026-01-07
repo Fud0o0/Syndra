@@ -36,22 +36,12 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent;
 }
 
 html {
     overflow-x: hidden;
     overflow-y: scroll;
     position: relative;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
-/* Smooth scroll only on desktop */
-@media (min-width: 769px) {
-    html {
-        scroll-behavior: smooth;
-    }
 }
 
 body {
@@ -72,8 +62,9 @@ body::before {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
+    max-width: 100%;
     pointer-events: none;
     z-index: 1000;
     /* Enhanced Scanlines effect */
@@ -84,13 +75,7 @@ body::before {
         transparent 2px,
         rgba(0, 0, 0, 0.03) 3px
     );
-}
-
-/* Disable heavy animations on mobile */
-@media (min-width: 769px) {
-    body::before {
-        animation: scanline-move 10s linear infinite;
-    }
+    animation: scanline-move 10s linear infinite;
 }
 
 @keyframes scanline-move {
@@ -107,19 +92,14 @@ body::after {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
+    max-width: 100%;
     pointer-events: none;
     z-index: 999;
     /* Screen grain/noise */
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.02'/%3E%3C/svg%3E");
-}
-
-@media (min-width: 769px) {
-    body::after {
-        animation: grain 1s steps(3) infinite;
-    }
-}
+    animation: grain 1s steps(3) infinite;
 }
 
 
@@ -148,58 +128,39 @@ body::after {
 
 /* Theme Backgrounds */
 .red-theme {
-    background: linear-gradient(135deg, var(--red-bg-start) 0%, var(--red-bg-end) 100%);
+    background:
+        radial-gradient(circle at 20% 50%, rgba(255, 0, 102, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(255, 51, 133, 0.1) 0%, transparent 50%),
+        radial-gradient(ellipse at center, var(--red-bg-end) 0%, var(--red-bg-start) 100%),
+        linear-gradient(135deg, var(--red-bg-start) 0%, var(--red-bg-end) 100%);
+    background-attachment: fixed;
 }
 
 .blue-theme {
-    background: linear-gradient(135deg, var(--blue-bg-start) 0%, var(--blue-bg-end) 100%);
+    background:
+        radial-gradient(circle at 20% 50%, rgba(0, 212, 255, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(0, 153, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(ellipse at center, var(--blue-bg-end) 0%, var(--blue-bg-start) 100%),
+        linear-gradient(135deg, var(--blue-bg-start) 0%, var(--blue-bg-end) 100%);
+    background-attachment: fixed;
 }
 
 .purple-theme {
-    background: linear-gradient(135deg, var(--purple-bg-start) 0%, var(--purple-bg-end) 100%);
+    background:
+        radial-gradient(circle at 20% 50%, rgba(179, 102, 255, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(214, 153, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(ellipse at center, var(--purple-bg-end) 0%, var(--purple-bg-start) 100%),
+        linear-gradient(135deg, var(--purple-bg-start) 0%, var(--purple-bg-end) 100%);
+    background-attachment: fixed;
 }
 
 .root-theme {
-    background: linear-gradient(135deg, var(--root-bg-start) 0%, var(--root-bg-end) 100%);
-}
-
-/* Complex backgrounds only on desktop */
-@media (min-width: 769px) {
-    .red-theme {
-        background:
-            radial-gradient(circle at 20% 50%, rgba(255, 0, 102, 0.15) 0%, transparent 50%),
-            radial-gradient(circle at 80% 80%, rgba(255, 51, 133, 0.1) 0%, transparent 50%),
-            radial-gradient(ellipse at center, var(--red-bg-end) 0%, var(--red-bg-start) 100%),
-            linear-gradient(135deg, var(--red-bg-start) 0%, var(--red-bg-end) 100%);
-        background-attachment: fixed;
-    }
-
-    .blue-theme {
-        background:
-            radial-gradient(circle at 20% 50%, rgba(0, 212, 255, 0.15) 0%, transparent 50%),
-            radial-gradient(circle at 80% 80%, rgba(0, 153, 255, 0.1) 0%, transparent 50%),
-            radial-gradient(ellipse at center, var(--blue-bg-end) 0%, var(--blue-bg-start) 100%),
-            linear-gradient(135deg, var(--blue-bg-start) 0%, var(--blue-bg-end) 100%);
-        background-attachment: fixed;
-    }
-
-    .purple-theme {
-        background:
-            radial-gradient(circle at 20% 50%, rgba(179, 102, 255, 0.15) 0%, transparent 50%),
-            radial-gradient(circle at 80% 80%, rgba(214, 153, 255, 0.1) 0%, transparent 50%),
-            radial-gradient(ellipse at center, var(--purple-bg-end) 0%, var(--purple-bg-start) 100%),
-            linear-gradient(135deg, var(--purple-bg-start) 0%, var(--purple-bg-end) 100%);
-        background-attachment: fixed;
-    }
-
-    .root-theme {
-        background:
-            radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.08) 0%, transparent 50%),
-            radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.05) 0%, transparent 50%),
-            radial-gradient(ellipse at center, var(--root-bg-end) 0%, var(--root-bg-start) 100%),
-            linear-gradient(135deg, var(--root-bg-start) 0%, var(--root-bg-end) 100%);
-        background-attachment: fixed;
-    }
+    background:
+        radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.05) 0%, transparent 50%),
+        radial-gradient(ellipse at center, var(--root-bg-end) 0%, var(--root-bg-start) 100%),
+        linear-gradient(135deg, var(--root-bg-start) 0%, var(--root-bg-end) 100%);
+    background-attachment: fixed;
 }
 
 /* CRT Vignette Effect - Disabled to remove dark borders */
@@ -228,8 +189,9 @@ html::after {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
+    max-width: 100%;
     pointer-events: none;
     z-index: 997;
     background: linear-gradient(
@@ -240,12 +202,7 @@ html::after {
         transparent 60%,
         transparent 100%
     );
-}
-
-@media (min-width: 769px) {
-    html::after {
-        animation: screen-reflection 12s linear infinite;
-    }
+    animation: screen-reflection 12s linear infinite;
 }
 
 @keyframes screen-reflection {
@@ -965,65 +922,6 @@ html::after {
 }
 
 /* ===== Responsive Design ===== */
-
-/* Large Desktop (1920px+) */
-@media (min-width: 1920px) {
-    .container {
-        max-width: 1600px;
-    }
-    
-    .retro-word {
-        font-size: 7rem;
-    }
-}
-
-/* Desktop (1200px - 1919px) */
-@media (max-width: 1200px) {
-    .container {
-        max-width: 1100px;
-        padding: 3rem 2rem;
-    }
-    
-    .retro-word {
-        font-size: 5rem;
-    }
-    
-    .features-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-/* Tablet Landscape (992px - 1199px) */
-@media (max-width: 992px) {
-    .container {
-        max-width: 900px;
-        padding: 2.5rem 1.5rem;
-    }
-    
-    .retro-word {
-        font-size: 4.5rem;
-    }
-    
-    .hero-description {
-        font-size: 1rem;
-    }
-    
-    .install-section {
-        padding: 1.5rem;
-    }
-    
-    .install-command {
-        flex-wrap: wrap;
-        gap: 0.5rem;
-    }
-    
-    .disk-space-info {
-        width: 100%;
-        justify-content: center;
-    }
-}
-
-/* Tablet Portrait (768px - 991px) */
 @media (max-width: 768px) {
     .hero-container {
         flex-direction: column-reverse;
@@ -1031,23 +929,17 @@ html::after {
     }
 
     .retro-word {
-        font-size: 3.5rem;
+        font-size: 3rem;
         justify-content: center;
     }
 
     .hero-description {
         text-align: center;
-        font-size: 0.95rem;
-        line-height: 1.8;
+        font-size: 0.9rem;
     }
 
     .pills {
         justify-content: center;
-        flex-wrap: wrap;
-    }
-    
-    .pill {
-        padding: 0.7rem 1.5rem;
     }
 
     .social-icons {
@@ -1055,92 +947,18 @@ html::after {
     }
 
     .retro-avatar {
-        width: 160px;
-        height: 160px;
+        width: 140px;
+        height: 140px;
     }
 
     .container {
-        padding: 2rem 1.5rem;
-    }
-    
-    .features-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1.5rem;
-    }
-    
-    .tools-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    
-    .install-command code {
-        font-size: 0.85rem;
+        padding: 2rem 1rem;
     }
 }
 
-/* Mobile Large (576px - 767px) */
-@media (max-width: 576px) {
-    .retro-word {
-        font-size: 3rem;
-    }
-    
-    .hero-tagline {
-        font-size: 1rem;
-    }
-    
-    .hero-description {
-        font-size: 0.85rem;
-    }
-    
-    .install-section h3 {
-        font-size: 1.2rem;
-    }
-    
-    .features-grid,
-    .tools-grid {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-    }
-    
-    .team-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .team-avatar-img {
-        width: 180px;
-        height: 180px;
-        font-size: 4rem;
-    }
-}
-
-/* Mobile Medium (480px - 575px) */
 @media (max-width: 480px) {
-    body {
-        font-size: 14px;
-    }
-    
-    /* Disable heavy effects on mobile */
-    body::before,
-    body::after,
-    html::after {
-        display: none;
-    }
-    
-    .container {
-        padding: 1.5rem 1rem;
-        max-width: 100%;
-    }
-    
     .retro-word {
         font-size: 2.5rem;
-    }
-    
-    .hero-tagline {
-        font-size: 0.9rem;
-    }
-    
-    .hero-description {
-        font-size: 0.8rem;
-        line-height: 1.6;
     }
 
     .pill {
@@ -1149,129 +967,8 @@ html::after {
     }
 
     .retro-avatar {
-        width: 140px;
-        height: 140px;
-    }
-    
-    .install-section {
-        padding: 1.25rem;
-    }
-    
-    .install-command {
-        padding: 1rem;
-    }
-    
-    .install-command code {
-        font-size: 0.75rem;
-        padding-left: 1rem;
-    }
-    
-    .copy-btn {
-        padding: 0.4rem;
-    }
-    
-    .copy-btn svg {
-        width: 14px;
-        height: 14px;
-    }
-    
-    .disk-space-info {
-        font-size: 0.75rem;
-        padding: 0.4rem 0.6rem;
-    }
-    
-    .feature-card,
-    .tool-card {
-        padding: 1.5rem;
-    }
-    
-    .feature-icon,
-    .tool-icon {
-        font-size: 2rem;
-    }
-    
-    .section-title {
-        font-size: 1.8rem;
-    }
-}
-
-/* Mobile Small (320px - 479px) */
-@media (max-width: 380px) {
-    .retro-word {
-        font-size: 2rem;
-    }
-    
-    .retro-letter {
-        margin: 0 0.05rem;
-    }
-    
-    .hero-tagline {
-        font-size: 0.8rem;
-    }
-    
-    .pills {
-        gap: 0.5rem;
-    }
-    
-    .pill {
-        padding: 0.5rem 1rem;
-        font-size: 0.75rem;
-    }
-    
-    .social-icons {
-        gap: 0.8rem;
-    }
-    
-    .social-icon {
-        width: 20px;
-        height: 20px;
-    }
-    
-    .install-command {
-        flex-direction: column;
-        align-items: stretch;
-    }
-    
-    .copy-btn,
-    .disk-space-info {
-        width: 100%;
-        justify-content: center;
-    }
-    
-    .team-avatar-img {
-        width: 150px;
-        height: 150px;
-        font-size: 3.5rem;
-    }
-}
-
-/* Touch device optimizations */
-@media (hover: none) and (pointer: coarse) {
-    .pill,
-    .copy-btn,
-    .feature-card,
-    .tool-card,
-    .team-card {
-        transition: transform 0.2s ease;
-    }
-    
-    .pill:active,
-    .copy-btn:active {
-        transform: scale(0.95);
-    }
-    
-    .feature-card:active,
-    .tool-card:active,
-    .team-card:active {
-        transform: translateY(2px);
-    }
-}
-
-/* High DPI displays */
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-    body::before,
-    body::after {
-        opacity: 0.5;
+        width: 120px;
+        height: 120px;
     }
 }
 /* ===== Install Section ===== */

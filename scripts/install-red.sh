@@ -48,10 +48,6 @@ echo "🎨 Installing Hyprland environment..."
 sudo pacman -S --noconfirm hyprland waybar wofi kitty dunst \
     polkit-gnome xdg-desktop-portal-hyprland qt5-wayland qt6-wayland
 
-# Install Opera browser
-echo "🌐 Installing Opera browser..."
-yay -S --noconfirm opera
-
 # Install Red Team security tools
 echo "🔨 Installing Red Team offensive tools..."
 sudo pacman -S --noconfirm nmap masscan wireshark-cli tcpdump \

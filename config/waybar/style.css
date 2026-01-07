@@ -1,160 +1,84 @@
 * {
     border: none;
     border-radius: 0;
-    font-family: "JetBrainsMono Nerd Font", "JetBrains Mono", monospace;
-    font-size: 14px;
-    font-weight: 600;
+    font-family: "JetBrainsMono Nerd Font";
+    font-size: 13px;
     min-height: 0;
 }
 
 window#waybar {
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(10px);
-    color: #ffffff;
-    transition: background-color 0.3s ease;
-    border-radius: 15px;
+    background-color: rgba(30, 30, 46, 0.9);
+    color: #cdd6f4;
+    transition-property: background-color;
+    transition-duration: .5s;
 }
 
 window#waybar.hidden {
-    opacity: 0.3;
-}
-
-/* Logo Syndra */
-#custom-logo {
-    padding: 0 15px;
-    font-weight: bold;
-    font-size: 15px;
-    background: linear-gradient(90deg, #b366ff 0%, #00d4ff 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin-right: 10px;
-}
-
-/* Workspaces */
-#workspaces {
-    margin: 0 5px;
+    opacity: 0.2;
 }
 
 #workspaces button {
-    padding: 0 12px;
-    background-color: rgba(255, 255, 255, 0.05);
-    color: #ffffff;
-    border-radius: 10px;
-    margin: 0 3px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 0 8px;
+    background-color: transparent;
+    color: #cdd6f4;
+    border-bottom: 2px solid transparent;
 }
 
 #workspaces button:hover {
-    background: rgba(179, 102, 255, 0.3);
-    box-shadow: 0 0 10px rgba(179, 102, 255, 0.5);
+    background: rgba(0, 0, 0, 0.2);
+    box-shadow: inherit;
+    border-bottom: 2px solid #cdd6f4;
 }
 
 #workspaces button.active {
-    background: linear-gradient(135deg, #b366ff 0%, #00d4ff 100%);
-    color: #000000;
-    box-shadow: 0 0 15px rgba(179, 102, 255, 0.8);
+    background-color: rgba(137, 180, 250, 0.2);
+    border-bottom: 2px solid #89b4fa;
 }
 
 #workspaces button.urgent {
-    background-color: #ff0066;
-    animation: urgent-blink 1s ease infinite;
+    background-color: #f38ba8;
 }
 
-@keyframes urgent-blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.6; }
-}
-
-/* Window title */
-#window {
-    padding: 0 15px;
-    background-color: transparent;
-    font-weight: 600;
-    color: #ffffff;
-    text-shadow: 0 0 5px rgba(179, 102, 255, 0.5);
-}
-
-/* Modules de droite */
 #clock,
 #battery,
 #cpu,
 #memory,
 #network,
 #pulseaudio,
-#custom-power {
-    padding: 5px 15px;
-    margin: 0 3px;
-    background: rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-    transition: all 0.3s ease;
+#tray,
+#window {
+    padding: 0 10px;
+    margin: 0 4px;
+    background-color: rgba(69, 71, 90, 0.5);
+    border-radius: 10px;
 }
 
-#clock:hover,
-#battery:hover,
-#cpu:hover,
-#memory:hover,
-#network:hover,
-#pulseaudio:hover,
-#custom-power:hover {
-    background: rgba(179, 102, 255, 0.2);
-    border-color: rgba(179, 102, 255, 0.5);
-    box-shadow: 0 0 10px rgba(179, 102, 255, 0.3);
+#window {
+    background-color: transparent;
+    font-weight: bold;
 }
 
-/* Batterie */
 #battery.charging, #battery.plugged {
-    color: #00ff88;
-    background: rgba(0, 255, 136, 0.1);
+    color: #a6e3a1;
 }
 
 #battery.critical:not(.charging) {
-    background: linear-gradient(135deg, #ff0066 0%, #ff3385 100%);
-    color: #ffffff;
-    animation: critical-blink 0.8s ease infinite;
+    background-color: #f38ba8;
+    color: #1e1e2e;
+    animation-name: blink;
+    animation-duration: 0.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
 }
 
-@keyframes critical-blink {
-    0%, 100% { 
-        box-shadow: 0 0 20px rgba(255, 0, 102, 0.8);
-    }
-    50% { 
-        box-shadow: 0 0 5px rgba(255, 0, 102, 0.3);
+@keyframes blink {
+    to {
+        background-color: #f9e2af;
+        color: #1e1e2e;
     }
 }
 
-/* Audio */
 #pulseaudio.muted {
-    color: #ff0066;
-    background: rgba(255, 0, 102, 0.1);
-}
-
-/* CPU & Memory warnings */
-#cpu.warning {
-    background: rgba(255, 153, 0, 0.2);
-    color: #ff9900;
-}
-
-#memory.warning {
-    background: rgba(255, 153, 0, 0.2);
-    color: #ff9900;
-}
-
-/* Network */
-#network.disconnected {
-    background: rgba(255, 0, 102, 0.2);
-    color: #ff0066;
-}
-
-/* Power button */
-#custom-power {
-    color: #ff0066;
-    font-size: 16px;
-}
-
-#custom-power:hover {
-    background: rgba(255, 0, 102, 0.2);
-    box-shadow: 0 0 15px rgba(255, 0, 102, 0.5);
+    color: #f38ba8;
 }

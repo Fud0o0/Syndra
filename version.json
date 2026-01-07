@@ -1,0 +1,11 @@
+{
+  "name": "SyndraShell",
+  "version": "1.0.0",
+  "breaking_changes": [],
+  "features": [
+    "Initial release with Fabric framework",
+    "Bar, Notch, and Dock components",
+    "Hyprland integration",
+    "Catppuccin theme"
+  ]
+}

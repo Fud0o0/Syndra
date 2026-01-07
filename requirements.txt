@@ -1,0 +1,10 @@
+# Python Dependencies for SyndraShell
+# Note: python-fabric-git must be installed via AUR (handled by install.sh)
+
+PyGObject
+Pillow
+pywayland
+setproctitle
+watchdog
+loguru
+

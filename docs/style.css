@@ -25,10 +25,10 @@
     --root-bg-end: #1a1a1a;
 
     /* Custom Theme (Green) */
-    --custom-primary: #00ff66;
-    --custom-secondary: #00cc52;
-    --custom-bg-start: #000a05;
-    --custom-bg-end: #001a10;
+    --custom-primary: #00ff88;
+    --custom-secondary: #00dd66;
+    --custom-bg-start: #000000;
+    --custom-bg-end: #001108;
 
     /* Base Colors */
     --text: #f0f0f0;
@@ -862,17 +862,19 @@ html::after {
 
 /* Profile Avatar Images */
 .profile-avatar .profile-avatar-img {
-    width: 50px;
-    height: 50px;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
     object-fit: cover;
     transition: all 0.3s ease;
-    border: 2px solid rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    display: block;
 }
 
 .social-icon-wrapper.profile-avatar:hover .profile-avatar-img {
-    transform: scale(1.1) rotate(5deg);
-    border-color: currentColor;
+    transform: scale(1.15) rotate(8deg);
+    filter: brightness(1.2);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
 }
 
 /* ===== Retro Avatar ===== */

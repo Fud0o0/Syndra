@@ -14,7 +14,7 @@ Votre site est maintenant prêt dans le dossier `docs/` ! Voici comment l'héber
    ```
 
 2. **Activer GitHub Pages** :
-   - Allez sur votre repo GitHub : `https://github.com/Fud0o0/SyndraShell`
+   - Allez sur votre repo GitHub : `https://github.com/Fud0o0/Syndra`
    - Cliquez sur **Settings** (Paramètres)
    - Dans le menu gauche, cliquez sur **Pages**
    - Sous "Source", sélectionnez :

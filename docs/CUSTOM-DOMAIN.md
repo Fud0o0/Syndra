@@ -105,7 +105,7 @@ Value: fud0o0.github.io
 
 ### Étape 3 : Activer HTTPS sur GitHub
 
-1. Allez sur votre repo : `https://github.com/Fud0o0/SyndraShell`
+1. Allez sur votre repo : `https://github.com/Fud0o0/Syndra`
 2. **Settings** → **Pages**
 3. Dans "Custom domain", entrez votre domaine : `fudooo.is-a.dev`
 4. Cliquez sur **Save**

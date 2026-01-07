@@ -4,7 +4,7 @@ set -e          # Exit immediately if a command fails
 set -u          # Treat unset variables as errors
 set -o pipefail # Prevent errors in a pipeline from being masked
 
-REPO_URL="https://github.com/Fud0o0/SyndraShell.git"
+REPO_URL="https://github.com/Fud0o0/Syndra.git"
 INSTALL_DIR="$HOME/.config/SyndraShell"
 
 echo "🚀 Installing SyndraShell..."

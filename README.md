@@ -19,7 +19,7 @@ curl -L get.syndra.me | sh
 
 Alternative method (using GitHub directly):
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Fud0o0/SyndraShell/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/Fud0o0/Syndra/main/install.sh | bash
 ```
 
 ### Manual Installation
@@ -77,7 +77,7 @@ curl -fsSL https://raw.githubusercontent.com/Fud0o0/SyndraShell/main/install.sh 
 
 2. Download and run SyndraShell:
     ```bash
-    git clone https://github.com/Fud0o0/SyndraShell.git ~/.config/SyndraShell
+    git clone https://github.com/Fud0o0/Syndra.git ~/.config/SyndraShell
     cd ~/.config/SyndraShell
     pip install --user -r requirements.txt
     uwsm app -- python ~/.config/SyndraShell/main.py > /dev/null 2>&1 & disown

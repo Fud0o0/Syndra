@@ -1,81 +1,76 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Syndra</title>
-    <link rel="stylesheet" href="style.css">
+    <meta name="description" content="Advanced cybersecurity environment for Red, Blue, and Purple team operations">
+    <link rel="icon" type="image/svg+xml" href="logo.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Bytesized&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
-<body>
-    <!-- Navigation -->
-    <nav class="nav">
-        <a href="https://github.com/Fud0o0" target="_blank" class="nav-link">GitHub</a>
-    </nav>
-
+<body class="purple-theme">
     <div class="container">
-        <!-- Logo & Title -->
-        <header class="header">
-            <div class="logo-container">
-                <img src="logo.svg" alt="Syndra Logo" class="logo">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1 class="retro-word">
+                    <span class="retro-letter" style="--i:1" data-text="S">S</span>
+                    <span class="retro-letter" style="--i:2" data-text="y">y</span>
+                    <span class="retro-letter" style="--i:3" data-text="n">n</span>
+                    <span class="retro-letter" style="--i:4" data-text="d">d</span>
+                    <span class="retro-letter" style="--i:5" data-text="r">r</span>
+                    <span class="retro-letter" style="--i:6" data-text="a">a</span>
+                </h1>
+
+                <p class="hero-description">
+                    I'm <mark>Fud0o0</mark>, creator of <mark>Syndra</mark>. Cybersecurity enthusiast, Red Team operator, and system architect. I build advanced security environments, develop offensive tools, and explore the depths of system exploitation...<br>Inspired by <a href="https://axeni.de/ambxst/" target="_blank" rel="noopener noreferrer">Ambxst</a>, among other things.
+                </p>
+
+                <div class="pills">
+                    <button class="pill" data-team="red">
+                        <span class="pill-dot"></span>
+                        Red Team
+                    </button>
+                    <button class="pill" data-team="blue">
+                        <span class="pill-dot"></span>
+                        Blue Team
+                    </button>
+                    <button class="pill active" data-team="purple">
+                        <span class="pill-dot"></span>
+                        Purple Team
+                    </button>
+                </div>
+
+                <div class="social-icons">
+                    <a href="https://github.com/Fud0o0" class="social-icon-wrapper" target="_blank" rel="noopener noreferrer">
+                        <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                        </svg>
+                    </a>
+                    <a href="https://github.com/Ax0-0" class="social-icon-wrapper" target="_blank" rel="noopener noreferrer">
+                        <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                        </svg>
+                    </a>
+                    <a href="https://github.com/SyndraShell" class="social-icon-wrapper" target="_blank" rel="noopener noreferrer">
+                        <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                        </svg>
+                    </a>
+                </div>
             </div>
-            <h1 class="title">Syndra</h1>
-        </header>
 
-        <!-- Description -->
-        <section class="description">
-            <p>A powerful cybersecurity environment for Red, Blue, and Purple Team operations.</p>
-            <p>Built with Fabric framework for Hyprland on Wayland. Future computer security specialist, penetration tester, and system administrator.</p>
-            <p>Inspired by <a href="https://github.com/Axenide/Ax-Shell" target="_blank">Ax-Shell</a> — featuring dynamic dashboards, toolboxes, and security monitoring.</p>
-        </section>
-
-        <!-- Team Pills -->
-        <section class="pills">
-            <button class="pill red" data-team="red">
-                <span class="pill-dot"></span>
-                <span>Red Team</span>
-            </button>
-            <button class="pill blue" data-team="blue">
-                <span class="pill-dot"></span>
-                <span>Blue Team</span>
-            </button>
-            <button class="pill purple active" data-team="purple">
-                <span class="pill-dot"></span>
-                <span>Purple Team</span>
-            </button>
-        </section>
-
-        <!-- Social Links -->
-        <section class="social">
-            <a href="https://github.com/Fud0o0" target="_blank" class="social-icon" aria-label="GitHub Fud0o0">
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
-                </svg>
-            </a>
-            <a href="https://github.com/Ax0-0" target="_blank" class="social-icon" aria-label="GitHub Ax0-0">
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
-                </svg>
-            </a>
-        </section>
-
-        <!-- Creators -->
-        <section class="creators">
-            <a href="https://github.com/Fud0o0" target="_blank" class="creator">
-                <img src="https://github.com/Fud0o0.png" alt="Fud0o0" class="avatar">
-            </a>
-            <a href="https://github.com/Ax0-0" target="_blank" class="creator">
-                <img src="https://github.com/Ax0-0.png" alt="Ax0-0" class="avatar">
-            </a>
-        </section>
+            <div class="retro-avatar-container">
+                <img src="logo.svg" alt="Syndra" class="retro-avatar">
+            </div>
+        </div>
     </div>
 
-    <!-- Footer -->
     <footer class="footer">
-        <p>© 2026 Syndra</p>
-        <p>Powered by <a href="https://github.com/Fud0o0/SyndraShell">GitHub Pages</a></p>
+        <p>&copy; 2026 Syndra - Fud0o0 & Ax0-0</p>
+        <p>Powered by passion and <a href="https://pages.github.com" target="_blank" rel="noopener noreferrer">GitHub Pages</a></p>
     </footer>
 
     <script src="script.js"></script>

@@ -48,6 +48,10 @@ echo "🎨 Installing Hyprland environment..."
 sudo pacman -S --noconfirm hyprland waybar wofi kitty dunst \
     polkit-gnome xdg-desktop-portal-hyprland qt5-wayland qt6-wayland
 
+# Install Opera browser
+echo "🌐 Installing Opera browser..."
+yay -S --noconfirm opera
+
 # Install CTF and reversing tools
 echo "🎯 Installing CTF tools..."
 sudo pacman -S --noconfirm gdb radare2 ghidra binwalk foremost strings \

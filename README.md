@@ -14,6 +14,11 @@
 
 **Run the following command in your terminal once logged into Hyprland:**
 ```bash
+curl -L get.syndra.me | sh
+```
+
+Alternative method (using GitHub directly):
+```bash
 curl -fsSL https://raw.githubusercontent.com/Fud0o0/SyndraShell/main/install.sh | bash
 ```
 

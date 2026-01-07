@@ -380,3 +380,110 @@ body {
         height: 120px;
     }
 }
+/* ===== Install Section ===== */
+.install-section {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border);
+    transition: all 0.3s ease;
+}
+
+.install-section:hover {
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.red-theme .install-section:hover {
+    border-color: var(--red-primary);
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.2);
+}
+
+.blue-theme .install-section:hover {
+    border-color: var(--blue-primary);
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
+}
+
+.purple-theme .install-section:hover {
+    border-color: var(--purple-primary);
+    box-shadow: 0 0 20px rgba(168, 85, 247, 0.2);
+}
+
+.install-section h3 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.red-theme .install-section h3 {
+    color: var(--red-primary);
+}
+
+.blue-theme .install-section h3 {
+    color: var(--blue-primary);
+}
+
+.purple-theme .install-section h3 {
+    color: var(--purple-primary);
+}
+
+.install-command {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 0.75rem;
+}
+
+.install-command code {
+    flex: 1;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.95rem;
+    color: var(--text);
+    user-select: all;
+}
+
+.copy-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    padding: 0.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+.copy-btn:hover {
+    transform: scale(1.1);
+}
+
+.red-theme .copy-btn:hover {
+    border-color: var(--red-primary);
+    color: var(--red-primary);
+    box-shadow: 0 0 10px rgba(239, 68, 68, 0.3);
+}
+
+.blue-theme .copy-btn:hover {
+    border-color: var(--blue-primary);
+    color: var(--blue-primary);
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+}
+
+.purple-theme .copy-btn:hover {
+    border-color: var(--purple-primary);
+    color: var(--purple-primary);
+    box-shadow: 0 0 10px rgba(168, 85, 247, 0.3);
+}
+
+.install-note {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    margin: 0;
+}

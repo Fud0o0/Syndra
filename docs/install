@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 
 set -e          # Exit immediately if a command fails
 set -u          # Treat unset variables as errors
@@ -102,77 +102,42 @@ ln -sf "$INSTALL_DIR/config/waybar" "$CONFIG_DIR/waybar"
 # Kitty
 ln -sf "$INSTALL_DIR/config/kitty" "$CONFIG_DIR/kitty"
 
-# Dunst
-ln -sf "$INSTALL_DIR/config/dunst" "$CONFIG_DIR/dunst"
-
 # Wofi
 ln -sf "$INSTALL_DIR/config/wofi" "$CONFIG_DIR/wofi"
 
-# Copy fonts if not already present
-if [ ! -d "$HOME/.fonts/tabler-icons" ]; then
-    echo "📝 Copying local fonts..."
-    mkdir -p "$HOME/.fonts"
-    if [ -d "$INSTALL_DIR/assets/fonts" ]; then
-        cp -r "$INSTALL_DIR/assets/fonts/"* "$HOME/.fonts"
-        fc-cache -f
-    fi
-fi
+# Dunst
+ln -sf "$INSTALL_DIR/config/dunst" "$CONFIG_DIR/dunst"
 
-# Create config from example if not exists
-if [ ! -f "$INSTALL_DIR/config/config.json" ] && [ -f "$INSTALL_DIR/config.example.json" ]; then
+# Copy example config
+if [ ! -f "$INSTALL_DIR/config/config.json" ]; then
+    echo "📋 Creating default configuration..."
     cp "$INSTALL_DIR/config.example.json" "$INSTALL_DIR/config/config.json"
-    echo "📝 Created config.json from example"
 fi
 
-# Make scripts executable
-echo "🔧 Setting script permissions..."
-chmod +x "$INSTALL_DIR/scripts/"*.sh 2>/dev/null || true
-chmod +x "$INSTALL_DIR/scripts/"*.py 2>/dev/null || true
-chmod +x "$INSTALL_DIR/syndrashell.sh" 2>/dev/null || true
-chmod +x "$INSTALL_DIR/main.py" 2>/dev/null || true
+# Set executable permissions
+chmod +x "$INSTALL_DIR/main.py"
+chmod +x "$INSTALL_DIR/syndrashell.sh"
 
-# Create directories
-echo "📁 Creating directories..."
-mkdir -p ~/Pictures/Wallpapers
-mkdir -p ~/Pictures/Screenshots
-mkdir -p ~/Videos/Recordings
-
-# Copy example wallpaper if wallpapers directory is empty
-if [ -z "$(ls -A ~/Pictures/Wallpapers)" ]; then
-    if [ -f "$INSTALL_DIR/assets/wallpapers_example/example-1.jpg" ]; then
-        echo "🖼️  Copying example wallpaper..."
-        cp "$INSTALL_DIR/assets/wallpapers_example/example-1.jpg" ~/Pictures/Wallpapers/
-    fi
+# Add to PATH if not already present
+SHELL_RC="$HOME/.bashrc"
+if [ -n "$ZSH_VERSION" ]; then
+    SHELL_RC="$HOME/.zshrc"
 fi
 
-# Generate Hyprland configuration
-echo "⚙️  Generating configuration..."
-python "$INSTALL_DIR/config/settings_utils.py" 2>/dev/null || true
-
-# Enable and start NetworkManager
-if command -v systemctl &> /dev/null; then
-    if ! systemctl is-enabled --quiet NetworkManager 2>/dev/null; then
-        echo "Enabling NetworkManager..."
-        sudo systemctl enable NetworkManager
-    fi
-    if ! systemctl is-active --quiet NetworkManager 2>/dev/null; then
-        echo "Starting NetworkManager..."
-        sudo systemctl start NetworkManager
-    fi
+if ! grep -q "SyndraShell" "$SHELL_RC" 2>/dev/null; then
+    echo "" >> "$SHELL_RC"
+    echo "# SyndraShell" >> "$SHELL_RC"
+    echo 'export PATH="$HOME/.config/SyndraShell:$PATH"' >> "$SHELL_RC"
 fi
-
-# Start SyndraShell
-echo "▶️  Starting SyndraShell..."
-killall syndrashell 2>/dev/null || true
-uwsm app -- python "$INSTALL_DIR/main.py" >/dev/null 2>&1 &
-disown
 
 echo ""
-echo "✅ SyndraShell installation complete!"
+echo "✨ SyndraShell installation complete!"
 echo ""
-echo "📋 Next steps:"
-echo "   1. Log out and log back into Hyprland"
-echo "   2. Or reload Hyprland: hyprctl reload"
-echo "   3. Press SUPER+D for dashboard"
-echo "   4. Press SUPER+R for app launcher"
+echo "📝 Next steps:"
+echo "   1. Reload your shell: source $SHELL_RC"
+echo "   2. Edit config: nano ~/.config/SyndraShell/config/config.json"
+echo "   3. Start SyndraShell: ./syndrashell.sh or restart Hyprland"
+echo ""
+echo "📚 Documentation: https://syndra.me"
+echo "🐛 Issues: https://github.com/Fud0o0/Syndra/issues"
 echo ""

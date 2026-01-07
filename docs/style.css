@@ -1,26 +1,13 @@
-/* SyndraShell - Minimal Design inspired by axeni.de */
+/* SyndraShell - Inspired by axeni.de */
 
 :root {
-    /* Red Team Colors */
-    --red-primary: #ef4444;
-    --red-hover: #dc2626;
-    --red-glow: rgba(239, 68, 68, 0.3);
-    
-    /* Blue Team Colors */
-    --blue-primary: #3b82f6;
-    --blue-hover: #2563eb;
-    --blue-glow: rgba(59, 130, 246, 0.3);
-    
-    /* Purple Team Colors */
-    --purple-primary: #a855f7;
-    --purple-hover: #9333ea;
-    --purple-glow: rgba(168, 85, 247, 0.3);
-    
-    /* Base Colors */
     --bg: #0a0a0a;
     --text: #e5e5e5;
-    --text-dim: #a3a3a3;
-    --border: #262626;
+    --text-dim: #888;
+    --border: #222;
+    --accent-red: #ef4444;
+    --accent-blue: #3b82f6;
+    --accent-purple: #a855f7;
 }
 
 * {
@@ -30,284 +17,288 @@
 }
 
 body {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
     background: var(--bg);
     color: var(--text);
+    line-height: 1.6;
     min-height: 100vh;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background 0.4s ease;
+    flex-direction: column;
+    transition: background 0.3s;
 }
 
-body.red-theme {
-    background: linear-gradient(135deg, #0a0a0a 0%, #1a0a0a 100%);
+body.red-theme { background: linear-gradient(135deg, #0a0000 0%, #1a0000 100%); }
+body.blue-theme { background: linear-gradient(135deg, #000a1a 0%, #001a2a 100%); }
+body.purple-theme { background: linear-gradient(135deg, #0a001a 0%, #15002a 100%); }
+
+/* Navigation */
+.nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 1.5rem 2rem;
+    display: flex;
+    justify-content: flex-end;
+    z-index: 100;
 }
 
-body.blue-theme {
-    background: linear-gradient(135deg, #0a0a0a 0%, #0a0f1a 100%);
+.nav-link {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s;
 }
 
-body.purple-theme {
-    background: linear-gradient(135deg, #0a0a0a 0%, #150a1a 100%);
+.nav-link:hover {
+    color: var(--text);
 }
 
+/* Container */
 .container {
-    max-width: 600px;
-    width: 100%;
-    padding: 3rem 2rem;
-    text-align: center;
+    max-width: 42rem;
+    margin: 0 auto;
+    padding: 8rem 2rem 4rem;
+    flex: 1;
 }
 
-/* Main Header */
-.main-header {
+/* Header with Logo */
+.header {
+    text-align: center;
     margin-bottom: 2rem;
 }
 
-.big-title {
-    font-size: clamp(3rem, 10vw, 5rem);
-    font-weight: 700;
-    letter-spacing: -0.05em;
-    line-height: 1;
-    margin-bottom: 0;
-    background: linear-gradient(135deg, var(--text) 0%, var(--text-dim) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+.logo-container {
+    margin-bottom: 1.5rem;
 }
 
-/* Intro Text */
-.intro {
+.logo {
+    width: 120px;
+    height: 120px;
+    color: var(--accent-purple);
+    transition: color 0.3s, transform 0.3s;
+}
+
+body.red-theme .logo { color: var(--accent-red); }
+body.blue-theme .logo { color: var(--accent-blue); }
+
+.logo:hover {
+    transform: scale(1.05);
+}
+
+.title {
+    font-size: clamp(2.5rem, 8vw, 4rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    margin: 0;
+}
+
+/* Description */
+.description {
+    text-align: center;
     margin-bottom: 3rem;
 }
 
-.intro p {
-    font-size: 1rem;
+.description p {
     color: var(--text-dim);
-    line-height: 1.6;
+    font-size: 0.95rem;
     margin-bottom: 0.5rem;
 }
 
-/* Team Selector Pills */
-.team-selector {
+/* Pills */
+.pills {
     display: flex;
     justify-content: center;
-    gap: 1rem;
+    gap: 0.75rem;
     margin-bottom: 3rem;
     flex-wrap: wrap;
 }
 
-.team-pill {
+.pill {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.75rem 1.5rem;
+    padding: 0.6rem 1.2rem;
     background: transparent;
-    border: 2px solid var(--border);
+    border: 1.5px solid var(--border);
     border-radius: 50px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.9rem;
-    font-weight: 500;
     color: var(--text-dim);
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 500;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.3s;
 }
 
-.team-pill:hover {
-    transform: translateY(-2px);
+.pill-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+.pill:hover {
     border-color: var(--text-dim);
+    transform: translateY(-2px);
 }
 
-.red-pill:hover,
-.red-pill.active {
-    border-color: var(--red-primary);
-    color: var(--red-primary);
-    box-shadow: 0 0 20px var(--red-glow);
+.pill.red:hover,
+.pill.red.active {
+    border-color: var(--accent-red);
+    color: var(--accent-red);
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.2);
 }
 
-.blue-pill:hover,
-.blue-pill.active {
-    border-color: var(--blue-primary);
-    color: var(--blue-primary);
-    box-shadow: 0 0 20px var(--blue-glow);
+.pill.blue:hover,
+.pill.blue.active {
+    border-color: var(--accent-blue);
+    color: var(--accent-blue);
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
 }
 
-.purple-pill:hover,
-.purple-pill.active {
-    border-color: var(--purple-primary);
-    color: var(--purple-primary);
-    box-shadow: 0 0 20px var(--purple-glow);
+.pill.purple:hover,
+.pill.purple.active {
+    border-color: var(--accent-purple);
+    color: var(--accent-purple);
+    box-shadow: 0 0 20px rgba(168, 85, 247, 0.2);
 }
 
-.pill-emoji {
-    font-size: 1.2rem;
-}
-
-.pill-text {
-    font-weight: 600;
-}
-
-/* Social Links */
-.social-links {
+/* Social */
+.social {
     display: flex;
     justify-content: center;
     gap: 1rem;
     margin-bottom: 3rem;
 }
 
-.social-btn {
+.social-icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 48px;
-    height: 48px;
-    background: transparent;
-    border: 2px solid var(--border);
-    border-radius: 12px;
+    width: 40px;
+    height: 40px;
     color: var(--text-dim);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
     text-decoration: none;
-    transition: all 0.3s ease;
+    transition: all 0.3s;
 }
 
-.social-btn:hover {
-    border-color: var(--text);
+.social-icon svg {
+    width: 20px;
+    height: 20px;
+}
+
+.social-icon:hover {
     color: var(--text);
+    border-color: var(--text-dim);
     transform: translateY(-2px);
 }
 
-body.red-theme .social-btn:hover {
-    border-color: var(--red-primary);
-    color: var(--red-primary);
-    box-shadow: 0 0 20px var(--red-glow);
+body.red-theme .social-icon:hover {
+    color: var(--accent-red);
+    border-color: var(--accent-red);
 }
 
-body.blue-theme .social-btn:hover {
-    border-color: var(--blue-primary);
-    color: var(--blue-primary);
-    box-shadow: 0 0 20px var(--blue-glow);
+body.blue-theme .social-icon:hover {
+    color: var(--accent-blue);
+    border-color: var(--accent-blue);
 }
 
-body.purple-theme .social-btn:hover {
-    border-color: var(--purple-primary);
-    color: var(--purple-primary);
-    box-shadow: 0 0 20px var(--purple-glow);
+body.purple-theme .social-icon:hover {
+    color: var(--accent-purple);
+    border-color: var(--accent-purple);
 }
 
 /* Creators */
 .creators {
     display: flex;
     justify-content: center;
-    gap: 2rem;
-    margin-bottom: 3rem;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
 }
 
-.creator-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.75rem;
-}
-
-.creator-avatar {
-    width: 80px;
-    height: 80px;
+.creator {
+    display: block;
     border-radius: 50%;
-    border: 3px solid var(--border);
-    transition: all 0.3s ease;
+    overflow: hidden;
+    transition: transform 0.3s;
 }
 
-.creator-avatar:hover {
+.creator:hover {
     transform: scale(1.05);
+}
+
+.avatar {
+    width: 64px;
+    height: 64px;
+    display: block;
+    border: 2px solid var(--border);
+    border-radius: 50%;
+    transition: border-color 0.3s;
+}
+
+.creator:hover .avatar {
     border-color: var(--text-dim);
 }
 
-body.red-theme .creator-avatar:hover {
-    border-color: var(--red-primary);
-    box-shadow: 0 0 20px var(--red-glow);
+body.red-theme .creator:hover .avatar {
+    border-color: var(--accent-red);
 }
 
-body.blue-theme .creator-avatar:hover {
-    border-color: var(--blue-primary);
-    box-shadow: 0 0 20px var(--blue-glow);
+body.blue-theme .creator:hover .avatar {
+    border-color: var(--accent-blue);
 }
 
-body.purple-theme .creator-avatar:hover {
-    border-color: var(--purple-primary);
-    box-shadow: 0 0 20px var(--purple-glow);
-}
-
-.creator-name {
-    font-size: 0.9rem;
-    color: var(--text-dim);
-    font-weight: 500;
+body.purple-theme .creator:hover .avatar {
+    border-color: var(--accent-purple);
 }
 
 /* Footer */
 .footer {
-    margin-top: 4rem;
-    padding-top: 2rem;
+    text-align: center;
+    padding: 2rem;
     border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--text-dim);
 }
 
 .footer p {
-    font-size: 0.85rem;
-    color: var(--text-dim);
-    margin-bottom: 0.25rem;
+    margin: 0.25rem 0;
 }
 
 .footer a {
-    color: var(--text-dim);
+    color: inherit;
     text-decoration: none;
-    transition: color 0.3s ease;
+    transition: color 0.3s;
 }
 
 .footer a:hover {
     color: var(--text);
 }
 
-body.red-theme .footer a:hover {
-    color: var(--red-primary);
-}
-
-body.blue-theme .footer a:hover {
-    color: var(--blue-primary);
-}
-
-body.purple-theme .footer a:hover {
-    color: var(--purple-primary);
-}
-
-.footer-subtitle {
-    font-size: 0.75rem;
-}
+body.red-theme .footer a:hover { color: var(--accent-red); }
+body.blue-theme .footer a:hover { color: var(--accent-blue); }
+body.purple-theme .footer a:hover { color: var(--accent-purple); }
 
 /* Responsive */
 @media (max-width: 768px) {
     .container {
-        padding: 2rem 1.5rem;
+        padding: 6rem 1.5rem 3rem;
     }
     
-    .big-title {
-        font-size: 2.5rem;
+    .logo {
+        width: 90px;
+        height: 90px;
     }
     
-    .team-selector {
+    .pills {
         flex-direction: column;
-        gap: 0.75rem;
+        align-items: stretch;
     }
     
-    .team-pill {
-        width: 100%;
+    .pill {
         justify-content: center;
-    }
-    
-    .creators {
-        gap: 1.5rem;
-    }
-    
-    .creator-avatar {
-        width: 64px;
-        height: 64px;
     }
 }
 

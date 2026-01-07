@@ -3,50 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SyndraShell - Cybersecurity Environment</title>
+    <title>SyndraShell</title>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <a href="https://github.com/Fud0o0" target="_blank" class="nav-link">GitHub</a>
+    </nav>
+
     <div class="container">
-        <!-- Main Title -->
-        <header class="main-header">
-            <h1 class="big-title">SyndraShell</h1>
+        <!-- Logo & Title -->
+        <header class="header">
+            <div class="logo-container">
+                <svg class="logo" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Simplified Syndra S logo -->
+                    <path d="M256 96 C200 96, 160 130, 160 180 C160 210, 180 235, 210 245 L180 280 C140 270, 110 235, 110 190 C110 105, 170 50, 256 50 C340 50, 400 105, 400 190 C400 235, 370 270, 330 280 L300 245 C330 235, 350 210, 350 180 C350 130, 310 96, 256 96 Z M256 270 C310 270, 350 305, 350 355 C350 385, 330 410, 300 420 L330 455 C370 445, 400 410, 400 365 C400 280, 340 225, 256 225 C170 225, 110 280, 110 365 C110 410, 140 445, 180 455 L210 420 C180 410, 160 385, 160 355 C160 305, 200 270, 256 270 Z" fill="currentColor"/>
+                    <!-- Slash lines -->
+                    <line x1="380" y1="120" x2="180" y2="320" stroke="currentColor" stroke-width="30" stroke-linecap="round"/>
+                    <line x1="420" y1="140" x2="280" y2="380" stroke="currentColor" stroke-width="25" stroke-linecap="round"/>
+                </svg>
+            </div>
+            <h1 class="title">SyndraShell</h1>
         </header>
 
-        <!-- Intro Text -->
-        <section class="intro">
-            <p>A powerful cybersecurity environment designed for Red, Blue, and Purple Team operations.</p>
-            <p>Built with Python, GTK, and modern web technologies.</p>
+        <!-- Description -->
+        <section class="description">
+            <p>I'm a powerful cybersecurity environment for Red, Blue, and Purple Team operations.</p>
+            <p>Future computer security specialist, penetration tester, and system administrator. Built with Python, GTK, and modern web technologies.</p>
         </section>
 
-        <!-- Team Selector Pills -->
-        <section class="team-selector">
-            <button class="team-pill red-pill" data-team="red">
-                <span class="pill-emoji">🔴</span>
-                <span class="pill-text">Red Team</span>
+        <!-- Team Pills -->
+        <section class="pills">
+            <button class="pill red" data-team="red">
+                <span class="pill-dot"></span>
+                <span>Red Team</span>
             </button>
-            <button class="team-pill blue-pill" data-team="blue">
-                <span class="pill-emoji">🔵</span>
-                <span class="pill-text">Blue Team</span>
+            <button class="pill blue" data-team="blue">
+                <span class="pill-dot"></span>
+                <span>Blue Team</span>
             </button>
-            <button class="team-pill purple-pill" data-team="purple">
-                <span class="pill-emoji">🟣</span>
-                <span class="pill-text">Purple Team</span>
+            <button class="pill purple active" data-team="purple">
+                <span class="pill-dot"></span>
+                <span>Purple Team</span>
             </button>
         </section>
 
         <!-- Social Links -->
-        <section class="social-links">
-            <a href="https://github.com/Fud0o0" target="_blank" class="social-btn" title="Fud0o0">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+        <section class="social">
+            <a href="https://github.com/Fud0o0" target="_blank" class="social-icon" aria-label="GitHub Fud0o0">
+                <svg viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
                 </svg>
             </a>
-            <a href="https://github.com/Ax0-0" target="_blank" class="social-btn" title="Ax0-0">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+            <a href="https://github.com/Ax0-0" target="_blank" class="social-icon" aria-label="GitHub Ax0-0">
+                <svg viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
                 </svg>
             </a>
@@ -54,22 +68,20 @@
 
         <!-- Creators -->
         <section class="creators">
-            <div class="creator-card">
-                <img src="https://github.com/Fud0o0.png" alt="Fud0o0" class="creator-avatar">
-                <p class="creator-name">Fud0o0</p>
-            </div>
-            <div class="creator-card">
-                <img src="https://github.com/Ax0-0.png" alt="Ax0-0" class="creator-avatar">
-                <p class="creator-name">Ax0-0</p>
-            </div>
+            <a href="https://github.com/Fud0o0" target="_blank" class="creator">
+                <img src="https://github.com/Fud0o0.png" alt="Fud0o0" class="avatar">
+            </a>
+            <a href="https://github.com/Ax0-0" target="_blank" class="creator">
+                <img src="https://github.com/Ax0-0.png" alt="Ax0-0" class="avatar">
+            </a>
         </section>
-
-        <!-- Footer -->
-        <footer class="footer">
-            <p>© 2026 SyndraShell</p>
-            <p class="footer-subtitle">Powered by <a href="https://github.com/Fud0o0/SyndraShell" target="_blank">GitHub Pages</a></p>
-        </footer>
     </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2026 SyndraShell</p>
+        <p>Powered by <a href="https://github.com/Fud0o0/SyndraShell">GitHub Pages</a></p>
+    </footer>
 
     <script src="script.js"></script>
 </body>

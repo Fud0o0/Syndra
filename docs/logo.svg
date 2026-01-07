@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="purpleGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8b5cf6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#6d28d9;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <!-- S supérieur -->
+  <path d="M 256 80 C 180 80 120 120 120 180 C 120 220 150 250 190 265 L 150 310 C 100 295 60 250 60 185 C 60 90 140 30 256 30 C 372 30 452 90 452 185 C 452 250 412 295 362 310 L 322 265 C 362 250 392 220 392 180 C 392 120 332 80 256 80 Z" fill="url(#purpleGradient)"/>
+  
+  <!-- S inférieur -->
+  <path d="M 256 280 C 332 280 392 320 392 380 C 392 420 362 450 322 465 L 362 510 C 412 495 452 450 452 385 C 452 290 372 230 256 230 C 140 230 60 290 60 385 C 60 450 100 495 150 510 L 190 465 C 150 450 120 420 120 380 C 120 320 180 280 256 280 Z" fill="url(#purpleGradient)"/>
+  
+  <!-- Lignes diagonales -->
+  <line x1="400" y1="100" x2="150" y2="350" stroke="url(#purpleGradient)" stroke-width="35" stroke-linecap="round"/>
+  <line x1="440" y1="130" x2="250" y2="420" stroke="url(#purpleGradient)" stroke-width="28" stroke-linecap="round"/>
+</svg>

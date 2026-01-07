@@ -1,0 +1,418 @@
+/* SyndraShell - Modern Cybersecurity Dashboard */
+
+:root {
+    /* Purple Team Colors */
+    --purple-primary: #8b5cf6;
+    --purple-secondary: #7c3aed;
+    --purple-dark: #6d28d9;
+    --purple-light: #a78bfa;
+    --purple-glow: rgba(139, 92, 246, 0.3);
+    
+    /* Blue Team Colors */
+    --blue-primary: #3b82f6;
+    --blue-secondary: #2563eb;
+    --blue-dark: #1d4ed8;
+    --blue-light: #60a5fa;
+    --blue-glow: rgba(59, 130, 246, 0.3);
+    
+    /* Base Colors */
+    --bg-dark: #0f0f1e;
+    --bg-darker: #0a0a15;
+    --text-primary: #e2e8f0;
+    --text-secondary: #94a3b8;
+    --card-bg: rgba(30, 30, 46, 0.6);
+    --card-border: rgba(255, 255, 255, 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'JetBrains Mono', monospace;
+    background: linear-gradient(135deg, var(--bg-darker) 0%, var(--bg-dark) 100%);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+    transition: background 0.6s ease;
+}
+
+body.purple-theme {
+    background: linear-gradient(135deg, #0a0a15 0%, #1e0f3d 50%, #2d1b4e 100%);
+}
+
+body.blue-theme {
+    background: linear-gradient(135deg, #0a0a15 0%, #0f1e3d 50%, #1a2d4e 100%);
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* Header Styles */
+.header {
+    text-align: center;
+    padding: 3rem 0;
+    position: relative;
+}
+
+.profile-section {
+    display: inline-block;
+}
+
+.profile-link {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1.5rem 2.5rem;
+    background: var(--card-bg);
+    backdrop-filter: blur(10px);
+    border: 2px solid var(--card-border);
+    border-radius: 20px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+body.purple-theme .profile-link {
+    border-color: var(--purple-primary);
+    box-shadow: 0 0 30px var(--purple-glow);
+}
+
+body.blue-theme .profile-link {
+    border-color: var(--blue-primary);
+    box-shadow: 0 0 30px var(--blue-glow);
+}
+
+.profile-link:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 40px var(--purple-glow);
+}
+
+body.blue-theme .profile-link:hover {
+    box-shadow: 0 10px 40px var(--blue-glow);
+}
+
+.profile-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 3px solid var(--purple-primary);
+    transition: all 0.3s ease;
+}
+
+body.blue-theme .profile-img {
+    border-color: var(--blue-primary);
+}
+
+.profile-info {
+    text-align: left;
+}
+
+.profile-name {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.3rem;
+}
+
+.profile-subtitle {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    font-weight: 400;
+}
+
+/* Team Selector */
+.team-selector {
+    text-align: center;
+    padding: 2rem 0;
+    margin-bottom: 2rem;
+}
+
+.selector-title {
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.team-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.team-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 2rem 3rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1rem;
+    font-weight: 600;
+    border: 3px solid transparent;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.purple-btn {
+    background: linear-gradient(135deg, var(--purple-primary), var(--purple-dark));
+    color: white;
+    border-color: var(--purple-light);
+}
+
+.purple-btn:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 15px 40px var(--purple-glow);
+}
+
+.blue-btn {
+    background: linear-gradient(135deg, var(--blue-primary), var(--blue-dark));
+    color: white;
+    border-color: var(--blue-light);
+}
+
+.blue-btn:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 15px 40px var(--blue-glow);
+}
+
+.team-btn .emoji {
+    font-size: 2.5rem;
+}
+
+.team-btn .team-name {
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+.team-btn .team-desc {
+    font-size: 0.85rem;
+    opacity: 0.9;
+}
+
+/* Dashboard Grid */
+.dashboard {
+    margin-top: 3rem;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.card {
+    background: var(--card-bg);
+    backdrop-filter: blur(10px);
+    border: 2px solid var(--card-border);
+    border-radius: 20px;
+    padding: 2rem;
+    transition: all 0.3s ease;
+}
+
+body.purple-theme .card {
+    border-color: rgba(139, 92, 246, 0.2);
+}
+
+body.blue-theme .card {
+    border-color: rgba(59, 130, 246, 0.2);
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+body.purple-theme .card:hover {
+    border-color: var(--purple-primary);
+    box-shadow: 0 10px 30px var(--purple-glow);
+}
+
+body.blue-theme .card:hover {
+    border-color: var(--blue-primary);
+    box-shadow: 0 10px 30px var(--blue-glow);
+}
+
+.card-title {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+body.purple-theme .card-title {
+    color: var(--purple-light);
+}
+
+body.blue-theme .card-title {
+    color: var(--blue-light);
+}
+
+.card-content {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+
+/* Tech Stack */
+.tech-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+}
+
+.tech-badge {
+    padding: 0.5rem 1rem;
+    background: rgba(139, 92, 246, 0.2);
+    border: 1px solid var(--purple-primary);
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+body.blue-theme .tech-badge {
+    background: rgba(59, 130, 246, 0.2);
+    border-color: var(--blue-primary);
+}
+
+.tech-badge:hover {
+    transform: scale(1.05);
+    background: rgba(139, 92, 246, 0.4);
+}
+
+body.blue-theme .tech-badge:hover {
+    background: rgba(59, 130, 246, 0.4);
+}
+
+/* Feature List */
+.feature-list {
+    list-style: none;
+    padding: 0;
+}
+
+.feature-list li {
+    padding: 0.8rem 0;
+    border-bottom: 1px solid var(--card-border);
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+}
+
+.feature-list li:last-child {
+    border-bottom: none;
+}
+
+.feature-list li:hover {
+    color: var(--purple-light);
+    transform: translateX(10px);
+}
+
+body.blue-theme .feature-list li:hover {
+    color: var(--blue-light);
+}
+
+/* Stats Grid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    text-align: center;
+}
+
+.stat-item {
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.stat-item:hover {
+    background: rgba(139, 92, 246, 0.1);
+    transform: scale(1.05);
+}
+
+body.blue-theme .stat-item:hover {
+    background: rgba(59, 130, 246, 0.1);
+}
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--purple-light);
+    margin-bottom: 0.5rem;
+}
+
+body.blue-theme .stat-value {
+    color: var(--blue-light);
+}
+
+.stat-label {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    padding: 3rem 0;
+    margin-top: 4rem;
+    border-top: 2px solid var(--card-border);
+    color: var(--text-secondary);
+}
+
+.footer a {
+    color: var(--purple-light);
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+body.blue-theme .footer a {
+    color: var(--blue-light);
+}
+
+.footer a:hover {
+    color: var(--purple-primary);
+}
+
+body.blue-theme .footer a:hover {
+    color: var(--blue-primary);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+    }
+    
+    .profile-link {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .profile-info {
+        text-align: center;
+    }
+    
+    .team-buttons {
+        flex-direction: column;
+    }
+    
+    .team-btn {
+        width: 100%;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+}

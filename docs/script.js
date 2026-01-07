@@ -5,7 +5,8 @@ const installCommands = {
     red: 'curl -L get.syndra.me/red.sh | sh',
     blue: 'curl -L get.syndra.me/blue.sh | sh',
     purple: 'curl -L get.syndra.me/purple.sh | sh',
-    root: 'curl -L get.syndra.me/root.sh | sh'
+    root: 'curl -L get.syndra.me/root.sh | sh',
+    custom: 'curl -L get.syndra.me/custom.sh | sh'
 };
 
 // Disk space requirements per team
@@ -13,7 +14,8 @@ const diskSpaceRequired = {
     red: '15 GB',
     blue: '12 GB',
     purple: '25 GB',
-    root: '18 GB'
+    root: '18 GB',
+    custom: '2 GB - 30 GB'
 };
 
 // Initialize theme - force apply immediately

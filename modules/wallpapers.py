@@ -218,8 +218,8 @@ class WallpaperSelector(Box):
             os.remove(current_wall)
         os.symlink(full_path, current_wall)
         
-        # Set wallpaper with matugen
-        exec_shell_command_async(f'matugen image "{full_path}"')
+        # Set wallpaper with mpvpaper
+        exec_shell_command_async(f'pkill mpvpaper; mpvpaper -o "no-audio loop" \'*\' "{full_path}"')
         print(f"Set wallpaper: {file_name}")
     
     def set_random_wallpaper(self, widget=None, external=False):
@@ -237,7 +237,7 @@ class WallpaperSelector(Box):
             os.remove(current_wall)
         os.symlink(full_path, current_wall)
         
-        exec_shell_command_async(f'matugen image "{full_path}"')
+        exec_shell_command_async(f'pkill mpvpaper; mpvpaper -o "no-audio loop" \'*\' "{full_path}"')
         
         if external:
             exec_shell_command_async(

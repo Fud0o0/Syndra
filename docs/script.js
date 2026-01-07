@@ -23,4 +23,4 @@ pills.forEach(pill => {
     });
 });
 
-console.log('%cSyndraShell', 'color: #a855f7; font-size: 20px; font-weight: bold;');
+console.log('%cSyndra', 'color: #a855f7; font-size: 20px; font-weight: bold;');

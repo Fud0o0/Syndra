@@ -18,7 +18,7 @@
 
 body {
     font-family: 'JetBrains Mono', 'Courier New', monospace;
-    background: var(--bg);
+    background: linear-gradient(135deg, #0a001a 0%, #15002a 100%);
     color: var(--text);
     line-height: 1.6;
     min-height: 100vh;
@@ -75,12 +75,13 @@ body.purple-theme { background: linear-gradient(135deg, #0a001a 0%, #15002a 100%
 .logo {
     width: 120px;
     height: 120px;
-    color: var(--accent-purple);
+    color: #b084f5;
     transition: color 0.3s, transform 0.3s;
 }
 
 body.red-theme .logo { color: var(--accent-red); }
 body.blue-theme .logo { color: var(--accent-blue); }
+body.purple-theme .logo { color: #b084f5; }
 
 .logo:hover {
     transform: scale(1.05);
@@ -103,6 +104,33 @@ body.blue-theme .logo { color: var(--accent-blue); }
     color: var(--text-dim);
     font-size: 0.95rem;
     margin-bottom: 0.5rem;
+}
+
+.description a {
+    color: var(--accent-purple);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s;
+}
+
+.description a:hover {
+    border-bottom-color: var(--accent-purple);
+}
+
+body.red-theme .description a {
+    color: var(--accent-red);
+}
+
+body.red-theme .description a:hover {
+    border-bottom-color: var(--accent-red);
+}
+
+body.blue-theme .description a {
+    color: var(--accent-blue);
+}
+
+body.blue-theme .description a:hover {
+    border-bottom-color: var(--accent-blue);
 }
 
 /* Pills */

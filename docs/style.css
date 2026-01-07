@@ -1,24 +1,28 @@
 /* ===== CSS Variables ===== */
 :root {
     /* Red Team Theme */
-    --red-primary: #ef4444;
-    --red-bg-start: #0a0000;
-    --red-bg-end: #1a0000;
-    
+    --red-primary: #ff0066;
+    --red-secondary: #ff3385;
+    --red-bg-start: #0a0005;
+    --red-bg-end: #1a0010;
+
     /* Blue Team Theme */
-    --blue-primary: #3b82f6;
-    --blue-bg-start: #000a1a;
-    --blue-bg-end: #001a2a;
-    
+    --blue-primary: #00d4ff;
+    --blue-secondary: #0099ff;
+    --blue-bg-start: #000510;
+    --blue-bg-end: #001020;
+
     /* Purple Team Theme */
-    --purple-primary: #a855f7;
-    --purple-bg-start: #0a001a;
-    --purple-bg-end: #15002a;
-    
+    --purple-primary: #b366ff;
+    --purple-secondary: #d699ff;
+    --purple-bg-start: #0a0015;
+    --purple-bg-end: #150025;
+
     /* Base Colors */
-    --text: #e5e5e5;
-    --text-dim: #888;
-    --border: #222;
+    --text: #f0f0f0;
+    --text-dim: #999;
+    --border: #333;
+    --glow-intensity: 0.6;
 }
 
 /* ===== Base Styles ===== */
@@ -36,19 +40,147 @@ body {
     flex-direction: column;
     transition: background 0.5s ease;
     overflow-x: hidden;
+    position: relative;
+    /* CRT screen curvature effect */
+    animation: screen-distortion 0.3s infinite;
+}
+
+/* CRT Screen Effects */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1000;
+    /* Enhanced Scanlines effect */
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.2) 0px,
+        rgba(0, 0, 0, 0.1) 1px,
+        transparent 2px,
+        rgba(0, 0, 0, 0.2) 3px
+    );
+    animation: flicker 0.15s infinite, scanline-move 8s linear infinite;
+}
+
+@keyframes scanline-move {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 0 20px;
+    }
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 999;
+    /* Screen grain/noise */
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+    animation: grain 0.5s steps(2) infinite;
+}
+
+@keyframes flicker {
+    0% { opacity: 0.98; }
+    50% { opacity: 1; }
+    100% { opacity: 0.97; }
+}
+
+@keyframes grain {
+    0%, 100% { transform: translate(0, 0); }
+    10% { transform: translate(-5%, -5%); }
+    20% { transform: translate(5%, 5%); }
+    30% { transform: translate(-3%, 3%); }
+    40% { transform: translate(3%, -3%); }
+    50% { transform: translate(-5%, 5%); }
+    60% { transform: translate(5%, -5%); }
+    70% { transform: translate(-3%, -3%); }
+    80% { transform: translate(3%, 3%); }
+    90% { transform: translate(-5%, -5%); }
+}
+
+@keyframes screen-distortion {
+    0%, 100% {
+        filter: contrast(1.05) brightness(1);
+    }
+    50% {
+        filter: contrast(1.08) brightness(0.98);
+    }
 }
 
 /* Theme Backgrounds */
 .red-theme {
-    background: linear-gradient(135deg, var(--red-bg-start) 0%, var(--red-bg-end) 100%);
+    background:
+        radial-gradient(ellipse at center, var(--red-bg-end) 0%, var(--red-bg-start) 100%),
+        linear-gradient(135deg, var(--red-bg-start) 0%, var(--red-bg-end) 100%);
 }
 
 .blue-theme {
-    background: linear-gradient(135deg, var(--blue-bg-start) 0%, var(--blue-bg-end) 100%);
+    background:
+        radial-gradient(ellipse at center, var(--blue-bg-end) 0%, var(--blue-bg-start) 100%),
+        linear-gradient(135deg, var(--blue-bg-start) 0%, var(--blue-bg-end) 100%);
 }
 
 .purple-theme {
-    background: linear-gradient(135deg, var(--purple-bg-start) 0%, var(--purple-bg-end) 100%);
+    background:
+        radial-gradient(ellipse at center, var(--purple-bg-end) 0%, var(--purple-bg-start) 100%),
+        linear-gradient(135deg, var(--purple-bg-start) 0%, var(--purple-bg-end) 100%);
+}
+
+/* CRT Vignette Effect */
+html::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 998;
+    background: radial-gradient(
+        ellipse at center,
+        transparent 0%,
+        transparent 40%,
+        rgba(0, 0, 0, 0.3) 80%,
+        rgba(0, 0, 0, 0.6) 100%
+    );
+}
+
+/* CRT Screen Reflection */
+html::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 997;
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.03) 50%,
+        transparent 100%
+    );
+    animation: screen-reflection 8s linear infinite;
+}
+
+@keyframes screen-reflection {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
 }
 
 /* ===== Container ===== */
@@ -60,6 +192,8 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
+    z-index: 1;
 }
 
 /* ===== Hero Layout ===== */
@@ -82,12 +216,13 @@ body {
     margin-bottom: 2rem;
     display: flex;
     gap: 0.2rem;
+    filter: brightness(1.2);
 }
 
 .retro-letter {
     display: inline-block;
     position: relative;
-    animation: retro-float 3s ease-in-out infinite;
+    animation: retro-float 3s ease-in-out infinite, glow-pulse 2s ease-in-out infinite;
     animation-delay: calc(var(--i) * 0.1s);
     transition: all 0.3s ease;
     cursor: pointer;
@@ -98,42 +233,105 @@ body {
     position: absolute;
     top: 0;
     left: 0;
-    opacity: 0.5;
+    opacity: 0.4;
     z-index: -1;
+}
+
+.retro-letter::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0.2;
+    z-index: -2;
+}
+
+/* Chromatic Aberration Effect on Hover */
+.retro-letter:hover::before {
+    animation: rgb-shift 0.2s infinite;
+}
+
+@keyframes rgb-shift {
+    0% {
+        text-shadow: 2px 0 0 #ff0000, -2px 0 0 #00ffff;
+    }
+    25% {
+        text-shadow: -2px 0 0 #ff0000, 2px 0 0 #00ffff;
+    }
+    50% {
+        text-shadow: 2px 0 0 #00ff00, -2px 0 0 #ff00ff;
+    }
+    75% {
+        text-shadow: -2px 0 0 #00ff00, 2px 0 0 #ff00ff;
+    }
+    100% {
+        text-shadow: 2px 0 0 #ff0000, -2px 0 0 #00ffff;
+    }
 }
 
 .red-theme .retro-letter {
     color: var(--red-primary);
-    text-shadow: 0 0 20px var(--red-primary), 0 0 40px var(--red-primary);
+    text-shadow:
+        0 0 10px var(--red-primary),
+        0 0 20px var(--red-primary),
+        0 0 40px var(--red-primary),
+        0 0 80px var(--red-secondary),
+        0 0 120px var(--red-secondary);
 }
 
 .red-theme .retro-letter::before {
+    color: var(--red-secondary);
+    filter: blur(8px);
+}
+
+.red-theme .retro-letter::after {
     color: var(--red-primary);
-    filter: blur(4px);
+    filter: blur(20px);
 }
 
 .blue-theme .retro-letter {
     color: var(--blue-primary);
-    text-shadow: 0 0 20px var(--blue-primary), 0 0 40px var(--blue-primary);
+    text-shadow:
+        0 0 10px var(--blue-primary),
+        0 0 20px var(--blue-primary),
+        0 0 40px var(--blue-primary),
+        0 0 80px var(--blue-secondary),
+        0 0 120px var(--blue-secondary);
 }
 
 .blue-theme .retro-letter::before {
+    color: var(--blue-secondary);
+    filter: blur(8px);
+}
+
+.blue-theme .retro-letter::after {
     color: var(--blue-primary);
-    filter: blur(4px);
+    filter: blur(20px);
 }
 
 .purple-theme .retro-letter {
     color: var(--purple-primary);
-    text-shadow: 0 0 20px var(--purple-primary), 0 0 40px var(--purple-primary);
+    text-shadow:
+        0 0 10px var(--purple-primary),
+        0 0 20px var(--purple-primary),
+        0 0 40px var(--purple-primary),
+        0 0 80px var(--purple-secondary),
+        0 0 120px var(--purple-secondary);
 }
 
 .purple-theme .retro-letter::before {
+    color: var(--purple-secondary);
+    filter: blur(8px);
+}
+
+.purple-theme .retro-letter::after {
     color: var(--purple-primary);
-    filter: blur(4px);
+    filter: blur(20px);
 }
 
 .retro-letter:hover {
-    transform: scale(1.2) translateY(-10px);
+    transform: scale(1.15) translateY(-10px);
+    filter: brightness(1.5);
 }
 
 @keyframes retro-float {
@@ -145,30 +343,78 @@ body {
     }
 }
 
+@keyframes glow-pulse {
+    0%, 100% {
+        filter: brightness(1);
+    }
+    50% {
+        filter: brightness(1.3);
+    }
+}
+
 /* ===== Hero Description ===== */
 .hero-description {
     font-size: 1rem;
     line-height: 1.8;
     margin-bottom: 2rem;
     color: var(--text);
+    text-shadow: 0 0 3px rgba(255, 255, 255, 0.1);
 }
 
 .hero-description mark {
     background: none;
     font-weight: 600;
     padding: 0 0.25rem;
+    transition: all 0.3s ease;
+}
+
+.hero-description a {
+    color: var(--text);
+    text-decoration: none;
+    border-bottom: 1px solid;
+    transition: all 0.3s ease;
 }
 
 .red-theme .hero-description mark {
     color: var(--red-primary);
+    text-shadow: 0 0 10px var(--red-primary);
+}
+
+.red-theme .hero-description a {
+    border-color: var(--red-primary);
+}
+
+.red-theme .hero-description a:hover {
+    color: var(--red-primary);
+    text-shadow: 0 0 15px var(--red-primary);
 }
 
 .blue-theme .hero-description mark {
     color: var(--blue-primary);
+    text-shadow: 0 0 10px var(--blue-primary);
+}
+
+.blue-theme .hero-description a {
+    border-color: var(--blue-primary);
+}
+
+.blue-theme .hero-description a:hover {
+    color: var(--blue-primary);
+    text-shadow: 0 0 15px var(--blue-primary);
 }
 
 .purple-theme .hero-description mark {
     color: var(--purple-primary);
+    text-shadow: 0 0 10px var(--purple-primary);
+}
+
+.purple-theme .hero-description a {
+    border-color: var(--purple-primary);
+}
+
+.purple-theme .hero-description a:hover {
+    color: var(--purple-primary);
+    text-shadow: 0 0 15px var(--purple-primary);
 }
 
 /* ===== Pills ===== */
@@ -180,8 +426,8 @@ body {
 }
 
 .pill {
-    background: transparent;
-    border: 1px solid var(--border);
+    background: rgba(0, 0, 0, 0.3);
+    border: 2px solid var(--border);
     color: var(--text-dim);
     padding: 0.75rem 1.5rem;
     border-radius: 50px;
@@ -192,6 +438,7 @@ body {
     align-items: center;
     gap: 0.5rem;
     transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
 }
 
 .pill-dot {
@@ -199,31 +446,57 @@ body {
     height: 8px;
     border-radius: 50%;
     background: currentColor;
+    box-shadow: 0 0 5px currentColor;
+    animation: pulse-dot 2s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 0.8;
+    }
 }
 
 .pill:hover {
     transform: translateY(-2px);
+    background: rgba(0, 0, 0, 0.5);
 }
 
 .red-theme .pill:hover,
 .red-theme .pill.active {
     border-color: var(--red-primary);
     color: var(--red-primary);
-    box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+    box-shadow:
+        0 0 20px rgba(255, 0, 102, 0.5),
+        0 0 40px rgba(255, 0, 102, 0.3),
+        inset 0 0 20px rgba(255, 0, 102, 0.1);
+    text-shadow: 0 0 10px var(--red-primary);
 }
 
 .blue-theme .pill:hover,
 .blue-theme .pill.active {
     border-color: var(--blue-primary);
     color: var(--blue-primary);
-    box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+    box-shadow:
+        0 0 20px rgba(0, 212, 255, 0.5),
+        0 0 40px rgba(0, 212, 255, 0.3),
+        inset 0 0 20px rgba(0, 212, 255, 0.1);
+    text-shadow: 0 0 10px var(--blue-primary);
 }
 
 .purple-theme .pill:hover,
 .purple-theme .pill.active {
     border-color: var(--purple-primary);
     color: var(--purple-primary);
-    box-shadow: 0 0 20px rgba(168, 85, 247, 0.3);
+    box-shadow:
+        0 0 20px rgba(179, 102, 255, 0.5),
+        0 0 40px rgba(179, 102, 255, 0.3),
+        inset 0 0 20px rgba(179, 102, 255, 0.1);
+    text-shadow: 0 0 10px var(--purple-primary);
 }
 
 /* ===== Social Icons ===== */
@@ -236,6 +509,10 @@ body {
 .social-icon-wrapper {
     display: inline-block;
     transition: all 0.5s ease;
+    padding: 0.5rem;
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid transparent;
 }
 
 .social-icon {
@@ -249,24 +526,58 @@ body {
     transform: rotate(-15deg) scale(1.2);
 }
 
+.red-theme .social-icon-wrapper:hover {
+    border-color: var(--red-primary);
+    background: rgba(255, 0, 102, 0.1);
+    box-shadow:
+        0 0 20px rgba(255, 0, 102, 0.4),
+        inset 0 0 10px rgba(255, 0, 102, 0.1);
+}
+
 .red-theme .social-icon-wrapper:hover .social-icon {
     color: var(--red-primary);
-    filter: drop-shadow(0 0 10px var(--red-primary));
+    filter: drop-shadow(0 0 15px var(--red-primary)) drop-shadow(0 0 30px var(--red-primary));
+}
+
+.blue-theme .social-icon-wrapper:hover {
+    border-color: var(--blue-primary);
+    background: rgba(0, 212, 255, 0.1);
+    box-shadow:
+        0 0 20px rgba(0, 212, 255, 0.4),
+        inset 0 0 10px rgba(0, 212, 255, 0.1);
 }
 
 .blue-theme .social-icon-wrapper:hover .social-icon {
     color: var(--blue-primary);
-    filter: drop-shadow(0 0 10px var(--blue-primary));
+    filter: drop-shadow(0 0 15px var(--blue-primary)) drop-shadow(0 0 30px var(--blue-primary));
+}
+
+.purple-theme .social-icon-wrapper:hover {
+    border-color: var(--purple-primary);
+    background: rgba(179, 102, 255, 0.1);
+    box-shadow:
+        0 0 20px rgba(179, 102, 255, 0.4),
+        inset 0 0 10px rgba(179, 102, 255, 0.1);
 }
 
 .purple-theme .social-icon-wrapper:hover .social-icon {
     color: var(--purple-primary);
-    filter: drop-shadow(0 0 10px var(--purple-primary));
+    filter: drop-shadow(0 0 15px var(--purple-primary)) drop-shadow(0 0 30px var(--purple-primary));
 }
 
 /* ===== Retro Avatar ===== */
 .retro-avatar-container {
     position: relative;
+    animation: float-avatar 6s ease-in-out infinite;
+}
+
+@keyframes float-avatar {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
 }
 
 .retro-avatar {
@@ -275,27 +586,41 @@ body {
     border-radius: 20px;
     transform: rotate(6deg);
     transition: all 0.5s ease;
-    border: 3px solid;
+    border: 4px solid;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    filter: brightness(1.1) contrast(1.1);
 }
 
 .red-theme .retro-avatar {
     border-color: var(--red-primary);
-    box-shadow: 0 10px 40px rgba(239, 68, 68, 0.4), 0 0 30px rgba(239, 68, 68, 0.3);
+    box-shadow:
+        0 10px 40px rgba(255, 0, 102, 0.6),
+        0 0 30px rgba(255, 0, 102, 0.4),
+        0 0 60px rgba(255, 0, 102, 0.3),
+        inset 0 0 20px rgba(255, 0, 102, 0.1);
 }
 
 .blue-theme .retro-avatar {
     border-color: var(--blue-primary);
-    box-shadow: 0 10px 40px rgba(59, 130, 246, 0.4), 0 0 30px rgba(59, 130, 246, 0.3);
+    box-shadow:
+        0 10px 40px rgba(0, 212, 255, 0.6),
+        0 0 30px rgba(0, 212, 255, 0.4),
+        0 0 60px rgba(0, 212, 255, 0.3),
+        inset 0 0 20px rgba(0, 212, 255, 0.1);
 }
 
 .purple-theme .retro-avatar {
     border-color: var(--purple-primary);
-    box-shadow: 0 10px 40px rgba(168, 85, 247, 0.4), 0 0 30px rgba(168, 85, 247, 0.3);
+    box-shadow:
+        0 10px 40px rgba(179, 102, 255, 0.6),
+        0 0 30px rgba(179, 102, 255, 0.4),
+        0 0 60px rgba(179, 102, 255, 0.3),
+        inset 0 0 20px rgba(179, 102, 255, 0.1);
 }
 
 .retro-avatar:hover {
     transform: rotate(-6deg) scale(1.05);
+    filter: brightness(1.3) contrast(1.2);
 }
 
 /* ===== Footer ===== */
@@ -306,28 +631,61 @@ body {
     font-size: 0.85rem;
     color: var(--text-dim);
     flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
 }
 
 .footer p {
     margin: 0.25rem 0;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
+}
+
+.footer mark {
+    background: none;
+    font-weight: 600;
+    padding: 0 0.25rem;
+}
+
+.red-theme .footer mark {
+    color: var(--red-primary);
+    text-shadow: 0 0 10px var(--red-primary);
+}
+
+.blue-theme .footer mark {
+    color: var(--blue-primary);
+    text-shadow: 0 0 10px var(--blue-primary);
+}
+
+.purple-theme .footer mark {
+    color: var(--purple-primary);
+    text-shadow: 0 0 10px var(--purple-primary);
 }
 
 .footer a {
     color: var(--text);
     text-decoration: none;
-    transition: color 0.3s ease;
+    transition: all 0.3s ease;
+    border-bottom: 1px solid transparent;
 }
 
 .red-theme .footer a:hover {
     color: var(--red-primary);
+    text-shadow: 0 0 10px var(--red-primary);
+    border-bottom-color: var(--red-primary);
 }
 
 .blue-theme .footer a:hover {
     color: var(--blue-primary);
+    text-shadow: 0 0 10px var(--blue-primary);
+    border-bottom-color: var(--blue-primary);
 }
 
 .purple-theme .footer a:hover {
     color: var(--purple-primary);
+    text-shadow: 0 0 10px var(--purple-primary);
+    border-bottom-color: var(--purple-primary);
 }
 
 /* ===== Responsive Design ===== */
@@ -385,28 +743,39 @@ body {
     margin-bottom: 2rem;
     padding: 1.5rem;
     border-radius: 12px;
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid var(--border);
+    background: rgba(0, 0, 0, 0.4);
+    border: 2px solid var(--border);
     transition: all 0.3s ease;
+    backdrop-filter: blur(15px);
 }
 
 .install-section:hover {
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.5);
+    transform: translateY(-2px);
 }
 
 .red-theme .install-section:hover {
     border-color: var(--red-primary);
-    box-shadow: 0 0 20px rgba(239, 68, 68, 0.2);
+    box-shadow:
+        0 0 30px rgba(255, 0, 102, 0.4),
+        0 0 60px rgba(255, 0, 102, 0.2),
+        inset 0 0 20px rgba(255, 0, 102, 0.05);
 }
 
 .blue-theme .install-section:hover {
     border-color: var(--blue-primary);
-    box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
+    box-shadow:
+        0 0 30px rgba(0, 212, 255, 0.4),
+        0 0 60px rgba(0, 212, 255, 0.2),
+        inset 0 0 20px rgba(0, 212, 255, 0.05);
 }
 
 .purple-theme .install-section:hover {
     border-color: var(--purple-primary);
-    box-shadow: 0 0 20px rgba(168, 85, 247, 0.2);
+    box-shadow:
+        0 0 30px rgba(179, 102, 255, 0.4),
+        0 0 60px rgba(179, 102, 255, 0.2),
+        inset 0 0 20px rgba(179, 102, 255, 0.05);
 }
 
 .install-section h3 {
@@ -417,14 +786,17 @@ body {
 
 .red-theme .install-section h3 {
     color: var(--red-primary);
+    text-shadow: 0 0 15px var(--red-primary);
 }
 
 .blue-theme .install-section h3 {
     color: var(--blue-primary);
+    text-shadow: 0 0 15px var(--blue-primary);
 }
 
 .purple-theme .install-section h3 {
     color: var(--purple-primary);
+    text-shadow: 0 0 15px var(--purple-primary);
 }
 
 .install-command {
@@ -432,10 +804,16 @@ body {
     align-items: center;
     gap: 0.75rem;
     padding: 1rem;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.6);
     border-radius: 8px;
     border: 1px solid rgba(255, 255, 255, 0.1);
     margin-bottom: 0.75rem;
+    transition: all 0.3s ease;
+}
+
+.install-command:hover {
+    background: rgba(0, 0, 0, 0.7);
+    border-color: rgba(255, 255, 255, 0.2);
 }
 
 .install-command code {
@@ -444,11 +822,12 @@ body {
     font-size: 0.95rem;
     color: var(--text);
     user-select: all;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
 }
 
 .copy-btn {
-    background: transparent;
-    border: 1px solid var(--border);
+    background: rgba(0, 0, 0, 0.5);
+    border: 2px solid var(--border);
     color: var(--text-dim);
     padding: 0.5rem;
     border-radius: 6px;
@@ -467,23 +846,33 @@ body {
 .red-theme .copy-btn:hover {
     border-color: var(--red-primary);
     color: var(--red-primary);
-    box-shadow: 0 0 10px rgba(239, 68, 68, 0.3);
+    background: rgba(255, 0, 102, 0.1);
+    box-shadow:
+        0 0 20px rgba(255, 0, 102, 0.5),
+        inset 0 0 10px rgba(255, 0, 102, 0.1);
 }
 
 .blue-theme .copy-btn:hover {
     border-color: var(--blue-primary);
     color: var(--blue-primary);
-    box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+    background: rgba(0, 212, 255, 0.1);
+    box-shadow:
+        0 0 20px rgba(0, 212, 255, 0.5),
+        inset 0 0 10px rgba(0, 212, 255, 0.1);
 }
 
 .purple-theme .copy-btn:hover {
     border-color: var(--purple-primary);
     color: var(--purple-primary);
-    box-shadow: 0 0 10px rgba(168, 85, 247, 0.3);
+    background: rgba(179, 102, 255, 0.1);
+    box-shadow:
+        0 0 20px rgba(179, 102, 255, 0.5),
+        inset 0 0 10px rgba(179, 102, 255, 0.1);
 }
 
 .install-note {
     font-size: 0.85rem;
     color: var(--text-dim);
     margin: 0;
+    text-shadow: 0 0 3px rgba(255, 255, 255, 0.1);
 }

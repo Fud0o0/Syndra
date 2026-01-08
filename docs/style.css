@@ -877,6 +877,105 @@ html::after {
     box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
 }
 
+/* Discord & Ko-fi Icons */
+.discord-icon svg,
+.kofi-icon svg {
+    width: 36px;
+    height: 36px;
+    color: var(--text-dim);
+    transition: all 0.4s ease;
+}
+
+.discord-icon:hover svg {
+    color: #5865F2;
+    filter: drop-shadow(0 0 15px #5865F2) drop-shadow(0 0 30px #5865F2);
+}
+
+.kofi-icon:hover svg {
+    color: #FF5E5B;
+    filter: drop-shadow(0 0 15px #FF5E5B) drop-shadow(0 0 30px #FF5E5B);
+}
+
+.red-theme .discord-icon:hover {
+    border-color: #5865F2;
+    background: rgba(88, 101, 242, 0.1);
+    box-shadow:
+        0 0 20px rgba(88, 101, 242, 0.4),
+        inset 0 0 10px rgba(88, 101, 242, 0.1);
+}
+
+.red-theme .kofi-icon:hover {
+    border-color: #FF5E5B;
+    background: rgba(255, 94, 91, 0.1);
+    box-shadow:
+        0 0 20px rgba(255, 94, 91, 0.4),
+        inset 0 0 10px rgba(255, 94, 91, 0.1);
+}
+
+.blue-theme .discord-icon:hover {
+    border-color: #5865F2;
+    background: rgba(88, 101, 242, 0.1);
+    box-shadow:
+        0 0 20px rgba(88, 101, 242, 0.4),
+        inset 0 0 10px rgba(88, 101, 242, 0.1);
+}
+
+.blue-theme .kofi-icon:hover {
+    border-color: #FF5E5B;
+    background: rgba(255, 94, 91, 0.1);
+    box-shadow:
+        0 0 20px rgba(255, 94, 91, 0.4),
+        inset 0 0 10px rgba(255, 94, 91, 0.1);
+}
+
+.purple-theme .discord-icon:hover {
+    border-color: #5865F2;
+    background: rgba(88, 101, 242, 0.1);
+    box-shadow:
+        0 0 20px rgba(88, 101, 242, 0.4),
+        inset 0 0 10px rgba(88, 101, 242, 0.1);
+}
+
+.purple-theme .kofi-icon:hover {
+    border-color: #FF5E5B;
+    background: rgba(255, 94, 91, 0.1);
+    box-shadow:
+        0 0 20px rgba(255, 94, 91, 0.4),
+        inset 0 0 10px rgba(255, 94, 91, 0.1);
+}
+
+.root-theme .discord-icon:hover {
+    border-color: #5865F2;
+    background: rgba(88, 101, 242, 0.1);
+    box-shadow:
+        0 0 20px rgba(88, 101, 242, 0.4),
+        inset 0 0 10px rgba(88, 101, 242, 0.1);
+}
+
+.root-theme .kofi-icon:hover {
+    border-color: #FF5E5B;
+    background: rgba(255, 94, 91, 0.1);
+    box-shadow:
+        0 0 20px rgba(255, 94, 91, 0.4),
+        inset 0 0 10px rgba(255, 94, 91, 0.1);
+}
+
+.custom-theme .discord-icon:hover {
+    border-color: #5865F2;
+    background: rgba(88, 101, 242, 0.1);
+    box-shadow:
+        0 0 20px rgba(88, 101, 242, 0.4),
+        inset 0 0 10px rgba(88, 101, 242, 0.1);
+}
+
+.custom-theme .kofi-icon:hover {
+    border-color: #FF5E5B;
+    background: rgba(255, 94, 91, 0.1);
+    box-shadow:
+        0 0 20px rgba(255, 94, 91, 0.4),
+        inset 0 0 10px rgba(255, 94, 91, 0.1);
+}
+
 /* ===== Retro Avatar ===== */
 .retro-avatar-container {
     position: relative;

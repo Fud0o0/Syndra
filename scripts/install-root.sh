@@ -1,24 +1,35 @@
 #!/bin/bash
 # Syndra Installation Script - Root Me Edition
-# CTF and challenge-focused installation
+# CTF and challenge-focused tools installation
+# REQUIRES: Syndra base installation (run install-syndra-base.sh first)
 
 set -e
 
+INSTALL_DIR="$HOME/.config/SyndraShell"
+
 echo "╔═══════════════════════════════════════════════════════════════╗"
 echo "║                    SYNDRA - ROOT ME                           ║"
-echo "║              CTF & Challenge Environment                      ║"
+echo "║              CTF & Challenge Tools                            ║"
 echo "╚═══════════════════════════════════════════════════════════════╝"
+echo ""
+
+# Check if Syndra base is installed
+if [ ! -d "$INSTALL_DIR" ]; then
+    echo "❌ Erreur: Syndra base n'est pas installé!"
+    echo "   Veuillez d'abord exécuter: ./scripts/install-syndra-base.sh"
+    exit 1
+fi
 
 # Check if running on Arch Linux
 if [ ! -f /etc/arch-release ]; then
-    echo "❌ Error: This script requires Arch Linux"
+    echo "❌ Erreur: Ce script nécessite Arch Linux"
     exit 1
 fi
 
 # Display disk space information
-REQUIRED_SPACE_GB=18
+REQUIRED_SPACE_GB=13
 AVAILABLE_SPACE_GB=$(df -BG / | tail -1 | awk '{print $4}' | sed 's/G//')
-echo "💾 Espace requis: ${REQUIRED_SPACE_GB} GB"
+echo "💾 Espace requis (outils CTF): ${REQUIRED_SPACE_GB} GB"
 echo "💿 Espace disponible: ${AVAILABLE_SPACE_GB} GB"
 
 if [ "$AVAILABLE_SPACE_GB" -lt "$REQUIRED_SPACE_GB" ]; then
@@ -33,121 +44,84 @@ fi
 START_SIZE=$(df -BG / | tail -1 | awk '{print $3}' | sed 's/G//')
 echo "📊 Espace utilisé avant installation: ${START_SIZE} GB"
 echo ""
-echo "⚫ Installing Root Me CTF tools and configuration..."
+echo "⚫ Installation des outils CTF et Root Me..."
 
 # Update system
+echo "🔄 Mise à jour du système..."
 sudo pacman -Syu --noconfirm
 
-# Install base tools
-echo "📦 Installing base tools..."
-sudo pacman -S --noconfirm git base-devel wget curl python python-pip \
-    python-virtualenv nodejs npm go rust
-
-# Install Hyprland and Wayland essentials
-echo "🎨 Installing Hyprland environment..."
-sudo pacman -S --noconfirm hyprland waybar wofi kitty dunst \
-    polkit-gnome xdg-desktop-portal-hyprland qt5-wayland qt6-wayland mpv
-
-# Install mpvpaper for video wallpapers
-echo "🎬 Installing mpvpaper for video wallpapers..."
-yay -S --noconfirm mpvpaper
+# Install base development tools if not present
+echo "📦 Installation des outils de développement de base..."
+sudo pacman -S --needed --noconfirm git base-devel wget curl \
+    python python-pip python-virtualenv nodejs npm go rust
 
 # Install CTF and reversing tools
-echo "🎯 Installing CTF tools..."
-sudo pacman -S --noconfirm gdb radare2 ghidra binwalk foremost strings \
+echo "🎯 Installation des outils CTF et reverse engineering..."
+sudo pacman -S --needed --noconfirm gdb radare2 ghidra binwalk foremost strings \
     ltrace strace hexedit bless xxd file binutils gcc make cmake \
     nasm yasm gdb-multiarch qemu-user qemu-system-x86 \
-    wireshark-cli tcpdump nmap masscan hashcat john
+    wireshark-cli tcpdump nmap masscan hashcat john || echo "⚠️  Certains outils CTF ont échoué"
 
 # Install crypto and forensics tools
-echo "🔐 Installing crypto & forensics tools..."
-sudo pacman -S --noconfirm openssl hashcat john steghide exiftool \
-    volatility sleuthkit autopsy testdisk photorec
+echo "🔐 Installation des outils crypto & forensics..."
+sudo pacman -S --needed --noconfirm openssl hashcat john steghide exiftool \
+    volatility sleuthkit autopsy testdisk photorec || echo "⚠️  Certains outils forensics ont échoué"
 
 # Install web exploitation tools
-echo "🌐 Installing web exploitation tools..."
-sudo pacman -S --noconfirm burpsuite zaproxy sqlmap nikto gobuster \
-    ffuf wfuzz dirb
+echo "🌐 Installation des outils web exploitation..."
+sudo pacman -S --needed --noconfirm burpsuite zaproxy sqlmap nikto gobuster \
+    ffuf wfuzz dirb || echo "⚠️  Certains outils web ont échoué"
 
 # Install Python CTF frameworks and tools
-echo "🐍 Installing Python CTF tools..."
+echo "🐍 Installation des frameworks CTF Python..."
 pip install --user pwntools angr z3-solver capstone unicorn keystone-engine \
-    ropper ropgadget pycryptodome gmpy2 sympy sage requests \
-    beautifulsoup4 lxml scapy paramiko
+    ropper ropgadget pycryptodome gmpy2 sympy requests \
+    beautifulsoup4 lxml scapy paramiko || echo "⚠️  Certains packages Python ont échoué"
 
-# Install AUR helper (yay)
-if ! command -v yay &> /dev/null; then
-    echo "📦 Installing yay AUR helper..."
-    cd /tmp
-    git clone https://aur.archlinux.org/yay.git
-    cd yay
-    makepkg -si --noconfirm
-    cd ~
-fi
-
-# Install additional CTF tools from AUR
-echo "🌟 Installing AUR CTF tools..."
-yay -S --noconfirm pwndbg gef peda ropper checksec one_gadget \
-    seccomp-tools pwninit ropstar
-
-# Clone Syndra configuration
-echo "⚙️ Installing Syndra configuration..."
-cd ~
-if [ -d "SyndraShell" ]; then
-    cd SyndraShell
-    git pull
+# Check AUR helper
+if ! command -v yay &> /dev/null && ! command -v paru &> /dev/null; then
+    echo "⚠️  AUR helper non trouvé. Certains packages AUR ne seront pas installés."
 else
-    git clone https://github.com/Fud0o0/Syndra.git SyndraShell
-    cd SyndraShell
+    AUR_HELPER=$(command -v yay || command -v paru)
+    
+    # Install additional CTF tools from AUR
+    echo "🌟 Installation des outils CTF depuis AUR..."
+    $AUR_HELPER -S --needed --noconfirm pwndbg gef peda ropper checksec one_gadget \
+        seccomp-tools pwninit ropstar || echo "⚠️  Certains outils AUR ont échoué"
 fi
 
-# Copy configuration files
-echo "📝 Applying Root Me configuration..."
-mkdir -p ~/.config/{hypr,waybar,wofi,kitty,dunst}
-mkdir -p ~/Pictures/Wallpapers
-
-# Copy default wallpaper if exists
-if [ -f assets/wallpapers/default.mp4 ]; then
-    echo "🖼️  Installing default wallpaper..."
-    cp assets/wallpapers/default.mp4 ~/Pictures/Wallpapers/default.mp4
+# Configure Root Me (black & white) color scheme
+echo "🎨 Configuration du thème Root Me..."
+if [ -f "$HOME/.config/waybar/style.css" ]; then
+    sed -i 's/--primary: #.*/--primary: #ffffff;/' "$HOME/.config/waybar/style.css" 2>/dev/null || true
 fi
-
-cp -r config/hypr/* ~/.config/hypr/ 2>/dev/null || true
-cp -r config/waybar/* ~/.config/waybar/ 2>/dev/null || true
-cp -r config/wofi/* ~/.config/wofi/ 2>/dev/null || true
-cp -r config/kitty/* ~/.config/kitty/ 2>/dev/null || true
-cp -r config/dunst/* ~/.config/dunst/ 2>/dev/null || true
-
-# Set Root Me (black & white) color scheme
-sed -i 's/--primary: #.*/--primary: #ffffff;/' ~/.config/waybar/style.css 2>/dev/null || true
 
 # Setup CTF workspace
-echo "📁 Creating CTF workspace..."
+echo "📁 Création de l'espace de travail CTF..."
 mkdir -p ~/CTF/{tools,challenges,writeups}
 
 # Clone useful CTF repositories
-echo "📚 Cloning CTF resources..."
+echo "📚 Clonage des ressources CTF..."
 cd ~/CTF/tools
 git clone https://github.com/Gallopsled/pwntools.git 2>/dev/null || true
 git clone https://github.com/JonathanSalwan/ROPgadget.git 2>/dev/null || true
 git clone https://github.com/longld/peda.git 2>/dev/null || true
 
-# Install Python modules for Syndra
-echo "🐍 Installing Syndra Python dependencies..."
-cd ~/SyndraShell
-pip install --user -r requirements.txt
-
-# Make scripts executable
-chmod +x scripts/*.sh 2>/dev/null || true
-
 # Setup GDB with pwndbg
-echo "🔧 Configuring GDB with pwndbg..."
+echo "🔧 Configuration de GDB avec pwndbg..."
 cd ~
 if [ ! -d "pwndbg" ]; then
     git clone https://github.com/pwndbg/pwndbg
     cd pwndbg
-    ./setup.sh
+    ./setup.sh || echo "⚠️  Configuration pwndbg échouée"
 fi
+
+# Start SyndraShell with Root Me configuration
+echo "▶️  Démarrage de SyndraShell..."
+cd "$INSTALL_DIR"
+killall python 2>/dev/null || true
+python "$INSTALL_DIR/main.py" >/dev/null 2>&1 &
+disown
 
 # Calculate final disk usage
 END_SIZE=$(df -BG / | tail -1 | awk '{print $3}' | sed 's/G//')
@@ -156,15 +130,26 @@ AVAILABLE_NOW=$(df -BG / | tail -1 | awk '{print $4}' | sed 's/G//')
 
 echo ""
 echo "╔═══════════════════════════════════════════════════════════════╗"
-echo "║              ✅ ROOT ME INSTALLATION COMPLETE!                ║"
+echo "║        ✅ INSTALLATION ROOT ME/CTF TERMINÉE!                  ║"
 echo "╠═══════════════════════════════════════════════════════════════╣"
-echo "║  💾 Espace utilisé par l'installation: ${USED_SPACE} GB              ║"
-echo "║  💿 Espace disque total utilisé: ${END_SIZE} GB                   ║"
-echo "║  📊 Espace disponible restant: ${AVAILABLE_NOW} GB               ║"
+echo "║  💾 Espace utilisé: ${USED_SPACE} GB                                   ║"
+echo "║  📊 Espace disponible: ${AVAILABLE_NOW} GB                           ║"
 echo "╠═══════════════════════════════════════════════════════════════╣"
-echo "║  Next steps:                                                  ║"
-echo "║  1. Logout and select Hyprland as your session                ║"
-echo "║  2. Run: python ~/SyndraShell/main.py                         ║"
-echo "║  3. Check ~/CTF/ for your CTF workspace                       ║"
+echo "║  Outils CTF installés:                                        ║"
+echo "║  ✓ Reverse: GDB, Radare2, Ghidra, pwndbg                     ║"
+echo "║  ✓ Pwn: pwntools, ROPgadget, checksec                        ║"
+echo "║  ✓ Crypto: OpenSSL, hashcat, john                            ║"
+echo "║  ✓ Forensics: Volatility, Autopsy, binwalk                   ║"
+echo "║  ✓ Web: Burp Suite, SQLMap, gobuster                         ║"
+echo "║  ✓ Workspace CTF créé dans ~/CTF/                            ║"
+echo "╠═══════════════════════════════════════════════════════════════╣"
+echo "║  Prochaines étapes:                                           ║"
+echo "║  1. Déconnectez-vous et sélectionnez Hyprland                ║"
+echo "║  2. SyndraShell démarrera automatiquement                     ║"
+echo "║  3. Vos challenges CTF vont dans ~/CTF/challenges/            ║"
+echo "║  4. Appuyez sur SUPER+D pour le dashboard                     ║"
+echo "╚═══════════════════════════════════════════════════════════════╝"
+echo ""
+
 echo "║  4. Enjoy your Root Me CTF challenge environment!             ║"
 echo "╚═══════════════════════════════════════════════════════════════╝"

@@ -7,17 +7,55 @@
 > [!TIP]
 > 📖 For a complete dependency reference with links and usage details, see [DEPENDENCIES.md](docs/DEPENDENCIES.md)
 
-### Arch Linux
+## 🚀 Quick Installation
+
+### Installation complète avec profil (Recommandé)
+
+Choisissez votre profil et installez Syndra + les outils en une commande :
+
+**🔵 Blue Team (Défensif - IDS, Firewall, SIEM)**
+```bash
+curl -fsSL https://raw.githubusercontent.com/Fud0o0/Syndra/main/docs/get/blue.sh | bash
+```
+
+**🔴 Red Team (Offensif - Pentest, Exploitation)**
+```bash
+curl -fsSL https://raw.githubusercontent.com/Fud0o0/Syndra/main/docs/get/red.sh | bash
+```
+
+**🟣 Purple Team (Complet - Red + Blue)**
+```bash
+curl -fsSL https://raw.githubusercontent.com/Fud0o0/Syndra/main/docs/get/purple.sh | bash
+```
+
+**⚫ Root Me / CTF (Challenges & CTF)**
+```bash
+curl -fsSL https://raw.githubusercontent.com/Fud0o0/Syndra/main/docs/get/root.sh | bash
+```
+
+### Installation de base uniquement
+
+Si vous voulez installer uniquement l'interface Syndra sans les outils de sécurité :
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/Fud0o0/Syndra/main/install.sh | bash
+```
 
 > [!TIP]
-> This command also works for updating an existing installation!
+> Cette commande fonctionne aussi pour mettre à jour une installation existante !
 
-**Run the following command in your terminal once logged into Hyprland:**
+---
+
+## 📦 Arch Linux
+
+### Installation standard
+
+**Exécutez cette commande dans votre terminal une fois connecté dans Hyprland :**
 ```bash
 curl -L get.syndra.me | sh
 ```
 
-Alternative method (using GitHub directly):
+Méthode alternative (via GitHub directement) :
 ```bash
 curl -fsSL https://raw.githubusercontent.com/Fud0o0/Syndra/main/install.sh | bash
 ```
@@ -120,9 +158,9 @@ Built with [Fabric](https://github.com/Fabric-Development/fabric).
 
 
 
-<h2><sub><img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Rocket.png" alt="Rocket" width="25" height="25" /></sub> Roadmap</h2>
+<h2><sub><img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Rocket.png" alt="Rocket" width="20" height="20" /></sub> Roadmap</h2>
 
-- [ ] App Launcher
+- [x] App Launcher
 - [ ] Bluetooth Manager
 - [ ] Calculator
 - [ ] Calendar
@@ -147,7 +185,7 @@ Built with [Fabric](https://github.com/Fabric-Development/fabric).
 - [ ] Tmux Session Manager
 - [ ] Update checker
 - [ ] Vertical Layout
-- [ ] Wallpaper Selector
+- [x] Wallpaper Selector
 - [ ] Workspaces Overview
 - [ ] Multi-monitor support
 - [ ] Multimodal AI Assistant
@@ -158,15 +196,27 @@ Built with [Fabric](https://github.com/Fabric-Development/fabric).
 
 <table align="center">
   <tr>
-    <td align="center"><img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Activity/Sparkles.webp" alt="Sparkles" width="16" height="16" /><sup> sᴜᴘᴘᴏʀᴛ ᴛʜᴇ ᴘʀᴏᴊᴇᴄᴛ </sup><img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Activity/Sparkles.webp" alt="Sparkles" width="16" height="16" /></td>
+    <td align="center"><img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Activity/Sparkles.webp" alt="Sparkles" width="16" height="16" /><sup> ꜱᴜᴘᴘᴏʀᴛ & ᴄᴏᴍᴍᴜɴɪᴛʏ </sup><img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Activity/Sparkles.webp" alt="Sparkles" width="16" height="16" /></td>
   </tr>
   <tr>
     <td align="center">
+      <a href='https://discord.gg/pbrrd5ATK5' target='_blank'>
+        <img style='border:0px;height:48px;margin:8px;'
+             src='https://img.shields.io/discord/YOUR_DISCORD_ID?style=for-the-badge&logo=discord&logoColor=white&label=Join%20Discord&color=5865F2'
+             border='0' alt='Join our Discord!' />
+      </a>
+      <br/>
       <a href='https://ko-fi.com/syndrashell' target='_blank'>
-        <img style='border:0px;height:128px;'
+        <img style='border:0px;height:48px;margin:8px;'
              src='https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExc3N4NzlvZWs2Z2tsaGx4aHgwa3UzMWVpcmNwZTNraTM2NW84ZDlqbiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/PaF9a1MpqDzovyqVKj/giphy.gif'
              border='0' alt='Support me on Ko-fi!' />
       </a>
+    </td>
+  </tr>
+  <tr>
+    <td align="center" style="font-size: 12px; padding: 10px;">
+      💬 <strong>Discord:</strong> Rejoignez notre communauté pour de l'aide, partager vos setups et discuter !<br/>
+      ☕ <strong>Ko-fi:</strong> Soutenez le développement de Syndra Shell
     </td>
   </tr>
 </table>

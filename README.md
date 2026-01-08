@@ -122,7 +122,7 @@ Built with [Fabric](https://github.com/Fabric-Development/fabric).
 
 <h2><sub><img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Rocket.png" alt="Rocket" width="25" height="25" /></sub> Roadmap</h2>
 
-- [ ] App Launcher
+- [x] App Launcher
 - [ ] Bluetooth Manager
 - [ ] Calculator
 - [ ] Calendar
@@ -147,7 +147,7 @@ Built with [Fabric](https://github.com/Fabric-Development/fabric).
 - [ ] Tmux Session Manager
 - [ ] Update checker
 - [ ] Vertical Layout
-- [ ] Wallpaper Selector
+- [x] Wallpaper Selector
 - [ ] Workspaces Overview
 - [ ] Multi-monitor support
 - [ ] Multimodal AI Assistant

@@ -46,7 +46,11 @@ sudo pacman -S --noconfirm git base-devel wget curl python python-pip \
 # Install Hyprland and Wayland essentials
 echo "🎨 Installing Hyprland environment..."
 sudo pacman -S --noconfirm hyprland waybar wofi kitty dunst \
-    polkit-gnome xdg-desktop-portal-hyprland qt5-wayland qt6-wayland
+    polkit-gnome xdg-desktop-portal-hyprland qt5-wayland qt6-wayland mpv
+
+# Install mpvpaper for video wallpapers
+echo "🎬 Installing mpvpaper for video wallpapers..."
+yay -S --noconfirm mpvpaper
 
 # Install Red Team security tools
 echo "🔨 Installing Red Team offensive tools..."
@@ -89,6 +93,14 @@ fi
 # Copy configuration files
 echo "📝 Applying Red Team configuration..."
 mkdir -p ~/.config/{hypr,waybar,wofi,kitty,dunst}
+mkdir -p ~/Pictures/Wallpapers
+
+# Copy default wallpaper if exists
+if [ -f assets/wallpapers/default.mp4 ]; then
+    echo "🖼️  Installing default wallpaper..."
+    cp assets/wallpapers/default.mp4 ~/Pictures/Wallpapers/default.mp4
+fi
+
 cp -r config/hypr/* ~/.config/hypr/ 2>/dev/null || true
 cp -r config/waybar/* ~/.config/waybar/ 2>/dev/null || true
 cp -r config/wofi/* ~/.config/wofi/ 2>/dev/null || true

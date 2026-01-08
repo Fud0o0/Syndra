@@ -4,6 +4,47 @@ All notable changes to SyndraShell will be documented in this file.
 
 ## [Unreleased]
 
+### 🎯 Major Changes - Installation System Refactoring
+
+- **🔄 Modular Installation Architecture**
+  - Installation split into 2 phases: Base + Team profile
+  - `scripts/install-syndra-base.sh` - Core Hyprland + Syndra interface (~5 GB)
+  - Separate team scripts that require base installation first
+  - User can switch between team profiles without reinstalling base
+
+- **📦 Team-Specific Installation Scripts**
+  - `scripts/install-blue.sh` - Blue Team defensive tools only (~8 GB)
+  - `scripts/install-red.sh` - Red Team offensive tools only (~10 GB)
+  - `scripts/install-purple.sh` - Purple Team (Red + Blue) (~20 GB)
+  - `scripts/install-root.sh` - Root Me/CTF tools only (~13 GB)
+  - Each script checks for base installation before proceeding
+
+- **⚡ Quick Install Scripts** 
+  - `docs/get/blue.sh` - One-command install: base + Blue Team
+  - `docs/get/red.sh` - One-command install: base + Red Team
+  - `docs/get/purple.sh` - One-command install: base + Purple Team
+  - `docs/get/root.sh` - One-command install: base + Root Me/CTF
+  - Designed for `curl | bash` installation method
+
+- **🎨 Enhanced Main Installer**
+  - `install.sh` - Interactive guided installation
+  - Detects existing base installation
+  - Menu-driven team profile selection
+  - Option to skip team installation
+  - Support for profile switching
+
+- **📖 Comprehensive Installation Documentation**
+  - `docs/INSTALLATION.md` - Complete installation guide
+  - Profile comparison table
+  - Space requirements and tool lists
+  - Troubleshooting section
+  - Step-by-step instructions
+
+- **🌐 Community Links**
+  - Added Discord community link: https://discord.gg/pbrrd5ATK5
+  - Enhanced Ko-fi support section
+  - Improved README with installation options
+
 ### Added
 
 - 📖 **Dependencies Documentation** - Complete dependency reference

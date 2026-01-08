@@ -1,178 +1,172 @@
 ﻿#!/bin/bash
+# Syndra Installation Script - Main Installer
+# This script guides you through the Syndra Shell installation process
 
-set -e          # Exit immediately if a command fails
-set -u          # Treat unset variables as errors
-set -o pipefail # Prevent errors in a pipeline from being masked
+set -e
 
-REPO_URL="https://github.com/Fud0o0/Syndra.git"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+echo "╔═══════════════════════════════════════════════════════════════╗"
+echo "║                  SYNDRA SHELL - INSTALLATEUR                  ║"
+echo "║              Installation modulaire en 2 étapes               ║"
+echo "╚═══════════════════════════════════════════════════════════════╝"
+echo ""
+echo "Bienvenue dans l'installateur Syndra Shell!"
+echo ""
+echo "L'installation se fait maintenant en 2 étapes:"
+echo ""
+echo "  1️⃣  Installation de BASE (Syndra Shell + Hyprland)"
+echo "      → Interface, fonctionnalités core, environnement Wayland"
+echo ""
+echo "  2️⃣  Installation TEAM (Outils spécifiques)"
+echo "      → Blue Team  : Outils défensifs (IDS, firewall, SIEM...)"
+echo "      → Red Team   : Outils offensifs (pentest, exploitation...)"
+echo "      → Purple Team: Couverture complète (Red + Blue)"
+echo "      → Root Me    : Outils CTF et challenges"
+echo "      → Custom     : Configuration personnalisée"
+echo ""
+echo "════════════════════════════════════════════════════════════════"
+echo ""
+
+# Check if base installation exists
 INSTALL_DIR="$HOME/.config/SyndraShell"
 
-echo "🚀 Installing SyndraShell..."
-
-# Clone or update repository
-if [ ! -d "$INSTALL_DIR" ]; then
-    echo "📦 Cloning repository..."
-    git clone "$REPO_URL" "$INSTALL_DIR"
+if [ -d "$INSTALL_DIR" ] && [ -f "$INSTALL_DIR/main.py" ]; then
+    echo "✅ Syndra base est déjà installé!"
+    echo ""
+    echo "Voulez-vous:"
+    echo "  1) Réinstaller la base (update)"
+    echo "  2) Installer/changer les outils team"
+    echo "  3) Quitter"
+    echo ""
+    read -p "Votre choix [1-3]: " choice
+    
+    case $choice in
+        1)
+            echo ""
+            echo "🔄 Réinstallation de la base Syndra..."
+            bash "$SCRIPT_DIR/scripts/install-syndra-base.sh"
+            ;;
+        2)
+            # Continue to team selection below
+            ;;
+        3)
+            echo "Installation annulée."
+            exit 0
+            ;;
+        *)
+            echo "❌ Choix invalide."
+            exit 1
+            ;;
+    esac
 else
-    echo "🔄 SyndraShell already installed, updating..."
-    cd "$INSTALL_DIR" && git pull
-fi
-
-cd "$INSTALL_DIR"
-
-# Install system dependencies (Arch Linux)
-echo "📦 Installing system dependencies..."
-
-CORE_PACKAGES=(
-  python-fabric-git
-  fabric-cli-git
-  matugen
-  hyprland
-  hypridle
-  hyprlock
-  brightnessctl
-  networkmanager
-  python-gobject
-  python-pywayland
-  wl-clipboard
-  kitty
-  wofi
-  swww
-  swaybg
-)
-
-TOOLS_PACKAGES=(
-  hyprshot
-  hyprpicker
-  imagemagick
-)
-
-OPTIONAL_PACKAGES=(
-  waybar
-  dunst
-  network-manager-applet
-  playerctl
-  cliphist
-  gpu-screen-recorder
-  tesseract
-  swappy
-)
-
-# Check if running on Arch Linux
-if command -v pacman &> /dev/null; then
-    echo "Detected Arch Linux, installing dependencies..."
-    # Install AUR helper if not present (yay or paru)
-    if ! command -v yay &> /dev/null && ! command -v paru &> /dev/null; then
-        echo "⚠️  AUR helper (yay or paru) not found. Please install one manually."
-        echo "Some dependencies may need to be installed manually from AUR."
-    else
-        AUR_HELPER=$(command -v yay || command -v paru)
-        
-        echo "Installing core packages..."
-        $AUR_HELPER -S --needed --noconfirm "${CORE_PACKAGES[@]}" || echo "⚠️  Some core packages failed to install"
-        
-        echo "Installing tools packages..."
-        $AUR_HELPER -S --needed --noconfirm "${TOOLS_PACKAGES[@]}" || echo "⚠️  Some tool packages failed to install"
-        
-        echo "Installing optional packages..."
-        $AUR_HELPER -S --needed --noconfirm "${OPTIONAL_PACKAGES[@]}" || echo "⚠️  Some optional packages failed to install (this is OK)"
+    echo "📦 Étape 1/2: Installation de la base Syndra"
+    echo ""
+    echo "Cette étape installe:"
+    echo "  • Hyprland (compositeur Wayland)"
+    echo "  • Syndra Shell (interface)"
+    echo "  • Waybar, Kitty, Wofi, Dunst"
+    echo "  • Dépendances Python"
+    echo "  • Configuration de base"
+    echo ""
+    read -p "Continuer avec l'installation de base? [Y/n]: " -n 1 -r
+    echo
+    
+    if [[ ! $REPLY =~ ^[Yy]$ ]] && [[ ! -z $REPLY ]]; then
+        echo "Installation annulée."
+        exit 0
     fi
-else
-    echo "⚠️  Not running Arch Linux. Please install dependencies manually."
+    
+    echo ""
+    bash "$SCRIPT_DIR/scripts/install-syndra-base.sh"
+    
+    echo ""
+    echo "════════════════════════════════════════════════════════════════"
+    echo ""
 fi
 
-# Install Python dependencies
-echo "📚 Installing Python dependencies..."
-if [ -f "requirements.txt" ]; then
-    pip install --user --break-system-packages -r requirements.txt
-fi
+# Team selection
+echo "📦 Étape 2/2: Choix des outils team"
+echo ""
+echo "Choisissez votre profil d'outils:"
+echo ""
+echo "  1) 🔵 Blue Team   - Défensif (~8 GB)"
+echo "     IDS/IPS, Firewall, Antivirus, Monitoring, SIEM"
+echo ""
+echo "  2) 🔴 Red Team    - Offensif (~10 GB)"
+echo "     Pentest, Exploitation, Password cracking, Reverse"
+echo ""
+echo "  3) 🟣 Purple Team - Complet (~20 GB)"
+echo "     Tous les outils Red + Blue"
+echo ""
+echo "  4) ⚫ Root Me     - CTF (~13 GB)"
+echo "     Reverse, Pwn, Crypto, Forensics, Web exploitation"
+echo ""
+echo "  5) 🎨 Custom      - Personnalisé"
+echo "     Configuration à la carte"
+echo ""
+echo "  6) ⏭️  Passer      - Installer plus tard"
+echo ""
+read -p "Votre choix [1-6]: " team_choice
 
-# Create symbolic links for configurations
-echo "🔗 Creating configuration links..."
-CONFIG_DIR="$HOME/.config"
-
-# Hyprland
-mkdir -p "$CONFIG_DIR/hypr"
-ln -sf "$INSTALL_DIR/config/hypr/hyprland.conf" "$CONFIG_DIR/hypr/hyprland.conf"
-echo "source = ~/.config/SyndraShell/config/hypr/syndrashell.conf" >> "$CONFIG_DIR/hypr/hyprland.conf" 2>/dev/null || true
-
-# Waybar
-ln -sf "$INSTALL_DIR/config/waybar" "$CONFIG_DIR/waybar"
-
-# Kitty
-ln -sf "$INSTALL_DIR/config/kitty" "$CONFIG_DIR/kitty"
-
-# Dunst
-ln -sf "$INSTALL_DIR/config/dunst" "$CONFIG_DIR/dunst"
-
-# Wofi
-ln -sf "$INSTALL_DIR/config/wofi" "$CONFIG_DIR/wofi"
-
-# Copy fonts if not already present
-if [ ! -d "$HOME/.fonts/tabler-icons" ]; then
-    echo "📝 Copying local fonts..."
-    mkdir -p "$HOME/.fonts"
-    if [ -d "$INSTALL_DIR/assets/fonts" ]; then
-        cp -r "$INSTALL_DIR/assets/fonts/"* "$HOME/.fonts"
-        fc-cache -f
-    fi
-fi
-
-# Create config from example if not exists
-if [ ! -f "$INSTALL_DIR/config/config.json" ] && [ -f "$INSTALL_DIR/config.example.json" ]; then
-    cp "$INSTALL_DIR/config.example.json" "$INSTALL_DIR/config/config.json"
-    echo "📝 Created config.json from example"
-fi
-
-# Make scripts executable
-echo "🔧 Setting script permissions..."
-chmod +x "$INSTALL_DIR/scripts/"*.sh 2>/dev/null || true
-chmod +x "$INSTALL_DIR/scripts/"*.py 2>/dev/null || true
-chmod +x "$INSTALL_DIR/syndrashell.sh" 2>/dev/null || true
-chmod +x "$INSTALL_DIR/main.py" 2>/dev/null || true
-
-# Create directories
-echo "📁 Creating directories..."
-mkdir -p ~/Pictures/Wallpapers
-mkdir -p ~/Pictures/Screenshots
-mkdir -p ~/Videos/Recordings
-
-# Copy example wallpaper if wallpapers directory is empty
-if [ -z "$(ls -A ~/Pictures/Wallpapers)" ]; then
-    if [ -f "$INSTALL_DIR/assets/wallpapers_example/example-1.jpg" ]; then
-        echo "🖼️  Copying example wallpaper..."
-        cp "$INSTALL_DIR/assets/wallpapers_example/example-1.jpg" ~/Pictures/Wallpapers/
-    fi
-fi
-
-# Generate Hyprland configuration
-echo "⚙️  Generating configuration..."
-python "$INSTALL_DIR/config/settings_utils.py" 2>/dev/null || true
-
-# Enable and start NetworkManager
-if command -v systemctl &> /dev/null; then
-    if ! systemctl is-enabled --quiet NetworkManager 2>/dev/null; then
-        echo "Enabling NetworkManager..."
-        sudo systemctl enable NetworkManager
-    fi
-    if ! systemctl is-active --quiet NetworkManager 2>/dev/null; then
-        echo "Starting NetworkManager..."
-        sudo systemctl start NetworkManager
-    fi
-fi
-
-# Start SyndraShell
-echo "▶️  Starting SyndraShell..."
-killall syndrashell 2>/dev/null || true
-uwsm app -- python "$INSTALL_DIR/main.py" >/dev/null 2>&1 &
-disown
+case $team_choice in
+    1)
+        echo ""
+        echo "🔵 Installation Blue Team..."
+        bash "$SCRIPT_DIR/scripts/install-blue.sh"
+        ;;
+    2)
+        echo ""
+        echo "🔴 Installation Red Team..."
+        bash "$SCRIPT_DIR/scripts/install-red.sh"
+        ;;
+    3)
+        echo ""
+        echo "🟣 Installation Purple Team..."
+        bash "$SCRIPT_DIR/scripts/install-purple.sh"
+        ;;
+    4)
+        echo ""
+        echo "⚫ Installation Root Me/CTF..."
+        bash "$SCRIPT_DIR/scripts/install-root.sh"
+        ;;
+    5)
+        echo ""
+        echo "🎨 Installation Custom..."
+        if [ -f "$SCRIPT_DIR/scripts/install-custom.sh" ]; then
+            bash "$SCRIPT_DIR/scripts/install-custom.sh"
+        else
+            echo "⚠️  Le script install-custom.sh n'existe pas encore."
+            echo "   Vous pouvez le créer dans scripts/ en vous basant sur les autres."
+        fi
+        ;;
+    6)
+        echo ""
+        echo "Installation des outils passée."
+        echo "Vous pouvez lancer un script team plus tard depuis scripts/"
+        ;;
+    *)
+        echo "❌ Choix invalide."
+        exit 1
+        ;;
+esac
 
 echo ""
-echo "✅ SyndraShell installation complete!"
-echo ""
-echo "📋 Next steps:"
-echo "   1. Log out and log back into Hyprland"
-echo "   2. Or reload Hyprland: hyprctl reload"
-echo "   3. Press SUPER+D for dashboard"
-echo "   4. Press SUPER+R for app launcher"
+echo "╔═══════════════════════════════════════════════════════════════╗"
+echo "║              🎉 INSTALLATION SYNDRA TERMINÉE! 🎉              ║"
+echo "╠═══════════════════════════════════════════════════════════════╣"
+echo "║  Pour démarrer Syndra Shell:                                  ║"
+echo "║                                                               ║"
+echo "║  1. Déconnectez-vous de votre session                        ║"
+echo "║  2. Sélectionnez 'Hyprland' comme environnement              ║"
+echo "║  3. Connectez-vous                                            ║"
+echo "║                                                               ║"
+echo "║  Raccourcis clavier principaux:                               ║"
+echo "║  • SUPER + D      → Dashboard Syndra                          ║"
+echo "║  • SUPER + R      → Lanceur d'applications                    ║"
+echo "║  • SUPER + Enter  → Terminal (Kitty)                          ║"
+echo "║  • SUPER + Q      → Fermer fenêtre                            ║"
+echo "║                                                               ║"
+echo "║  Documentation: https://github.com/Fud0o0/Syndra              ║"
+echo "╚═══════════════════════════════════════════════════════════════╝"
 echo ""

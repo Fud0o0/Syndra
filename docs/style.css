@@ -1694,6 +1694,12 @@ section {
     align-items: center;
 }
 
+.tool-list a {
+    color: var(--text);
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
 .tool-bullet {
     margin-right: 0.75rem;
     font-weight: bold;
@@ -1713,11 +1719,21 @@ section {
     text-shadow: 0 0 10px var(--red-primary);
 }
 
+.red-theme .tool-list li:hover a {
+    color: var(--red-primary);
+    text-shadow: 0 0 10px var(--red-primary);
+}
+
 .blue-theme .tool-list li:hover {
     color: var(--blue-primary);
 }
 
 .blue-theme .tool-list li:hover .tool-bullet {
+    color: var(--blue-primary);
+    text-shadow: 0 0 10px var(--blue-primary);
+}
+
+.blue-theme .tool-list li:hover a {
     color: var(--blue-primary);
     text-shadow: 0 0 10px var(--blue-primary);
 }
@@ -1731,6 +1747,11 @@ section {
     text-shadow: 0 0 10px var(--purple-primary);
 }
 
+.purple-theme .tool-list li:hover a {
+    color: var(--purple-primary);
+    text-shadow: 0 0 10px var(--purple-primary);
+}
+
 .root-theme .tool-list li:hover {
     color: var(--root-primary);
 }
@@ -1740,11 +1761,21 @@ section {
     text-shadow: 0 0 10px var(--root-primary);
 }
 
+.root-theme .tool-list li:hover a {
+    color: var(--root-primary);
+    text-shadow: 0 0 10px var(--root-primary);
+}
+
 .custom-theme .tool-list li:hover {
     color: var(--custom-primary);
 }
 
 .custom-theme .tool-list li:hover .tool-bullet {
+    color: var(--custom-primary);
+    text-shadow: 0 0 10px var(--custom-primary);
+}
+
+.custom-theme .tool-list li:hover a {
     color: var(--custom-primary);
     text-shadow: 0 0 10px var(--custom-primary);
 }

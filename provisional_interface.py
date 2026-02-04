@@ -5,9 +5,23 @@ Interface de test/développement simple
 """
 
 import gi
-gi.require_version("Gtk", "3.0")
-from gi.repository import Gtk, GLib
+import sys
 import os
+
+# Vérifier que GTK peut être initialisé
+gi.require_version("Gtk", "3.0")
+try:
+    from gi.repository import Gtk, GLib
+    if not Gtk.init_check()[0]:
+        print("❌ Erreur: GTK ne peut pas être initialisé")
+        print("   Assurez-vous d'être dans une session graphique (X11/Wayland)")
+        print("   Variables d'environnement:")
+        print(f"   - DISPLAY: {os.environ.get('DISPLAY', 'non défini')}")
+        print(f"   - WAYLAND_DISPLAY: {os.environ.get('WAYLAND_DISPLAY', 'non défini')}")
+        sys.exit(1)
+except Exception as e:
+    print(f"❌ Erreur lors de l'import de GTK: {e}")
+    sys.exit(1)
 
 class ProvisionalInterface(Gtk.Window):
     def __init__(self):

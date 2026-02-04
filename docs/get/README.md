@@ -2,6 +2,8 @@
 
 Installez Syndra Shell avec votre profil préféré en **une seule commande** !
 
+**⭐ Nouveau :** Inclut maintenant une interface provisoire GTK pour le développement et les tests !
+
 ## 📋 Profils Disponibles
 
 ### 🔵 Blue Team (Défensif)
@@ -84,10 +86,37 @@ curl -L get.syndra.me | sh
 Toutes les installations incluent :
 - ✅ Hyprland + environnement Wayland
 - ✅ Syndra Shell (interface complète)
+- ✅ Interface provisoire GTK (développement/test)
 - ✅ Waybar, Kitty, Wofi, Dunst
 - ✅ Configurations optimisées
 
 **Plus les outils spécifiques à chaque profil !**
+
+---
+
+## 🎨 Interface Provisoire
+
+Après l'installation, une interface de test GTK est disponible :
+
+**Lancement :**
+```bash
+# Via le script
+~/.config/SyndraShell/launch-provisional.sh
+
+# Ou directement
+python ~/.config/SyndraShell/provisional_interface.py
+
+# Ou via le menu d'applications
+# Cherchez "Syndra Provisional Interface"
+```
+
+**Utilité :**
+- 🧪 Tester les modules sans Hyprland
+- ⚙️ Configuration rapide (thèmes, modes)
+- 🔍 Développement et débogage
+- 📊 Vue d'ensemble du système
+
+[📖 Documentation complète](../PROVISIONAL-INTERFACE.md)
 
 ---
 

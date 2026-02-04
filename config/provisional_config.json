@@ -1,0 +1,62 @@
+{
+  "provisional_interface": {
+    "window": {
+      "title": "SyndraShell - Interface Provisoire",
+      "width": 800,
+      "height": 600,
+      "position": "center"
+    },
+    "themes": {
+      "available": [
+        "Blue Team",
+        "Red Team",
+        "Purple Team",
+        "Root Me"
+      ],
+      "default": "Purple Team"
+    },
+    "modules": [
+      {
+        "name": "Bar",
+        "description": "Barre supérieure",
+        "module": "modules.bar",
+        "enabled": true
+      },
+      {
+        "name": "Dock",
+        "description": "Dock d'applications",
+        "module": "modules.dock",
+        "enabled": true
+      },
+      {
+        "name": "Notch",
+        "description": "Zone de notifications",
+        "module": "modules.notch",
+        "enabled": true
+      },
+      {
+        "name": "Dashboard",
+        "description": "Tableau de bord",
+        "module": "modules.dashboard",
+        "enabled": true
+      },
+      {
+        "name": "Wallpapers",
+        "description": "Gestion des fonds d'écran",
+        "module": "modules.wallpapers",
+        "enabled": true
+      },
+      {
+        "name": "Icons",
+        "description": "Gestionnaire d'icônes",
+        "module": "modules.icons",
+        "enabled": true
+      }
+    ],
+    "settings": {
+      "dark_mode": true,
+      "transparency": 80,
+      "auto_launch": false
+    }
+  }
+}

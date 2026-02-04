@@ -180,6 +180,11 @@ chmod +x "$INSTALL_DIR/scripts/"*.sh 2>/dev/null || true
 chmod +x "$INSTALL_DIR/scripts/"*.py 2>/dev/null || true
 chmod +x "$INSTALL_DIR/syndrashell.sh" 2>/dev/null || true
 chmod +x "$INSTALL_DIR/main.py" 2>/dev/null || true
+chmod +x "$INSTALL_DIR/provisional_interface.py" 2>/dev/null || true
+chmod +x "$INSTALL_DIR/launch-provisional.sh" 2>/dev/null || true
+chmod +x "$INSTALL_DIR/manage-autostart.sh" 2>/dev/null || true
+chmod +x "$INSTALL_DIR/test-provisional.py" 2>/dev/null || true
+chmod +x "$INSTALL_DIR/verify-provisional.py" 2>/dev/null || true
 
 # Copy example wallpaper if wallpapers directory is empty
 if [ -z "$(ls -A ~/Pictures/Wallpapers 2>/dev/null)" ]; then
@@ -192,6 +197,40 @@ fi
 # Generate Hyprland configuration
 echo "⚙️  Generating Syndra configuration..."
 python "$INSTALL_DIR/config/settings_utils.py" 2>/dev/null || true
+
+# Install provisional interface
+echo "🎨 Installing provisional interface..."
+if [ -f "$INSTALL_DIR/provisional_interface.py" ]; then
+    # Create desktop entry for easy access
+    DESKTOP_FILE="$HOME/.local/share/applications/syndra-provisional.desktop"
+    mkdir -p "$HOME/.local/share/applications"
+    
+    cat > "$DESKTOP_FILE" << EOF
+[Desktop Entry]
+Name=Syndra Provisional Interface
+Comment=Interface provisoire de développement pour SyndraShell
+Exec=python $INSTALL_DIR/provisional_interface.py
+Icon=preferences-system
+Terminal=false
+Type=Application
+Categories=Development;System;
+EOF
+    
+    chmod +x "$DESKTOP_FILE"
+    echo "  ✓ Interface provisoire installée"
+    echo "  ✓ Raccourci créé dans le menu d'applications"
+    
+    # Créer un autostart si l'utilisateur le souhaite
+    echo ""
+    read -p "Voulez-vous lancer l'interface provisoire au démarrage? [y/N]: " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        AUTOSTART_FILE="$HOME/.config/autostart/syndra-provisional.desktop"
+        mkdir -p "$HOME/.config/autostart"
+        cp "$DESKTOP_FILE" "$AUTOSTART_FILE"
+        echo "  ✓ Lancement automatique activé"
+    fi
+fi
 
 # Enable and start NetworkManager
 if command -v systemctl &> /dev/null; then
@@ -220,6 +259,12 @@ echo "╠═══════════════════════�
 echo "║  L'interface Syndra Shell et l'environnement Hyprland        ║"
 echo "║  sont maintenant installés!                                   ║"
 echo "║                                                               ║"
+echo "║  🎨 INTERFACE PROVISOIRE:                                     ║"
+echo "║  Une interface de test est disponible:                       ║"
+echo "║    • Dans le menu d'applications: 'Syndra Provisional'       ║"
+echo "║    • En ligne de commande:                                   ║"
+echo "║      python ~/.config/SyndraShell/provisional_interface.py   ║"
+echo "║                                                               ║"
 echo "║  PROCHAINE ÉTAPE:                                            ║"
 echo "║  Choisissez et lancez un script d'installation team:         ║"
 echo "║    • ./scripts/install-blue.sh   (Defensive/Blue Team)       ║"
@@ -229,3 +274,17 @@ echo "║    • ./scripts/install-root.sh   (CTF/Root Me)               ║"
 echo "║    • ./scripts/install-custom.sh (Custom configuration)      ║"
 echo "╚═══════════════════════════════════════════════════════════════╝"
 echo ""
+
+# Proposer de lancer l'interface provisoire maintenant
+if [ -f "$INSTALL_DIR/provisional_interface.py" ]; then
+    echo ""
+    read -p "🎨 Voulez-vous lancer l'interface provisoire maintenant? [Y/n]: " -n 1 -r
+    echo
+    if [[ ! $REPLY =~ ^[Nn]$ ]]; then
+        echo "🚀 Lancement de l'interface provisoire..."
+        echo ""
+        python "$INSTALL_DIR/provisional_interface.py" &
+        echo "✓ Interface lancée en arrière-plan"
+        echo ""
+    fi
+fi

@@ -128,6 +128,31 @@ curl -fsSL https://raw.githubusercontent.com/Fud0o0/Syndra/main/install.sh | bas
 - **Notch**
 - **Dashboard**
 
+## 🎨 Interface Provisoire (Mode Développement)
+
+Une interface de test GTK est disponible après l'installation pour :
+- Visualiser et tester les modules sans Hyprland
+- Développer et déboguer l'interface
+- Configurer rapidement les thèmes et paramètres
+
+**L'interface se lance automatiquement après l'installation** (vous pouvez choisir de la désactiver).
+
+**Lancement manuel :**
+```bash
+# Via le script de lancement
+~/.config/SyndraShell/launch-provisional.sh
+
+# Ou directement
+python ~/.config/SyndraShell/provisional_interface.py
+
+# Ou via le menu d'applications (cherchez "Syndra Provisional")
+```
+
+**Fonctionnalités :**
+- Onglet Système : Informations de base
+- Onglet Modules : Test des modules SyndraShell
+- Onglet Configuration : Thèmes, mode sombre, transparence, autostart
+
 ## Keybinds
 
 ### General

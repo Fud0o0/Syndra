@@ -16,16 +16,20 @@ fi
 echo "✅ Sur la branche update"
 echo ""
 
-# Commit les changements en cours
-echo "📦 Commit des modifications..."
-git add .
-git commit -m "🎨 Ajout interface Iceland + thèmes + wallpapers vidéo + corrections" || echo "Aucune modification à commiter"
-echo ""
-
-# Push update
-echo "⬆️  Push de la branche update..."
-git push origin update
-echo ""
+# Vérifier s'il y a des modifications
+if [ -n "$(git status --porcelain)" ]; then
+    echo "📦 Modifications détectées, commit en cours..."
+    git add -A
+    git commit -m "🎨 Ajout interface Iceland + thèmes + wallpapers vidéo + corrections GTK"
+    echo ""
+    
+    echo "⬆️  Push de la branche update..."
+    git push origin update
+    echo ""
+else
+    echo "✅ Aucune modification à commiter"
+    echo ""
+fi
 
 # Switch vers main
 echo "🔀 Passage sur la branche main..."

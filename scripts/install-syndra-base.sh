@@ -310,13 +310,11 @@ echo ""
 # Proposer de lancer l'interface provisoire maintenant
 if [ -f "$INSTALL_DIR/provisional_interface.py" ]; then
     echo ""
-    read -p "🎨 Voulez-vous lancer l'interface provisoire maintenant? [Y/n]: " -n 1 -r
-    echo
-    if [[ ! $REPLY =~ ^[Nn]$ ]]; then
-        echo "🚀 Lancement de l'interface provisoire..."
-        echo ""
-        python "$INSTALL_DIR/provisional_interface.py" &
-        echo "✓ Interface lancée en arrière-plan"
-        echo ""
-    fi
+    # Ne jamais lancer automatiquement pendant l'installation
+    # L'utilisateur peut lancer manuellement plus tard
+    echo "ℹ️  Interface provisoire disponible:"
+    echo "   • Depuis le menu d'applications: 'Syndra Provisional'"
+    echo "   • En ligne de commande: syndra provisional"
+    echo "   • Raccourci: SUPER + A (pour le menu général)"
+    echo ""
 fi

@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Syndra Themes - Prévisualisation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+            font-size: 3em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            text-align: center;
+            color: rgba(255,255,255,0.9);
+            font-size: 1.2em;
+            margin-bottom: 50px;
+        }
+
+        .themes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .theme-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .theme-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        }
+
+        .theme-preview {
+            height: 250px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .theme-header {
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .theme-header-title {
+            color: white;
+            font-weight: bold;
+            font-size: 1.3em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .close-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: #ef5350;
+            color: white;
+            border: none;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+
+        .theme-content {
+            flex: 1;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .theme-button {
+            padding: 12px 20px;
+            border-radius: 10px;
+            border: 2px solid;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .theme-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .theme-info {
+            padding: 25px;
+            text-align: center;
+        }
+
+        .theme-icon {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        .theme-name {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .theme-description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .theme-tags {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .tag {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 500;
+        }
+
+        /* Iceland Theme */
+        .iceland .theme-preview {
+            background: linear-gradient(180deg, #e1f5fe 0%, #b3e5fc 100%);
+        }
+        .iceland .theme-header {
+            background: linear-gradient(135deg, #0288d1 0%, #0277bd 100%);
+        }
+        .iceland .theme-content {
+            background-color: white;
+        }
+        .iceland .theme-button {
+            background: linear-gradient(180deg, #ffffff 0%, #e3f2fd 100%);
+            border-color: #81d4fa;
+            color: #01579b;
+        }
+        .iceland .tag {
+            background: #b3e5fc;
+            color: #01579b;
+        }
+
+        /* Tokyo Night Theme */
+        .tokyo-night .theme-preview {
+            background: linear-gradient(180deg, #1a1b26 0%, #24283b 100%);
+        }
+        .tokyo-night .theme-header {
+            background: linear-gradient(135deg, #7aa2f7 0%, #bb9af7 100%);
+        }
+        .tokyo-night .theme-content {
+            background-color: #24283b;
+        }
+        .tokyo-night .theme-button {
+            background: #414868;
+            border-color: #7aa2f7;
+            color: #c0caf5;
+        }
+        .tokyo-night .tag {
+            background: #414868;
+            color: #7aa2f7;
+        }
+
+        /* Sunset Theme */
+        .sunset .theme-preview {
+            background: linear-gradient(180deg, #ffe0b2 0%, #ffccbc 100%);
+        }
+        .sunset .theme-header {
+            background: linear-gradient(135deg, #ff6f00 0%, #f57c00 100%);
+        }
+        .sunset .theme-content {
+            background-color: white;
+        }
+        .sunset .theme-button {
+            background: linear-gradient(180deg, #ffffff 0%, #fff3e0 100%);
+            border-color: #ffcc80;
+            color: #bf360c;
+        }
+        .sunset .tag {
+            background: #ffccbc;
+            color: #bf360c;
+        }
+
+        /* Forest Theme */
+        .forest .theme-preview {
+            background: linear-gradient(180deg, #e8f5e9 0%, #c8e6c9 100%);
+        }
+        .forest .theme-header {
+            background: linear-gradient(135deg, #2e7d32 0%, #388e3c 100%);
+        }
+        .forest .theme-content {
+            background-color: white;
+        }
+        .forest .theme-button {
+            background: linear-gradient(180deg, #ffffff 0%, #e8f5e9 100%);
+            border-color: #a5d6a7;
+            color: #1b5e20;
+        }
+        .forest .tag {
+            background: #c8e6c9;
+            color: #1b5e20;
+        }
+
+        /* Purple Haze Theme */
+        .purple-haze .theme-preview {
+            background: linear-gradient(180deg, #f3e5f5 0%, #e1bee7 100%);
+        }
+        .purple-haze .theme-header {
+            background: linear-gradient(135deg, #7b1fa2 0%, #8e24aa 100%);
+        }
+        .purple-haze .theme-content {
+            background-color: white;
+        }
+        .purple-haze .theme-button {
+            background: linear-gradient(180deg, #ffffff 0%, #f3e5f5 100%);
+            border-color: #ce93d8;
+            color: #4a148c;
+        }
+        .purple-haze .tag {
+            background: #e1bee7;
+            color: #4a148c;
+        }
+
+        /* Cyberpunk Theme */
+        .cyberpunk .theme-preview {
+            background: linear-gradient(180deg, #0a0e27 0%, #1a1d3a 100%);
+        }
+        .cyberpunk .theme-header {
+            background: linear-gradient(135deg, #ff0080 0%, #00ffff 100%);
+        }
+        .cyberpunk .theme-content {
+            background-color: #1a1d3a;
+        }
+        .cyberpunk .theme-button {
+            background: #1a1d3a;
+            border-color: #ff0080;
+            color: #ffffff;
+        }
+        .cyberpunk .theme-name,
+        .cyberpunk .theme-description {
+            color: #333;
+        }
+        .cyberpunk .tag {
+            background: #ff0080;
+            color: white;
+        }
+
+        .download-section {
+            text-align: center;
+            margin-top: 60px;
+            padding: 40px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .download-btn {
+            display: inline-block;
+            padding: 15px 40px;
+            background: white;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.2em;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            transition: all 0.3s;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
+
+        @media (max-width: 768px) {
+            .themes-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 Syndra Themes</h1>
+        <p class="subtitle">Personnalisez votre environnement de cybersécurité</p>
+
+        <div class="themes-grid">
+            <!-- Iceland Theme -->
+            <div class="theme-card iceland">
+                <div class="theme-preview">
+                    <div class="theme-header">
+                        <span class="theme-header-title">❄️ SYNDRA ICELAND</span>
+                        <button class="close-btn">✕</button>
+                    </div>
+                    <div class="theme-content">
+                        <button class="theme-button">Rechercher...</button>
+                        <button class="theme-button">Applications</button>
+                        <button class="theme-button">Configuration</button>
+                    </div>
+                </div>
+                <div class="theme-info">
+                    <div class="theme-icon">❄️</div>
+                    <div class="theme-name">Iceland</div>
+                    <div class="theme-description">
+                        Thème glacier avec tons bleus froids. Idéal pour le travail de longue durée.
+                    </div>
+                    <div class="theme-tags">
+                        <span class="tag">Professionnel</span>
+                        <span class="tag">Apaisant</span>
+                        <span class="tag">Lumineux</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tokyo Night Theme -->
+            <div class="theme-card tokyo-night">
+                <div class="theme-preview">
+                    <div class="theme-header">
+                        <span class="theme-header-title">🌃 SYNDRA TOKYO</span>
+                        <button class="close-btn">✕</button>
+                    </div>
+                    <div class="theme-content">
+                        <button class="theme-button">Rechercher...</button>
+                        <button class="theme-button">Applications</button>
+                        <button class="theme-button">Configuration</button>
+                    </div>
+                </div>
+                <div class="theme-info">
+                    <div class="theme-icon">🌃</div>
+                    <div class="theme-name">Tokyo Night</div>
+                    <div class="theme-description">
+                        Thème sombre moderne inspiré de Tokyo. Parfait pour le travail de nuit.
+                    </div>
+                    <div class="theme-tags">
+                        <span class="tag">Sombre</span>
+                        <span class="tag">Moderne</span>
+                        <span class="tag">Nocturne</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sunset Theme -->
+            <div class="theme-card sunset">
+                <div class="theme-preview">
+                    <div class="theme-header">
+                        <span class="theme-header-title">🌅 SYNDRA SUNSET</span>
+                        <button class="close-btn">✕</button>
+                    </div>
+                    <div class="theme-content">
+                        <button class="theme-button">Rechercher...</button>
+                        <button class="theme-button">Applications</button>
+                        <button class="theme-button">Configuration</button>
+                    </div>
+                </div>
+                <div class="theme-info">
+                    <div class="theme-icon">🌅</div>
+                    <div class="theme-name">Sunset</div>
+                    <div class="theme-description">
+                        Tons chauds orangés. Énergique et dynamique pour les sessions créatives.
+                    </div>
+                    <div class="theme-tags">
+                        <span class="tag">Chaleureux</span>
+                        <span class="tag">Énergique</span>
+                        <span class="tag">Créatif</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Forest Theme -->
+            <div class="theme-card forest">
+                <div class="theme-preview">
+                    <div class="theme-header">
+                        <span class="theme-header-title">🌲 SYNDRA FOREST</span>
+                        <button class="close-btn">✕</button>
+                    </div>
+                    <div class="theme-content">
+                        <button class="theme-button">Rechercher...</button>
+                        <button class="theme-button">Applications</button>
+                        <button class="theme-button">Configuration</button>
+                    </div>
+                </div>
+                <div class="theme-info">
+                    <div class="theme-icon">🌲</div>
+                    <div class="theme-name">Forest</div>
+                    <div class="theme-description">
+                        Tons naturels verts. Reposant et équilibré, réduit la fatigue visuelle.
+                    </div>
+                    <div class="theme-tags">
+                        <span class="tag">Naturel</span>
+                        <span class="tag">Reposant</span>
+                        <span class="tag">Équilibré</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Purple Haze Theme -->
+            <div class="theme-card purple-haze">
+                <div class="theme-preview">
+                    <div class="theme-header">
+                        <span class="theme-header-title">🔮 SYNDRA PURPLE</span>
+                        <button class="close-btn">✕</button>
+                    </div>
+                    <div class="theme-content">
+                        <button class="theme-button">Rechercher...</button>
+                        <button class="theme-button">Applications</button>
+                        <button class="theme-button">Configuration</button>
+                    </div>
+                </div>
+                <div class="theme-info">
+                    <div class="theme-icon">🔮</div>
+                    <div class="theme-name">Purple Haze</div>
+                    <div class="theme-description">
+                        Tons violets mystiques. Créatif et artistique, parfait pour le design.
+                    </div>
+                    <div class="theme-tags">
+                        <span class="tag">Mystique</span>
+                        <span class="tag">Créatif</span>
+                        <span class="tag">Artistique</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cyberpunk Theme -->
+            <div class="theme-card cyberpunk">
+                <div class="theme-preview">
+                    <div class="theme-header">
+                        <span class="theme-header-title">🤖 SYNDRA CYBER</span>
+                        <button class="close-btn">✕</button>
+                    </div>
+                    <div class="theme-content">
+                        <button class="theme-button">Rechercher...</button>
+                        <button class="theme-button">Applications</button>
+                        <button class="theme-button">Configuration</button>
+                    </div>
+                </div>
+                <div class="theme-info">
+                    <div class="theme-icon">🤖</div>
+                    <div class="theme-name">Cyberpunk</div>
+                    <div class="theme-description">
+                        Néon rose et cyan futuriste. Pour le hacking éthique et le pentesting.
+                    </div>
+                    <div class="theme-tags">
+                        <span class="tag">Futuriste</span>
+                        <span class="tag">High-Tech</span>
+                        <span class="tag">Néon</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="download-section">
+            <h2 style="color: white; margin-bottom: 20px;">Prêt à personnaliser votre Syndra Shell ?</h2>
+            <a href="../index.html" class="download-btn">📥 Télécharger Syndra</a>
+        </div>
+    </div>
+
+    <script>
+        // Animation au scroll
+        const cards = document.querySelectorAll('.theme-card');
+        
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        cards.forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'opacity 0.6s, transform 0.6s';
+            observer.observe(card);
+        });
+
+        // Effet hover sur les boutons de fermeture
+        document.querySelectorAll('.close-btn').forEach(btn => {
+            btn.addEventListener('mouseenter', () => {
+                btn.style.transform = 'scale(1.1) rotate(90deg)';
+                btn.style.transition = 'all 0.3s';
+            });
+            btn.addEventListener('mouseleave', () => {
+                btn.style.transform = 'scale(1) rotate(0deg)';
+            });
+        });
+    </script>
+</body>
+</html>

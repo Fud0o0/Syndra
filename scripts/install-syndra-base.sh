@@ -93,6 +93,8 @@ TOOLS_PACKAGES=(
   gpu-screen-recorder
   tesseract
   swappy
+  mpvpaper
+  ffmpeg
 )
 
 # Check and install AUR helper if not present
@@ -115,10 +117,6 @@ $AUR_HELPER -S --needed --noconfirm "${INTERFACE_PACKAGES[@]}" || echo "⚠️  
 
 echo "📦 Installing utility tools..."
 $AUR_HELPER -S --needed --noconfirm "${TOOLS_PACKAGES[@]}" || echo "⚠️  Some tool packages failed to install (this is OK)"
-
-# Install mpvpaper for video wallpapers
-echo "🎬 Installing mpvpaper for video wallpapers..."
-$AUR_HELPER -S --noconfirm mpvpaper || echo "⚠️  mpvpaper failed to install"
 
 # Install Python dependencies
 echo "🐍 Installing Python dependencies for Syndra..."

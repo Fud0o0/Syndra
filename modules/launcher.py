@@ -46,64 +46,87 @@ class AppLauncher(Gtk.Window):
         self.connect("focus-out-event", self.on_focus_out)
         
     def setup_css(self):
-        """Configure le style CSS"""
+        """Configure le style CSS Iceland"""
         css_provider = Gtk.CssProvider()
         css = b"""
         window {
-            background-color: #1a1b26;
-            border: 2px solid #7aa2f7;
-            border-radius: 12px;
+            background: linear-gradient(180deg, #e1f5fe 0%, #b3e5fc 100%);
+            border: 3px solid #0288d1;
+            border-radius: 15px;
         }
         
         .header {
-            background: linear-gradient(135deg, #7aa2f7 0%, #bb9af7 100%);
-            padding: 20px;
-            border-radius: 10px 10px 0 0;
+            background: linear-gradient(135deg, #0288d1 0%, #0277bd 100%);
+            padding: 15px;
+            border-radius: 12px 12px 0 0;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
         
         .logo-text {
             color: white;
-            font-size: 32px;
+            font-size: 28px;
             font-weight: bold;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            text-shadow: 2px 2px 6px rgba(0,0,0,0.4);
+        }
+        
+        .close-button {
+            background-color: #ef5350;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            min-width: 36px;
+            min-height: 36px;
+            font-size: 18px;
+            font-weight: bold;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+        
+        .close-button:hover {
+            background-color: #f44336;
+            box-shadow: 0 4px 10px rgba(244, 67, 54, 0.5);
+            transform: scale(1.1);
         }
         
         .search-entry {
-            background-color: #24283b;
-            color: #c0caf5;
-            border: 2px solid #414868;
-            border-radius: 8px;
+            background-color: white;
+            color: #01579b;
+            border: 2px solid #4fc3f7;
+            border-radius: 10px;
             padding: 12px;
             font-size: 14px;
         }
         
         .search-entry:focus {
-            border-color: #7aa2f7;
+            border-color: #0288d1;
+            box-shadow: 0 0 12px rgba(2, 136, 209, 0.4);
         }
         
         .app-button {
-            background-color: #24283b;
-            border: 1px solid #414868;
-            border-radius: 8px;
+            background: linear-gradient(180deg, #ffffff 0%, #e3f2fd 100%);
+            border: 2px solid #81d4fa;
+            border-radius: 10px;
             padding: 15px;
             margin: 5px;
         }
         
         .app-button:hover {
-            background-color: #414868;
-            border-color: #7aa2f7;
+            background: linear-gradient(180deg, #e3f2fd 0%, #b3e5fc 100%);
+            border-color: #0288d1;
+            box-shadow: 0 4px 12px rgba(2, 136, 209, 0.3);
         }
         
         .app-name {
-            color: #c0caf5;
+            color: #01579b;
             font-size: 12px;
+            font-weight: 500;
         }
         
         .category-label {
-            color: #7aa2f7;
+            color: #01579b;
             font-weight: bold;
-            font-size: 14px;
+            font-size: 16px;
             padding: 10px;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.8);
         }
         """
         css_provider.load_from_data(css)
@@ -114,23 +137,34 @@ class AppLauncher(Gtk.Window):
         )
     
     def create_header(self, container):
-        """Crée le header avec logo"""
-        header = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=5)
-        header.get_style_context().add_class("header")
-        header.set_size_request(-1, 100)
+        """Crée le header avec logo et bouton fermer"""
+        header_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+        header_box.get_style_context().add_class("header")
+        header_box.set_size_request(-1, 80)
+        container.pack_start(header_box, False, False, 0)
         
-        # Logo Syndra (texte stylisé)
+        # Logo avec icône snowflake
+        logo_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+        
+        icon_label = Gtk.Label()
+        icon_label.set_markup("<span size='32000'>❄️</span>")
+        logo_box.pack_start(icon_label, False, False, 15)
+        
+        # Texte logo
         logo_label = Gtk.Label()
-        logo_label.set_markup("<span size='xx-large' weight='bold'>⚡ SYNDRA</span>")
+        logo_label.set_markup("<span class='logo-text'>SYNDRA ICELAND</span>")
         logo_label.get_style_context().add_class("logo-text")
-        header.pack_start(logo_label, True, True, 0)
+        logo_box.pack_start(logo_label, False, False, 0)
         
-        # Sous-titre
-        subtitle = Gtk.Label(label="Shell Environment")
-        subtitle.set_markup("<span color='#e0e0e0'>Shell Environment</span>")
-        header.pack_start(subtitle, False, False, 0)
+        header_box.pack_start(logo_box, True, True, 0)
         
-        container.pack_start(header, False, False, 0)
+        # Bouton fermer visible
+        close_btn = Gtk.Button(label="✕")
+        close_btn.set_size_request(36, 36)
+        close_btn.get_style_context().add_class("close-button")
+        close_btn.set_tooltip_text("Fermer (ou ESC)")
+        close_btn.connect("clicked", lambda w: self.close())
+        header_box.pack_start(close_btn, False, False, 15)
     
     def create_search_bar(self, container):
         """Crée la barre de recherche"""

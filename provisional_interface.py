@@ -10,8 +10,9 @@ import os
 
 # Vérifier que GTK peut être initialisé
 gi.require_version("Gtk", "3.0")
+gi.require_version("Gdk", "3.0")
 try:
-    from gi.repository import Gtk, GLib
+    from gi.repository import Gtk, Gdk, GLib
     if not Gtk.init_check()[0]:
         print("❌ Erreur: GTK ne peut pas être initialisé")
         print("   Assurez-vous d'être dans une session graphique (X11/Wayland)")
@@ -28,27 +29,29 @@ class ProvisionalInterface(Gtk.Window):
         super().__init__(title="SyndraShell - Interface Provisoire")
         self.set_default_size(800, 600)
         self.set_position(Gtk.WindowPosition.CENTER)
+        self.set_decorated(False)  # Pas de décoration système
+        
+        # Style CSS Iceland
+        self.setup_iceland_css()
         
         # Container principal
-        main_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
-        main_box.set_margin_top(20)
-        main_box.set_margin_bottom(20)
-        main_box.set_margin_start(20)
-        main_box.set_margin_end(20)
+        main_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
         self.add(main_box)
         
-        # Titre
-        title_label = Gtk.Label()
-        title_label.set_markup("<big><b>SyndraShell - Interface Provisoire</b></big>")
-        main_box.pack_start(title_label, False, False, 10)
+        # Header personnalisé avec bouton fermer
+        self.create_custom_header(main_box)
         
-        # Séparateur
-        separator = Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL)
-        main_box.pack_start(separator, False, False, 0)
+        # Container du contenu
+        content_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
+        content_box.set_margin_top(10)
+        content_box.set_margin_bottom(20)
+        content_box.set_margin_start(20)
+        content_box.set_margin_end(20)
+        main_box.pack_start(content_box, True, True, 0)
         
         # Notebook pour différentes sections
         notebook = Gtk.Notebook()
-        main_box.pack_start(notebook, True, True, 0)
+        content_box.pack_start(notebook, True, True, 0)
         
         # Page 1: Informations système
         self.create_system_page(notebook)
@@ -62,8 +65,8 @@ class ProvisionalInterface(Gtk.Window):
         # Barre de statut
         statusbar = Gtk.Statusbar()
         context_id = statusbar.get_context_id("status")
-        statusbar.push(context_id, "Interface provisoire prête")
-        main_box.pack_start(statusbar, False, False, 0)
+        statusbar.push(context_id, "Interface Iceland prête ❄️")
+        content_box.pack_start(statusbar, False, False, 0)
     
     def create_system_page(self, notebook):
         """Page d'informations système"""
@@ -192,27 +195,47 @@ class ProvisionalInterface(Gtk.Window):
         # Options de configuration
         config_options = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
         
-        # Option 1: Thème
+        # Option 1: Sélection de thème visuel
         theme_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
-        theme_label = Gtk.Label(label="Thème:")
+        theme_label = Gtk.Label(label="Thème visuel:")
         theme_combo = Gtk.ComboBoxText()
-        theme_combo.append_text("Blue Team")
-        theme_combo.append_text("Red Team")
-        theme_combo.append_text("Purple Team")
-        theme_combo.append_text("Root Me")
-        theme_combo.set_active(0)
+        theme_combo.append("iceland", "❄️ Iceland (Glacier)")
+        theme_combo.append("tokyo_night", "🌃 Tokyo Night")
+        theme_combo.append("sunset", "🌅 Sunset")
+        theme_combo.append("forest", "🌲 Forest")
+        theme_combo.append("purple_haze", "🔮 Purple Haze")
+        theme_combo.append("cyberpunk", "🤖 Cyberpunk")
+        theme_combo.set_active_id("iceland")
+        theme_combo.connect("changed", self.on_theme_changed)
         theme_box.pack_start(theme_label, False, False, 0)
         theme_box.pack_start(theme_combo, True, True, 0)
         config_options.pack_start(theme_box, False, False, 0)
         
-        # Option 2: Mode sombre
-        dark_mode_switch = Gtk.Switch()
-        dark_mode_switch.set_active(True)
-        dark_mode_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
-        dark_mode_label = Gtk.Label(label="Mode sombre:")
-        dark_mode_box.pack_start(dark_mode_label, False, False, 0)
-        dark_mode_box.pack_start(dark_mode_switch, False, False, 0)
-        config_options.pack_start(dark_mode_box, False, False, 0)
+        # Option 2: Thème de sécurité
+        security_theme_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+        security_theme_label = Gtk.Label(label="Profil de sécurité:")
+        security_theme_combo = Gtk.ComboBoxText()
+        security_theme_combo.append_text("Blue Team")
+        security_theme_combo.append_text("Red Team")
+        security_theme_combo.append_text("Purple Team")
+        security_theme_combo.append_text("Root Me")
+        security_theme_combo.set_active(0)
+        security_theme_box.pack_start(security_theme_label, False, False, 0)
+        security_theme_box.pack_start(security_theme_combo, True, True, 0)
+        config_options.pack_start(security_theme_box, False, False, 0)
+        
+        # Option 2: Thème de sécurité
+        security_theme_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+        security_theme_label = Gtk.Label(label="Profil de sécurité:")
+        security_theme_combo = Gtk.ComboBoxText()
+        security_theme_combo.append_text("Blue Team")
+        security_theme_combo.append_text("Red Team")
+        security_theme_combo.append_text("Purple Team")
+        security_theme_combo.append_text("Root Me")
+        security_theme_combo.set_active(0)
+        security_theme_box.pack_start(security_theme_label, False, False, 0)
+        security_theme_box.pack_start(security_theme_combo, True, True, 0)
+        config_options.pack_start(security_theme_box, False, False, 0)
         
         # Option 3: Transparence
         transparency_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
@@ -299,6 +322,61 @@ class ProvisionalInterface(Gtk.Window):
         )
         dialog.run()
         dialog.destroy()
+    
+    def on_theme_changed(self, combo):
+        """Changer le thème dynamiquement"""
+        theme_id = combo.get_active_id()
+        if theme_id:
+            try:
+                # Import du module themes
+                import sys
+                config_path = os.path.join(os.path.dirname(__file__), "config")
+                if config_path not in sys.path:
+                    sys.path.insert(0, config_path)
+                
+                from themes import get_theme_css, THEMES
+                
+                # Appliquer le nouveau CSS
+                css_provider = Gtk.CssProvider()
+                css = get_theme_css(theme_id).encode()
+                css_provider.load_from_data(css)
+                
+                from gi.repository import Gdk
+                screen = Gdk.Screen.get_default()
+                style_context = Gtk.StyleContext()
+                style_context.add_provider_for_screen(
+                    screen, css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
+                )
+                
+                # Mise à jour du titre avec l'icône du thème
+                theme = THEMES[theme_id]
+                title_text = f"SyndraShell - {theme['name']} {theme['icon']}"
+                self.set_title(title_text)
+                
+                # Afficher confirmation
+                dialog = Gtk.MessageDialog(
+                    transient_for=self,
+                    flags=0,
+                    message_type=Gtk.MessageType.INFO,
+                    buttons=Gtk.ButtonsType.OK,
+                    text=f"Thème {theme['name']} appliqué",
+                )
+                dialog.format_secondary_text(theme['description'])
+                dialog.run()
+                dialog.destroy()
+                
+            except Exception as e:
+                dialog = Gtk.MessageDialog(
+                    transient_for=self,
+                    flags=0,
+                    message_type=Gtk.MessageType.ERROR,
+                    buttons=Gtk.ButtonsType.OK,
+                    text="Erreur lors du changement de thème",
+                )
+                dialog.format_secondary_text(str(e))
+                dialog.run()
+                dialog.destroy()
+
     
     def on_apply_config(self, button):
         """Appliquer la configuration"""

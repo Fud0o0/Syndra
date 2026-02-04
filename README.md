@@ -6,6 +6,17 @@
 
 > [!TIP]
 > 📖 For a complete dependency reference with links and usage details, see [DEPENDENCIES.md](docs/DEPENDENCIES.md)
+> 🎨 Découvrez nos 6 thèmes dynamiques: [THEMES.md](docs/THEMES.md) | [Preview](https://fud0o0.github.io/Syndra/themes.html)
+
+## ✨ Nouvelles Fonctionnalités
+
+- **� Fonds d'Écran Vidéo** : Support MP4/WebM/MKV avec mpvpaper ([Guide](docs/VIDEO-WALLPAPERS.md))
+- **�🎨 Thèmes Dynamiques** : 6 thèmes (Iceland, Tokyo Night, Sunset, Forest, Purple Haze, Cyberpunk)
+- **✕ Boutons de Fermeture** : Toutes les interfaces ont maintenant des boutons de fermeture visibles
+- **🖱️ Fenêtres Déplaçables** : Cliquez et déplacez depuis le header
+- **🎯 Interface Provisoire** : Interface de test avec onglets Système/Modules/Configuration
+- **🚀 App Launcher** : Menu style Windows avec catégories (SUPER+A)
+- **⚙️ Commandes Syndra** : CLI intégré pour gérer l'environnement
 
 ## 🚀 Quick Installation
 

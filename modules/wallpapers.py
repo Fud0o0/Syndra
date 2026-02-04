@@ -137,16 +137,24 @@ class WallpaperSelector(Box):
         
         if not os.path.exists(cache_path):
             try:
-                with Image.open(full_path) as img:
-                    width, height = img.size
-                    side = min(width, height)
-                    left = (width - side) // 2
-                    top = (height - side) // 2
-                    right = left + side
-                    bottom = top + side
-                    img_cropped = img.crop((left, top, right, bottom))
-                    img_cropped.thumbnail((96, 96), Image.Resampling.LANCZOS)
-                    img_cropped.save(cache_path, "PNG")
+                # Pour les vidéos, utiliser une icône spéciale
+                if self._is_video(file_name):
+                    # Créer une miniature avec icône vidéo
+                    img = Image.new('RGB', (96, 96), color=(30, 30, 46))
+                    # TODO: Extraire une frame avec ffmpeg si disponible
+                    img.save(cache_path, "PNG")
+                else:
+                    # Traitement normal pour les images
+                    with Image.open(full_path) as img:
+                        width, height = img.size
+                        side = min(width, height)
+                        left = (width - side) // 2
+                        top = (height - side) // 2
+                        right = left + side
+                        bottom = top + side
+                        img_cropped = img.crop((left, top, right, bottom))
+                        img_cropped.thumbnail((96, 96), Image.Resampling.LANCZOS)
+                        img_cropped.save(cache_path, "PNG")
             except Exception as e:
                 print(f"Error processing {file_name}: {e}")
                 return
@@ -179,10 +187,16 @@ class WallpaperSelector(Box):
     
     @staticmethod
     def _is_image(file_name: str) -> bool:
-        """Check if file is an image"""
-        return file_name.lower().endswith(
-            (".png", ".jpg", ".jpeg", ".bmp", ".gif", ".webp")
-        )
+        """Check if file is an image or video"""
+        image_extensions = (".png", ".jpg", ".jpeg", ".bmp", ".gif", ".webp")
+        video_extensions = (".mp4", ".webm", ".mkv", ".avi", ".mov")
+        return file_name.lower().endswith(image_extensions + video_extensions)
+    
+    @staticmethod
+    def _is_video(file_name: str) -> bool:
+        """Check if file is a video"""
+        video_extensions = (".mp4", ".webm", ".mkv", ".avi", ".mov")
+        return file_name.lower().endswith(video_extensions)
     
     def arrange_viewport(self, query: str = ""):
         """Filter and arrange wallpapers"""

@@ -60,7 +60,7 @@ update_syndra() {
         echo
         
         if [[ ! $REPLY =~ ^[Nn]$ ]]; then
-            echo "📦 Téléchargement des mises à jour..."
+            echo "📦 Téléchargement des mises à jour depuis main..."
             git pull origin main 2>&1
             
             echo "🔧 Installation des nouvelles dépendances..."

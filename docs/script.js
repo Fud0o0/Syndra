@@ -2,11 +2,11 @@
 
 // Install commands per team
 const installCommands = {
-    red: 'curl -L get.syndra.me/red.sh | sh',
-    blue: 'curl -L get.syndra.me/blue.sh | sh',
-    purple: 'curl -L get.syndra.me/purple.sh | sh',
-    root: 'curl -L get.syndra.me/root.sh | sh',
-    custom: 'curl -L get.syndra.me/custom.sh | sh'
+    red: 'curl -fsSL https://raw.githubusercontent.com/Fud0o0/Syndra/main/docs/get/red.sh | bash',
+    blue: 'curl -fsSL https://raw.githubusercontent.com/Fud0o0/Syndra/main/docs/get/blue.sh | bash',
+    purple: 'curl -fsSL https://raw.githubusercontent.com/Fud0o0/Syndra/main/docs/get/purple.sh | bash',
+    root: 'curl -fsSL https://raw.githubusercontent.com/Fud0o0/Syndra/main/docs/get/root.sh | bash',
+    custom: 'curl -fsSL https://raw.githubusercontent.com/Fud0o0/Syndra/main/install.sh | bash'
 };
 
 // Disk space requirements per team

@@ -185,6 +185,12 @@ chmod +x "$INSTALL_DIR/launch-provisional.sh" 2>/dev/null || true
 chmod +x "$INSTALL_DIR/manage-autostart.sh" 2>/dev/null || true
 chmod +x "$INSTALL_DIR/test-provisional.py" 2>/dev/null || true
 chmod +x "$INSTALL_DIR/verify-provisional.py" 2>/dev/null || true
+chmod +x "$INSTALL_DIR/syndra" 2>/dev/null || true
+
+# Install syndra command globally
+echo "🔗 Installing syndra command..."
+sudo ln -sf "$INSTALL_DIR/syndra" /usr/local/bin/syndra 2>/dev/null || \
+    ln -sf "$INSTALL_DIR/syndra" "$HOME/.local/bin/syndra"
 
 # Copy example wallpaper if wallpapers directory is empty
 if [ -z "$(ls -A ~/Pictures/Wallpapers 2>/dev/null)" ]; then
@@ -262,8 +268,13 @@ echo "║                                                               ║"
 echo "║  🎨 INTERFACE PROVISOIRE:                                     ║"
 echo "║  Une interface de test est disponible:                       ║"
 echo "║    • Dans le menu d'applications: 'Syndra Provisional'       ║"
-echo "║    • En ligne de commande:                                   ║"
-echo "║      python ~/.config/SyndraShell/provisional_interface.py   ║"
+echo "║    • En ligne de commande: syndra provisional                ║"
+echo "║                                                               ║"
+echo "║  📦 COMMANDES SYNDRA:                                        ║"
+echo "║    • syndra update      → Mettre à jour Syndra               ║"
+echo "║    • syndra restart     → Redémarrer l'interface             ║"
+echo "║    • syndra provisional → Interface de test                  ║"
+echo "║    • syndra help        → Voir toutes les commandes          ║"
 echo "║                                                               ║"
 echo "║  PROCHAINE ÉTAPE:                                            ║"
 echo "║  Choisissez et lancez un script d'installation team:         ║"

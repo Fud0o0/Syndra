@@ -15,6 +15,7 @@ show_help() {
     echo "Commandes disponibles:"
     echo "  update          Mettre à jour Syndra vers la dernière version"
     echo "  restart         Redémarrer l'interface Syndra"
+    echo "  menu            Ouvrir le menu d'applications Syndra"
     echo "  provisional     Lancer l'interface provisoire"
     echo "  autostart       Gérer le lancement automatique"
     echo "  version         Afficher la version actuelle"
@@ -33,19 +34,20 @@ update_syndra() {
         exit 1
     fi
     
-    cd "$INSTALL_DIR"
+    cd "$INSTALL_DIR" || exit 1
     
     echo "📡 Récupération des mises à jour..."
-    git fetch origin
+    git fetch origin 2>/dev/null
     
     # Check if updates are available
-    LOCAL=$(git rev-parse @)
-    REMOTE=$(git rev-parse @{u})
+    LOCAL=$(git rev-parse @ 2>/dev/null)
+    REMOTE=$(git rev-parse @{u} 2>/dev/null)
     
     if [ "$LOCAL" = "$REMOTE" ]; then
         echo "✅ Syndra est déjà à jour!"
         echo ""
-        git log -1 --pretty=format:"Version actuelle: %h - %s (%ar)"
+        git log -1 --pretty=format:"Version actuelle: %h - %s (%ar)" 2>/dev/null
+        echo ""
         echo ""
     else
         echo "🔄 Mise à jour disponible!"
@@ -59,20 +61,25 @@ update_syndra() {
         
         if [[ ! $REPLY =~ ^[Nn]$ ]]; then
             echo "📦 Téléchargement des mises à jour..."
-            git pull origin main
+            git pull origin main 2>&1
             
             echo "🔧 Installation des nouvelles dépendances..."
             if [ -f "requirements.txt" ]; then
-                pip install --user --break-system-packages -r requirements.txt --upgrade
+                pip install --user --break-system-packages -r requirements.txt --upgrade 2>/dev/null
             fi
             
             echo "♻️  Redémarrage de Syndra..."
             pkill -f "python.*main.py" || true
-            sleep 1
-            python "$INSTALL_DIR/main.py" > /dev/null 2>&1 & disown
+            sleep 2
+            
+            # Restart Syndra if in Hyprland session
+            if [ "$XDG_SESSION_TYPE" = "wayland" ] && command -v hyprctl &> /dev/null; then
+                python "$INSTALL_DIR/main.py" > /dev/null 2>&1 & disown
+            fi
             
             echo ""
             echo "✅ Mise à jour terminée avec succès!"
+            echo "   Relancez Hyprland pour appliquer tous les changements"
             echo ""
         else
             echo "Mise à jour annulée."
@@ -93,6 +100,15 @@ launch_provisional() {
         python "$INSTALL_DIR/provisional_interface.py"
     else
         echo "❌ Interface provisoire non trouvée"
+        exit 1
+    fi
+}
+
+launch_menu() {
+    if [ -f "$INSTALL_DIR/launch-menu.py" ]; then
+        python "$INSTALL_DIR/launch-menu.py"
+    else
+        echo "❌ Menu Syndra non trouvé"
         exit 1
     fi
 }
@@ -124,6 +140,9 @@ case "${1:-help}" in
         ;;
     restart)
         restart_syndra
+        ;;
+    menu)
+        launch_menu
         ;;
     provisional)
         launch_provisional

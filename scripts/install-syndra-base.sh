@@ -186,11 +186,29 @@ chmod +x "$INSTALL_DIR/manage-autostart.sh" 2>/dev/null || true
 chmod +x "$INSTALL_DIR/test-provisional.py" 2>/dev/null || true
 chmod +x "$INSTALL_DIR/verify-provisional.py" 2>/dev/null || true
 chmod +x "$INSTALL_DIR/syndra" 2>/dev/null || true
+chmod +x "$INSTALL_DIR/launch-menu.py" 2>/dev/null || true
+chmod +x "$INSTALL_DIR/modules/launcher.py" 2>/dev/null || true
 
 # Install syndra command globally
 echo "🔗 Installing syndra command..."
 sudo ln -sf "$INSTALL_DIR/syndra" /usr/local/bin/syndra 2>/dev/null || \
     ln -sf "$INSTALL_DIR/syndra" "$HOME/.local/bin/syndra"
+
+# Ensure .local/bin is in PATH
+if [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
+    # Add to bashrc if not already there
+    if [ -f "$HOME/.bashrc" ] && ! grep -q ".local/bin" "$HOME/.bashrc"; then
+        echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$HOME/.bashrc"
+        echo "  ✓ Ajouté au PATH dans ~/.bashrc"
+    fi
+    # Add to zshrc if not already there
+    if [ -f "$HOME/.zshrc" ] && ! grep -q ".local/bin" "$HOME/.zshrc"; then
+        echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$HOME/.zshrc"
+        echo "  ✓ Ajouté au PATH dans ~/.zshrc"
+    fi
+fi
+
+echo "  ✓ Commande 'syndra' disponible (rechargez votre shell si nécessaire)"
 
 # Copy example wallpaper if wallpapers directory is empty
 if [ -z "$(ls -A ~/Pictures/Wallpapers 2>/dev/null)" ]; then
@@ -275,6 +293,9 @@ echo "║    • syndra update      → Mettre à jour Syndra               ║"
 echo "║    • syndra restart     → Redémarrer l'interface             ║"
 echo "║    • syndra provisional → Interface de test                  ║"
 echo "║    • syndra help        → Voir toutes les commandes          ║"
+echo "║                                                               ║"
+echo "║  ⌨️  RACCOURCI:                                               ║"
+echo "║    • SUPER + A          → Menu Syndra (Lanceur d'apps)       ║"
 echo "║                                                               ║"
 echo "║  PROCHAINE ÉTAPE:                                            ║"
 echo "║  Choisissez et lancez un script d'installation team:         ║"

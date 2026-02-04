@@ -123,10 +123,11 @@ curl -fsSL https://raw.githubusercontent.com/Fud0o0/Syndra/main/install.sh | bas
 
 ## Components
 
-- **Bar**
-- **Dock**
-- **Notch**
-- **Dashboard**
+- **Bar** - Barre supérieure
+- **Dock** - Dock d'applications
+- **Notch** - Zone de notifications
+- **Dashboard** - Tableau de bord
+- **Launcher** - Menu d'applications moderne (style Windows)
 
 ## 🎨 Interface Provisoire (Mode Développement)
 
@@ -156,8 +157,9 @@ python ~/.config/SyndraShell/provisional_interface.py
 ## Keybinds
 
 ### General
+- `SUPER + A` - Menu Syndra (Lanceur d'applications)
 - `SUPER + D` - Open Dashboard
-- `SUPER + R` - App Launcher
+- `SUPER + R` - App Launcher (Wofi)
 - `SUPER + L` - Lock session
 - `SUPER + ALT + B` - Reload SyndraShell
 

@@ -5,6 +5,7 @@ Powered by Fabric Framework
 """
 
 import os
+import sys
 import gi
 
 gi.require_version("GLib", "2.0")
@@ -20,7 +21,92 @@ from modules.dock import Dock
 
 fonts_updated_file = f"{CACHE_DIR}/fonts_updated"
 
+def handle_uninstall():
+    """Handle the uninstall command"""
+    print("╔═══════════════════════════════════════════════════════════════╗")
+    print("║              SYNDRA SHELL - DÉSINSTALLATION                   ║")
+    print("╚═══════════════════════════════════════════════════════════════╝")
+    print()
+    print("⚠️  ATTENTION: Cette action va supprimer:")
+    print()
+    print("  • Syndra Shell (~/.config/SyndraShell)")
+    print("  • Configuration Hyprland (~/.config/hypr)")
+    print("  • Configuration Waybar (~/.config/waybar)")
+    print("  • Configuration Kitty (~/.config/kitty)")
+    print("  • Configuration Wofi (~/.config/wofi)")
+    print("  • Configuration Dunst (~/.config/dunst)")
+    print("  • Cache Syndra (~/.cache/syndrashell)")
+    print("  • Fichier wallpaper actuel (~/.current.wall)")
+    print()
+    print("📁 Les wallpapers dans ~/Pictures/Wallpapers seront CONSERVÉS")
+    print()
+    
+    response = input("❓ Voulez-vous vraiment désinstaller Syndra Shell? [y/N]: ").strip().lower()
+    
+    if response != 'y':
+        print("✅ Désinstallation annulée.")
+        sys.exit(0)
+    
+    print()
+    print("🗑️  Désinstallation en cours...")
+    print()
+    
+    import shutil
+    
+    def safe_remove(path):
+        """Safely remove a file or directory"""
+        expanded_path = os.path.expanduser(path)
+        if os.path.exists(expanded_path):
+            print(f"  ✓ Suppression: {path}")
+            if os.path.isdir(expanded_path):
+                shutil.rmtree(expanded_path)
+            else:
+                os.remove(expanded_path)
+        else:
+            print(f"  ⊘ Déjà absent: {path}")
+    
+    # Stop running processes
+    print("1/4 - Arrêt des processus Syndra...")
+    os.system("pkill -f syndrashell 2>/dev/null || true")
+    os.system("pkill -f 'SyndraShell/main.py' 2>/dev/null || true")
+    
+    # Remove Syndra Shell main directory
+    print()
+    print("2/4 - Suppression de Syndra Shell...")
+    safe_remove("~/.config/SyndraShell")
+    
+    # Remove configuration directories
+    print()
+    print("3/4 - Suppression des configurations...")
+    safe_remove("~/.config/hypr")
+    safe_remove("~/.config/waybar")
+    safe_remove("~/.config/kitty")
+    safe_remove("~/.config/wofi")
+    safe_remove("~/.config/dunst")
+    
+    # Remove cache and temporary files
+    print()
+    print("4/4 - Suppression du cache...")
+    safe_remove("~/.cache/syndrashell")
+    safe_remove("~/.current.wall")
+    safe_remove("~/.fonts/zed-sans")
+    
+    print()
+    print("╔═══════════════════════════════════════════════════════════════╗")
+    print("║          ✅ DÉSINSTALLATION TERMINÉE AVEC SUCCÈS! ✅          ║")
+    print("╠═══════════════════════════════════════════════════════════════╣")
+    print("║  Syndra Shell a été complètement supprimé de votre système.   ║")
+    print("║                                                               ║")
+    print("║  Merci d'avoir utilisé Syndra Shell! 👋                       ║")
+    print("╚═══════════════════════════════════════════════════════════════╝")
+    print()
+    sys.exit(0)
+
 if __name__ == "__main__":
+    # Check for uninstall command
+    if len(sys.argv) > 1 and sys.argv[1].lower() in ['uninstall', 'uninstalle', 'désinstaller', 'remove']:
+        handle_uninstall()
+    
     setproctitle.setproctitle(APP_NAME)
 
     # Ensure config exists

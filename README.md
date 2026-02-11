@@ -151,6 +151,34 @@ curl -fsSL https://raw.githubusercontent.com/Fud0o0/Syndra/main/install.sh | bas
 - `SUPER + ALT + C` - Color picker
 - `SUPER + ALT + G` - Toggle game mode
 
+## 🗑️ Uninstall / Désinstallation
+
+Pour désinstaller complètement Syndra Shell :
+
+**Méthode 1 - Script bash (Recommandé)**
+```bash
+cd ~/.config/SyndraShell
+bash uninstall.sh
+```
+
+**Méthode 2 - Via Python**
+```bash
+python ~/.config/SyndraShell/main.py uninstall
+```
+
+**Méthode 3 - Via commande syndra**
+```bash
+syndra uninstall
+```
+
+Le script de désinstallation supprimera :
+- Syndra Shell (`~/.config/SyndraShell`)
+- Configurations Hyprland, Waybar, Kitty, Wofi, Dunst
+- Cache et fichiers temporaires
+- Fontes téléchargées
+
+⚠️ **Note:** Vos wallpapers dans `~/Pictures/Wallpapers` seront **conservés**.
+
 ## Credits
 
 Inspired by [Ax-Shell](https://github.com/Axenide/Ax-Shell) by Axenide.

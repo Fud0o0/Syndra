@@ -93,6 +93,8 @@ TOOLS_PACKAGES=(
   gpu-screen-recorder
   tesseract
   swappy
+  mpvpaper
+  ffmpeg
 )
 
 # Check and install AUR helper if not present
@@ -115,10 +117,6 @@ $AUR_HELPER -S --needed --noconfirm "${INTERFACE_PACKAGES[@]}" || echo "⚠️  
 
 echo "📦 Installing utility tools..."
 $AUR_HELPER -S --needed --noconfirm "${TOOLS_PACKAGES[@]}" || echo "⚠️  Some tool packages failed to install (this is OK)"
-
-# Install mpvpaper for video wallpapers
-echo "🎬 Installing mpvpaper for video wallpapers..."
-$AUR_HELPER -S --noconfirm mpvpaper || echo "⚠️  mpvpaper failed to install"
 
 # Install Python dependencies
 echo "🐍 Installing Python dependencies for Syndra..."
@@ -180,6 +178,35 @@ chmod +x "$INSTALL_DIR/scripts/"*.sh 2>/dev/null || true
 chmod +x "$INSTALL_DIR/scripts/"*.py 2>/dev/null || true
 chmod +x "$INSTALL_DIR/syndrashell.sh" 2>/dev/null || true
 chmod +x "$INSTALL_DIR/main.py" 2>/dev/null || true
+chmod +x "$INSTALL_DIR/provisional_interface.py" 2>/dev/null || true
+chmod +x "$INSTALL_DIR/launch-provisional.sh" 2>/dev/null || true
+chmod +x "$INSTALL_DIR/manage-autostart.sh" 2>/dev/null || true
+chmod +x "$INSTALL_DIR/test-provisional.py" 2>/dev/null || true
+chmod +x "$INSTALL_DIR/verify-provisional.py" 2>/dev/null || true
+chmod +x "$INSTALL_DIR/syndra" 2>/dev/null || true
+chmod +x "$INSTALL_DIR/launch-menu.py" 2>/dev/null || true
+chmod +x "$INSTALL_DIR/modules/launcher.py" 2>/dev/null || true
+
+# Install syndra command globally
+echo "🔗 Installing syndra command..."
+sudo ln -sf "$INSTALL_DIR/syndra" /usr/local/bin/syndra 2>/dev/null || \
+    ln -sf "$INSTALL_DIR/syndra" "$HOME/.local/bin/syndra"
+
+# Ensure .local/bin is in PATH
+if [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
+    # Add to bashrc if not already there
+    if [ -f "$HOME/.bashrc" ] && ! grep -q ".local/bin" "$HOME/.bashrc"; then
+        echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$HOME/.bashrc"
+        echo "  ✓ Ajouté au PATH dans ~/.bashrc"
+    fi
+    # Add to zshrc if not already there
+    if [ -f "$HOME/.zshrc" ] && ! grep -q ".local/bin" "$HOME/.zshrc"; then
+        echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$HOME/.zshrc"
+        echo "  ✓ Ajouté au PATH dans ~/.zshrc"
+    fi
+fi
+
+echo "  ✓ Commande 'syndra' disponible (rechargez votre shell si nécessaire)"
 
 # Copy example wallpaper if wallpapers directory is empty
 if [ -z "$(ls -A ~/Pictures/Wallpapers 2>/dev/null)" ]; then
@@ -192,6 +219,40 @@ fi
 # Generate Hyprland configuration
 echo "⚙️  Generating Syndra configuration..."
 python "$INSTALL_DIR/config/settings_utils.py" 2>/dev/null || true
+
+# Install provisional interface
+echo "🎨 Installing provisional interface..."
+if [ -f "$INSTALL_DIR/provisional_interface.py" ]; then
+    # Create desktop entry for easy access
+    DESKTOP_FILE="$HOME/.local/share/applications/syndra-provisional.desktop"
+    mkdir -p "$HOME/.local/share/applications"
+    
+    cat > "$DESKTOP_FILE" << EOF
+[Desktop Entry]
+Name=Syndra Provisional Interface
+Comment=Interface provisoire de développement pour SyndraShell
+Exec=python $INSTALL_DIR/provisional_interface.py
+Icon=preferences-system
+Terminal=false
+Type=Application
+Categories=Development;System;
+EOF
+    
+    chmod +x "$DESKTOP_FILE"
+    echo "  ✓ Interface provisoire installée"
+    echo "  ✓ Raccourci créé dans le menu d'applications"
+    
+    # Créer un autostart si l'utilisateur le souhaite
+    echo ""
+    read -p "Voulez-vous lancer l'interface provisoire au démarrage? [y/N]: " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        AUTOSTART_FILE="$HOME/.config/autostart/syndra-provisional.desktop"
+        mkdir -p "$HOME/.config/autostart"
+        cp "$DESKTOP_FILE" "$AUTOSTART_FILE"
+        echo "  ✓ Lancement automatique activé"
+    fi
+fi
 
 # Enable and start NetworkManager
 if command -v systemctl &> /dev/null; then
@@ -220,6 +281,20 @@ echo "╠═══════════════════════�
 echo "║  L'interface Syndra Shell et l'environnement Hyprland        ║"
 echo "║  sont maintenant installés!                                   ║"
 echo "║                                                               ║"
+echo "║  🎨 INTERFACE PROVISOIRE:                                     ║"
+echo "║  Une interface de test est disponible:                       ║"
+echo "║    • Dans le menu d'applications: 'Syndra Provisional'       ║"
+echo "║    • En ligne de commande: syndra provisional                ║"
+echo "║                                                               ║"
+echo "║  📦 COMMANDES SYNDRA:                                        ║"
+echo "║    • syndra update      → Mettre à jour Syndra               ║"
+echo "║    • syndra restart     → Redémarrer l'interface             ║"
+echo "║    • syndra provisional → Interface de test                  ║"
+echo "║    • syndra help        → Voir toutes les commandes          ║"
+echo "║                                                               ║"
+echo "║  ⌨️  RACCOURCI:                                               ║"
+echo "║    • SUPER + A          → Menu Syndra (Lanceur d'apps)       ║"
+echo "║                                                               ║"
 echo "║  PROCHAINE ÉTAPE:                                            ║"
 echo "║  Choisissez et lancez un script d'installation team:         ║"
 echo "║    • ./scripts/install-blue.sh   (Defensive/Blue Team)       ║"
@@ -229,3 +304,15 @@ echo "║    • ./scripts/install-root.sh   (CTF/Root Me)               ║"
 echo "║    • ./scripts/install-custom.sh (Custom configuration)      ║"
 echo "╚═══════════════════════════════════════════════════════════════╝"
 echo ""
+
+# Proposer de lancer l'interface provisoire maintenant
+if [ -f "$INSTALL_DIR/provisional_interface.py" ]; then
+    echo ""
+    # Ne jamais lancer automatiquement pendant l'installation
+    # L'utilisateur peut lancer manuellement plus tard
+    echo "ℹ️  Interface provisoire disponible:"
+    echo "   • Depuis le menu d'applications: 'Syndra Provisional'"
+    echo "   • En ligne de commande: syndra provisional"
+    echo "   • Raccourci: SUPER + A (pour le menu général)"
+    echo ""
+fi

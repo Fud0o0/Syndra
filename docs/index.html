@@ -29,13 +29,13 @@
                 <p class="hero-description">
                     Created by <mark>Fud0o0</mark> & <mark>Ax0-0</mark> — <mark>Syndra</mark> is an advanced cybersecurity environment for Red, Blue, and Purple team operations.<br><br>
                     We build offensive tools, architect security systems, and push the boundaries of system exploitation.<br><br>
-                    Inspired by <a href="https://axeni.de/ambxst/" target="_blank" rel="noopener noreferrer">Ambxst</a> and the hacker community.
+                    <a href="themes.html" style="color: #7aa2f7; text-decoration: none; font-weight: bold;">🎨 Découvrez nos 6 thèmes dynamiques</a> | Inspired by <a href="https://axeni.de/ambxst/" target="_blank" rel="noopener noreferrer">Ambxst</a> and the hacker community.
                 </p>
 
                 <div class="install-section">
                     <h3>Quick Install</h3>
                     <div class="install-command">
-                        <code id="install-cmd">curl -L get.syndra.me/purple | sh</code>
+                        <code id="install-cmd">curl -fsSL https://raw.githubusercontent.com/Fud0o0/Syndra/main/docs/get/purple.sh | bash</code>
                         <button class="copy-btn" id="copy-install-btn">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
@@ -51,6 +51,7 @@
                         </span>
                     </div>
                     <p class="install-note">Requires Arch Linux with Hyprland</p>
+                    <p class="install-note" style="margin-top: 8px; color: #7aa2f7;">✨ Includes provisional interface & app launcher</p>
                 </div>
 
                 <div class="pills">
@@ -97,6 +98,12 @@
                         </svg>
                     </a>
                 </div>
+                
+                <div style="margin-top: 30px; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);">
+                    <p style="margin: 0; font-size: 14px; color: rgba(255,255,255,0.7);">
+                        &#128465; Pour d&eacute;sinstaller: <code style="background: rgba(0,0,0,0.3); padding: 2px 8px; border-radius: 4px; font-size: 13px;">bash ~/.config/SyndraShell/uninstall.sh</code>
+                    </p>
+                </div>
             </div>
 
             <div class="retro-avatar-container">
@@ -140,9 +147,57 @@
                     <p>One-command installation that handles all dependencies and configurations automatically.</p>
                 </div>
                 <div class="feature-card">
+                    <div class="feature-icon">🎨</div>
+                    <h3>Dev Interface</h3>
+                    <p>Provisional GTK interface for testing and development without full Hyprland setup.</p>
+                </div>
+                <div class="feature-card">
                     <div class="feature-icon">🚀</div>
                     <h3>Modern Stack</h3>
                     <p>Cutting-edge tools and workflows optimized for modern cybersecurity challenges.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Commands Section -->
+    <section class="features-section">
+        <div class="container">
+            <h2 class="section-title">
+                <span class="title-bracket">[</span>
+                Syndra Commands
+                <span class="title-bracket">]</span>
+            </h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🔄</div>
+                    <h3>syndra update</h3>
+                    <p>Update Syndra to the latest version from GitHub with all new features and fixes.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">♻️</div>
+                    <h3>syndra restart</h3>
+                    <p>Restart the Syndra Shell interface without logging out of your session.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎨</div>
+                    <h3>syndra menu</h3>
+                    <p>Open the modern Syndra application launcher with logo and categories (SUPER+A).</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🧪</div>
+                    <h3>syndra provisional</h3>
+                    <p>Launch the provisional GTK interface for testing modules and configuration.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚙️</div>
+                    <h3>syndra autostart</h3>
+                    <p>Manage autostart settings: enable, disable, status, or toggle automatic launch.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">ℹ️</div>
+                    <h3>syndra version</h3>
+                    <p>Display current Syndra version, commit hash, and last update information.</p>
                 </div>
             </div>
         </div>
@@ -192,6 +247,49 @@
                         <li><span class="tool-bullet">›</span> <a href="https://github.com/volatilityfoundation/volatility3" target="_blank" rel="noopener noreferrer">Volatility</a></li>
                         <li><span class="tool-bullet">›</span> <a href="https://github.com/VirusTotal/yara" target="_blank" rel="noopener noreferrer">YARA</a></li>
                     </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Keybinds Section -->
+    <section class="features-section" style="background: #0d0e1a;">
+        <div class="container">
+            <h2 class="section-title">
+                <span class="title-bracket">[</span>
+                Keyboard Shortcuts
+                <span class="title-bracket">]</span>
+            </h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">⌨️</div>
+                    <h3>SUPER + A</h3>
+                    <p>Open Syndra Menu - Modern application launcher with logo and categories</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>SUPER + D</h3>
+                    <p>Open Dashboard - Quick access to Syndra dashboard and system info</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🚀</div>
+                    <h3>SUPER + R</h3>
+                    <p>Terminal - Launch Kitty terminal for command-line operations</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3>SUPER + L</h3>
+                    <p>Lock Screen - Secure your session with Hyprlock screen locker</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">❌</div>
+                    <h3>SUPER + Q</h3>
+                    <p>Close Window - Close the currently focused application window</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔄</div>
+                    <h3>SUPER + ALT + B</h3>
+                    <p>Reload Syndra - Restart the Syndra Shell interface instantly</p>
                 </div>
             </div>
         </div>

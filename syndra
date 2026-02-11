@@ -1,0 +1,166 @@
+#!/bin/bash
+# Syndra - Commande principale de gestion
+# Usage: syndra [command]
+
+INSTALL_DIR="$HOME/.config/SyndraShell"
+REPO_URL="https://github.com/Fud0o0/Syndra.git"
+
+show_help() {
+    echo "╔═══════════════════════════════════════════════════════════════╗"
+    echo "║                    SYNDRA - COMMANDES                         ║"
+    echo "╚═══════════════════════════════════════════════════════════════╝"
+    echo ""
+    echo "Usage: syndra [commande]"
+    echo ""
+    echo "Commandes disponibles:"
+    echo "  update          Mettre à jour Syndra vers la dernière version"
+    echo "  restart         Redémarrer l'interface Syndra"
+    echo "  menu            Ouvrir le menu d'applications Syndra"
+    echo "  provisional     Lancer l'interface provisoire"
+    echo "  autostart       Gérer le lancement automatique"
+    echo "  version         Afficher la version actuelle"
+    echo "  help            Afficher cette aide"
+    echo ""
+}
+
+update_syndra() {
+    echo "╔═══════════════════════════════════════════════════════════════╗"
+    echo "║              MISE À JOUR DE SYNDRA SHELL                      ║"
+    echo "╚═══════════════════════════════════════════════════════════════╝"
+    echo ""
+    
+    if [ ! -d "$INSTALL_DIR" ]; then
+        echo "❌ Syndra n'est pas installé dans $INSTALL_DIR"
+        exit 1
+    fi
+    
+    cd "$INSTALL_DIR" || exit 1
+    
+    echo "📡 Récupération des mises à jour..."
+    git fetch origin 2>/dev/null
+    
+    # Check if updates are available
+    LOCAL=$(git rev-parse @ 2>/dev/null)
+    REMOTE=$(git rev-parse @{u} 2>/dev/null)
+    
+    if [ "$LOCAL" = "$REMOTE" ]; then
+        echo "✅ Syndra est déjà à jour!"
+        echo ""
+        git log -1 --pretty=format:"Version actuelle: %h - %s (%ar)" 2>/dev/null
+        echo ""
+        echo ""
+    else
+        echo "🔄 Mise à jour disponible!"
+        echo ""
+        echo "Derniers changements:"
+        git log --oneline HEAD..@{u} | head -5
+        echo ""
+        
+        read -p "Continuer la mise à jour? [Y/n]: " -n 1 -r
+        echo
+        
+        if [[ ! $REPLY =~ ^[Nn]$ ]]; then
+            echo "📦 Téléchargement des mises à jour depuis main..."
+            git pull origin main 2>&1
+            
+            echo "🔧 Installation des nouvelles dépendances..."
+            if [ -f "requirements.txt" ]; then
+                pip install --user --break-system-packages -r requirements.txt --upgrade 2>/dev/null
+            fi
+            
+            echo "♻️  Redémarrage de Syndra..."
+            pkill -f "python.*main.py" || true
+            sleep 2
+            
+            # Restart Syndra if in Hyprland session
+            if [ "$XDG_SESSION_TYPE" = "wayland" ] && command -v hyprctl &> /dev/null; then
+                python "$INSTALL_DIR/main.py" > /dev/null 2>&1 & disown
+            fi
+            
+            echo ""
+            echo "✅ Mise à jour terminée avec succès!"
+            echo "   Relancez Hyprland pour appliquer tous les changements"
+            echo ""
+        else
+            echo "Mise à jour annulée."
+        fi
+    fi
+}
+
+restart_syndra() {
+    echo "♻️  Redémarrage de Syndra..."
+    pkill -f "python.*main.py" || true
+    sleep 1
+    python "$INSTALL_DIR/main.py" > /dev/null 2>&1 & disown
+    echo "✅ Syndra redémarré!"
+}
+
+launch_provisional() {
+    if [ -f "$INSTALL_DIR/provisional_interface.py" ]; then
+        python "$INSTALL_DIR/provisional_interface.py"
+    else
+        echo "❌ Interface provisoire non trouvée"
+        exit 1
+    fi
+}
+
+launch_menu() {
+    if [ -f "$INSTALL_DIR/launch-menu.py" ]; then
+        python "$INSTALL_DIR/launch-menu.py"
+    else
+        echo "❌ Menu Syndra non trouvé"
+        exit 1
+    fi
+}
+
+manage_autostart() {
+    if [ -f "$INSTALL_DIR/manage-autostart.sh" ]; then
+        bash "$INSTALL_DIR/manage-autostart.sh" "$@"
+    else
+        echo "❌ Script de gestion autostart non trouvé"
+        exit 1
+    fi
+}
+
+show_version() {
+    if [ -d "$INSTALL_DIR/.git" ]; then
+        cd "$INSTALL_DIR"
+        echo "Syndra Shell"
+        git log -1 --pretty=format:"Version: %h%nDate: %ai%nAuteur: %an%nMessage: %s"
+        echo ""
+    else
+        echo "❌ Impossible de déterminer la version"
+    fi
+}
+
+# Main command handler
+case "${1:-help}" in
+    update)
+        update_syndra
+        ;;
+    restart)
+        restart_syndra
+        ;;
+    menu)
+        launch_menu
+        ;;
+    provisional)
+        launch_provisional
+        ;;
+    autostart)
+        shift
+        manage_autostart "$@"
+        ;;
+    version)
+        show_version
+        ;;
+    help|--help|-h)
+        show_help
+        ;;
+    *)
+        echo "❌ Commande inconnue: $1"
+        echo ""
+        show_help
+        exit 1
+        ;;
+esac

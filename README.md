@@ -6,6 +6,17 @@
 
 > [!TIP]
 > 📖 For a complete dependency reference with links and usage details, see [DEPENDENCIES.md](docs/DEPENDENCIES.md)
+> 🎨 Découvrez nos 6 thèmes dynamiques: [THEMES.md](docs/THEMES.md) | [Preview](https://fud0o0.github.io/Syndra/themes.html)
+
+## ✨ Nouvelles Fonctionnalités
+
+- **� Fonds d'Écran Vidéo** : Support MP4/WebM/MKV avec mpvpaper ([Guide](docs/VIDEO-WALLPAPERS.md))
+- **�🎨 Thèmes Dynamiques** : 6 thèmes (Iceland, Tokyo Night, Sunset, Forest, Purple Haze, Cyberpunk)
+- **✕ Boutons de Fermeture** : Toutes les interfaces ont maintenant des boutons de fermeture visibles
+- **🖱️ Fenêtres Déplaçables** : Cliquez et déplacez depuis le header
+- **🎯 Interface Provisoire** : Interface de test avec onglets Système/Modules/Configuration
+- **🚀 App Launcher** : Menu style Windows avec catégories (SUPER+A)
+- **⚙️ Commandes Syndra** : CLI intégré pour gérer l'environnement
 
 ## 🚀 Quick Installation
 
@@ -123,16 +134,43 @@ curl -fsSL https://raw.githubusercontent.com/Fud0o0/Syndra/main/install.sh | bas
 
 ## Components
 
-- **Bar**
-- **Dock**
-- **Notch**
-- **Dashboard**
+- **Bar** - Barre supérieure
+- **Dock** - Dock d'applications
+- **Notch** - Zone de notifications
+- **Dashboard** - Tableau de bord
+- **Launcher** - Menu d'applications moderne (style Windows)
+
+## 🎨 Interface Provisoire (Mode Développement)
+
+Une interface de test GTK est disponible après l'installation pour :
+- Visualiser et tester les modules sans Hyprland
+- Développer et déboguer l'interface
+- Configurer rapidement les thèmes et paramètres
+
+**L'interface se lance automatiquement après l'installation** (vous pouvez choisir de la désactiver).
+
+**Lancement manuel :**
+```bash
+# Via le script de lancement
+~/.config/SyndraShell/launch-provisional.sh
+
+# Ou directement
+python ~/.config/SyndraShell/provisional_interface.py
+
+# Ou via le menu d'applications (cherchez "Syndra Provisional")
+```
+
+**Fonctionnalités :**
+- Onglet Système : Informations de base
+- Onglet Modules : Test des modules SyndraShell
+- Onglet Configuration : Thèmes, mode sombre, transparence, autostart
 
 ## Keybinds
 
 ### General
+- `SUPER + A` - Menu Syndra (Lanceur d'applications)
 - `SUPER + D` - Open Dashboard
-- `SUPER + R` - App Launcher
+- `SUPER + R` - App Launcher (Wofi)
 - `SUPER + L` - Lock session
 - `SUPER + ALT + B` - Reload SyndraShell
 

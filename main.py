@@ -137,16 +137,30 @@ if __name__ == "__main__":
             first_wall = os.path.join(wallpapers_dir, os.listdir(wallpapers_dir)[0])
             os.symlink(first_wall, current_wallpaper)
     
-    # Apply wallpaper with swww or hyprpaper
+    # Apply wallpaper with swww, mpvpaper (for videos), or swaybg
     if os.path.exists(current_wallpaper):
-        # Try swww first
-        if os.system("command -v swww >/dev/null 2>&1") == 0:
-            os.system(f"swww init >/dev/null 2>&1 || true")
-            os.system(f"swww img '{current_wallpaper}' --transition-type fade >/dev/null 2>&1 &")
-        # Fallback to swaybg
-        elif os.system("command -v swaybg >/dev/null 2>&1") == 0:
-            os.system(f"killall swaybg 2>/dev/null || true")
-            os.system(f"swaybg -i '{current_wallpaper}' -m fill >/dev/null 2>&1 &")
+        # Check if it's a video file (MP4, WebM, etc.)
+        video_extensions = (".mp4", ".webm", ".mkv", ".avi", ".mov")
+        is_video = current_wallpaper.lower().endswith(video_extensions)
+        
+        if is_video:
+            # Use mpvpaper for video wallpapers
+            exec_shell_command_async("killall mpvpaper 2>/dev/null || true")
+            GLib.timeout_add_seconds(1, lambda: exec_shell_command_async(
+                f"mpvpaper -o 'loop' '*' '{current_wallpaper}' >/dev/null 2>&1 &"
+            ))
+        else:
+            # Try swww for static images
+            exec_shell_command_async("swww-daemon --format xrgb >/dev/null 2>&1 || true")
+            GLib.timeout_add_seconds(2, lambda: exec_shell_command_async(
+                f"swww img '{current_wallpaper}' --transition-type fade --transition-duration 2"
+            ) or True)
+            # Fallback to swaybg
+            if os.system("command -v swaybg >/dev/null 2>&1") == 0:
+                GLib.timeout_add_seconds(3, lambda: (
+                    os.system(f"killall swaybg 2>/dev/null || true"),
+                    os.system(f"swaybg -i '{current_wallpaper}' -m fill >/dev/null 2>&1 &")
+                ) and False)
 
     # Download fonts if not already done
     if not os.path.exists(fonts_updated_file):

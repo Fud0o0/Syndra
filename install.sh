@@ -170,3 +170,19 @@ echo "║                                                               ║"
 echo "║  Documentation: https://github.com/Fud0o0/Syndra              ║"
 echo "╚═══════════════════════════════════════════════════════════════╝"
 echo ""
+
+# Proposer de lancer l'interface provisoire
+INSTALL_DIR="$HOME/.config/SyndraShell"
+if [ -f "$INSTALL_DIR/provisional_interface.py" ]; then
+    echo ""
+    read -p "🎨 Voulez-vous lancer l'interface provisoire de test maintenant? [Y/n]: " -n 1 -r
+    echo
+    if [[ ! $REPLY =~ ^[Nn]$ ]]; then
+        echo "🚀 Lancement de l'interface provisoire..."
+        echo ""
+        python "$INSTALL_DIR/provisional_interface.py" &
+        echo "✓ Interface lancée en arrière-plan"
+        echo "  (Vous pouvez la relancer avec: python ~/.config/SyndraShell/provisional_interface.py)"
+        echo ""
+    fi
+fi

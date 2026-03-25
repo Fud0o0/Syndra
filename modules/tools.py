@@ -1,214 +1,456 @@
-"""
-Tools module for SyndraShell
-Provides screenshot, screen recording, OCR, and other utilities
-"""
 import os
+import subprocess
+
+from fabric.utils.helpers import exec_shell_command_async, get_relative_path
 from fabric.widgets.box import Box
 from fabric.widgets.button import Button
-from fabric.utils import exec_shell_command, exec_shell_command_async
-from gi.repository import GLib
+from fabric.widgets.label import Label
+from gi.repository import Gdk, GLib
+from loguru import logger
 
 import config.data as data
+import modules.icons as icons
+
+SCREENSHOT_SCRIPT = get_relative_path("../scripts/screenshot.sh")
+POMODORO_SCRIPT = get_relative_path("../scripts/pomodoro.sh")
+OCR_SCRIPT = get_relative_path("../scripts/ocr.sh")
+GAMEMODE_SCRIPT = get_relative_path("../scripts/gamemode.sh")
+SCREENRECORD_SCRIPT = get_relative_path("../scripts/screenrecord.sh")
+
+# Tooltips
+## Screenshot
+tooltip_ssregion = """<b><u>Region Screenshot</u></b>
+<b>Left Click:</b> Take a screenshot of a selected region.
+<b>Right Click:</b> Take a mockup screenshot of a selected region."""
+
+tooltip_ssfull = """<b><u>Screenshot</u></b>
+<b>Left Click:</b> Take a fullscreen screenshot.
+<b>Right Click:</b> Take a mockup fullscreen screenshot."""
+
+tooltip_sswindow = """<b><u>Window Screenshot</u></b>
+<b>Left Click:</b> Take a screenshot of the active window.
+<b>Right Click:</b> Take a mockup screenshot of the active window."""
+
+tooltip_screenshots = "<b>Screenshots Directory</b>"
+
+tooltip_screenrecord = "<b>Screen Recorder</b>"
+tooltip_recordings = "<b>Recordings Directory</b>"
+
+tooltip_ocr = "<b>OCR</b>"
+tooltip_colorpicker = """<b><u>Color Picker</u></b>
+<b>Mouse:</b>
+Left Click: HEX
+Middle Click: HSV
+Right Click: RGB
+
+<b>Keyboard:</b>
+Enter: HEX
+Shift+Enter: RGB
+Ctrl+Enter: HSV"""
+
+tooltip_gamemode = "<b>Game Mode</b>\nDisables effects and window animations for better performance."
+tooltip_pomodoro = "<b>Pomodoro Timer</b>"
+tooltip_emoji = "<b>Emoji Picker</b>"
 
 
 class Toolbox(Box):
-    """Toolbox with screenshot, recording, and utility tools"""
-    
     def __init__(self, **kwargs):
+        orientation = "h"
+        if data.PANEL_THEME == "Panel" and (data.BAR_POSITION in ["Left", "Right"] or data.PANEL_POSITION in ["Start", "End"]):
+            orientation = "v"
+
         super().__init__(
             name="toolbox",
-            spacing=8,
-            orientation="v",
-            h_expand=True,
-            v_expand=True,
+            orientation=orientation,
+            spacing=4,
+            v_align="center",
+            h_align="center",
+            visible=True,
             **kwargs,
         )
-        
-        self.scripts_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "scripts")
-        self.recording = False
-        
-        # Screenshot section
-        screenshot_label = Button(
-            name="toolbox-section-label",
-            label="📸 Screenshots",
-            sensitive=False,
-        )
-        
-        self.btn_ss_region = Button(
+
+        self.notch = kwargs["notch"]
+
+        self.btn_ssregion = Button(
             name="toolbox-button",
-            label="✂️ Region",
-            tooltip_text="Capture selected region",
-            on_clicked=lambda *_: self.screenshot("s"),
+            tooltip_markup=tooltip_ssregion,
+            child=Label(name="button-label", markup=icons.ssregion),
+            on_clicked=self.ssregion,
+            h_expand=False,
+            v_expand=False,
+            h_align="center",
+            v_align="center",
         )
-        
-        self.btn_ss_window = Button(
+        self.btn_ssregion.set_can_focus(True)
+        self.btn_ssregion.connect("button-press-event", self.on_ssregion_click)
+        self.btn_ssregion.connect("key-press-event", self.on_ssregion_key)
+
+        self.btn_ssfull = Button(
             name="toolbox-button",
-            label="🪟 Window",
-            tooltip_text="Capture focused window",
-            on_clicked=lambda *_: self.screenshot("w"),
+            tooltip_markup=tooltip_ssfull,
+            child=Label(name="button-label", markup=icons.ssfull),
+            on_clicked=self.ssfull,
+            h_expand=False,
+            v_expand=False,
+            h_align="center",
+            v_align="center",
         )
-        
-        self.btn_ss_screen = Button(
+
+        self.btn_ssfull.set_can_focus(True) 
+        self.btn_ssfull.connect("button-press-event", self.on_ssfull_click)
+        self.btn_ssfull.connect("key-press-event", self.on_ssfull_key)
+
+        self.btn_sswindow = Button(
             name="toolbox-button",
-            label="🖥️ Screen",
-            tooltip_text="Capture entire screen",
-            on_clicked=lambda *_: self.screenshot("p"),
+            tooltip_markup=tooltip_sswindow,
+            child=Label(name="button-label", markup=icons.sswindow),
+            on_clicked=self.sswindow,
+            h_expand=False,
+            v_expand=False,
+            h_align="center",
+            v_align="center",
         )
-        
-        self.btn_ss_mockup = Button(
+
+        self.btn_sswindow.set_can_focus(True)
+        self.btn_sswindow.connect("button-press-event", self.on_sswindow_click)
+        self.btn_sswindow.connect("key-press-event", self.on_sswindow_key)
+
+        self.btn_screenrecord = Button(
             name="toolbox-button",
-            label="🎨 Mockup",
-            tooltip_text="Capture region with mockup effects",
-            on_clicked=lambda *_: self.screenshot("s", mockup=True),
+            tooltip_markup=tooltip_screenrecord,
+            child=Label(name="button-label", markup=icons.screenrecord),
+            on_clicked=self.screenrecord,
+            h_expand=False,
+            v_expand=False,
+            h_align="center",
+            v_align="center",
         )
-        
-        screenshot_box = Box(
-            orientation="h",
-            spacing=4,
-            children=[
-                self.btn_ss_region,
-                self.btn_ss_window,
-                self.btn_ss_screen,
-                self.btn_ss_mockup,
-            ],
-        )
-        
-        # Recording section
-        recording_label = Button(
-            name="toolbox-section-label",
-            label="🎬 Recording",
-            sensitive=False,
-        )
-        
-        self.btn_record = Button(
-            name="toolbox-button",
-            label="⏺️ Record",
-            tooltip_text="Start/stop screen recording",
-            on_clicked=self.toggle_recording,
-        )
-        
-        # OCR section
-        ocr_label = Button(
-            name="toolbox-section-label",
-            label="📝 OCR",
-            sensitive=False,
-        )
-        
+
         self.btn_ocr = Button(
             name="toolbox-button",
-            label="🔍 Extract Text",
-            tooltip_text="Capture region and extract text (OCR)",
-            on_clicked=lambda *_: self.run_ocr(),
+            tooltip_markup=tooltip_ocr,
+            child=Label(name="button-label", markup=icons.ocr),
+            on_clicked=self.ocr,
+            h_expand=False,
+            v_expand=False,
+            h_align="center",
+            v_align="center",
         )
-        
-        # Color picker section
-        picker_label = Button(
-            name="toolbox-section-label",
-            label="🎨 Color",
-            sensitive=False,
-        )
-        
-        self.btn_color_picker = Button(
+
+        self.btn_color = Button(
             name="toolbox-button",
-            label="🎯 Pick Color",
-            tooltip_text="Pick color from screen",
-            on_clicked=lambda *_: self.color_picker(),
+            tooltip_markup=tooltip_colorpicker,
+            child=Label(
+                name="button-bar-label",
+                markup=icons.colorpicker
+            ),
+            h_expand=False,
+            v_expand=False,
+            h_align="center",
+            v_align="center",
         )
-        
-        # Game mode section
-        game_label = Button(
-            name="toolbox-section-label",
-            label="🎮 Performance",
-            sensitive=False,
-        )
-        
+
         self.btn_gamemode = Button(
             name="toolbox-button",
-            label="⚡ Game Mode",
-            tooltip_text="Toggle game mode (disable effects)",
-            on_clicked=lambda *_: self.toggle_gamemode(),
+            tooltip_markup=tooltip_gamemode,
+            child=Label(name="button-label", markup=icons.gamemode),
+            on_clicked=self.gamemode,
+            h_expand=False,
+            v_expand=False,
+            h_align="center",
+            v_align="center",
+        )
+
+        self.btn_pomodoro = Button(
+            name="toolbox-button",
+            tooltip_markup=tooltip_pomodoro,
+            child=Label(name="button-label", markup=icons.timer_off),
+            on_clicked=self.pomodoro,
+            h_expand=False,
+            v_expand=False,
+            h_align="center",
+            v_align="center",
+        )
+
+        self.btn_color.set_can_focus(True)
+
+        self.btn_color.connect("button-press-event", self.colorpicker)
+        self.btn_color.connect("key_press_event", self.colorpicker_key)
+
+        self.btn_emoji = Button(
+            name="toolbox-button",
+            tooltip_markup=tooltip_emoji,
+            child=Label(name="button-label", markup=icons.emoji),
+            on_clicked=self.emoji,
+            h_expand=False,
+            v_expand=False,
+            h_align="center",
+            v_align="center",
         )
         
-        # Assemble toolbox
-        self.children = [
-            screenshot_label,
-            screenshot_box,
-            recording_label,
-            self.btn_record,
-            ocr_label,
+        self.btn_screenshots_folder = Button(
+            name="toolbox-button",
+            tooltip_markup=tooltip_screenshots,
+            child=Label(name="button-label", markup=icons.screenshots),
+            on_clicked=self.open_screenshots_folder,
+            h_expand=False,
+            v_expand=False,
+            h_align="center",
+            v_align="center",
+        )
+        
+        self.btn_recordings_folder = Button(
+            name="toolbox-button",
+            tooltip_markup=tooltip_recordings,
+            child=Label(name="button-label", markup=icons.recordings),
+            on_clicked=self.open_recordings_folder,
+            h_expand=False,
+            v_expand=False,
+            h_align="center",
+            v_align="center",
+        )
+
+        self.buttons = [
+            self.btn_ssregion,
+            self.btn_sswindow,
+            self.btn_ssfull,
+            self.btn_screenshots_folder,
+            Box(name="tool-sep", h_expand=False, v_expand=False, h_align="center", v_align="center"),
+            self.btn_screenrecord,
+            self.btn_recordings_folder,
+            Box(name="tool-sep", h_expand=False, v_expand=False, h_align="center", v_align="center"),
             self.btn_ocr,
-            picker_label,
-            self.btn_color_picker,
-            game_label,
+            self.btn_color,
+            Box(name="tool-sep", h_expand=False, v_expand=False, h_align="center", v_align="center"),
             self.btn_gamemode,
+            self.btn_pomodoro,
+            self.btn_emoji,
         ]
-    
-    def screenshot(self, mode: str, mockup: bool = False):
-        """
-        Take screenshot
-        
-        Args:
-            mode: Screenshot mode (s=region, w=window, p=screen)
-            mockup: Apply mockup effects
-        """
-        script = os.path.join(self.scripts_dir, "screenshot.sh")
-        
-        if not os.path.exists(script):
-            print(f"Error: Screenshot script not found at {script}")
-            return
-        
-        mockup_arg = "mockup" if mockup else ""
-        cmd = f'bash "{script}" {mode} {mockup_arg}'
-        
+
+        for button in self.buttons:
+            self.add(button)
+
+        self.show_all()
+
+        self.recorder_timer_id = GLib.timeout_add_seconds(2, self.update_screenrecord_state)
+        self.gamemode_updater = GLib.timeout_add_seconds(2, self.gamemode_check)
+        self.pomodoro_updater = GLib.timeout_add_seconds(2, self.pomodoro_check)
+
+    def close_menu(self):
+        self.notch.close_notch()
+
+    def ssfull(self, *args, mockup=False):
+        cmd = f"bash {SCREENSHOT_SCRIPT} p"
+        if mockup:
+            cmd += " mockup"
         exec_shell_command_async(cmd)
-        print(f"Screenshot: mode={mode}, mockup={mockup}")
+        self.close_menu()
+
+    def on_ssfull_click(self, button, event):
+        if event.type == Gdk.EventType.BUTTON_PRESS:
+            if event.button == 1:
+                self.ssfull()
+            elif event.button == 3:
+                self.ssfull(mockup=True)
+            return True
+        return False
+
+    def on_ssfull_key(self, widget, event):
+        if event.keyval in {Gdk.KEY_Return, Gdk.KEY_KP_Enter}:
+            modifiers = event.get_state()
+            if modifiers & Gdk.ModifierType.SHIFT_MASK:
+                self.ssfull(mockup=True)
+            else:
+                self.ssfull()
+            return True
+        return False
+
+    def ssregion(self, *args):
+        exec_shell_command_async(f"bash {SCREENSHOT_SCRIPT} s")
+        self.close_menu()
+
+    def on_ssregion_click(self, button, event):
+        if event.type == Gdk.EventType.BUTTON_PRESS:
+            if event.button == 1:
+                self.ssregion()
+            elif event.button == 3:
+                exec_shell_command_async(f"bash {SCREENSHOT_SCRIPT} s mockup")
+                self.close_menu()
+            return True
+        return False
+
+    def on_ssregion_key(self, widget, event):
+        if event.keyval in {Gdk.KEY_Return, Gdk.KEY_KP_Enter}:
+            modifiers = event.get_state()
+            if modifiers & Gdk.ModifierType.SHIFT_MASK:
+                exec_shell_command_async(f"bash {SCREENSHOT_SCRIPT} s mockup")
+                self.close_menu()
+            else:
+                self.ssregion()
+            return True
+        return False
+
+    def sswindow(self, *args):
+        exec_shell_command_async(f"bash {SCREENSHOT_SCRIPT} w")
+        self.close_menu()
+
+    def on_sswindow_click(self, button, event):
+        if event.type == Gdk.EventType.BUTTON_PRESS:
+            if event.button == 1:
+                self.sswindow()
+            elif event.button == 3:
+                exec_shell_command_async(f"bash {SCREENSHOT_SCRIPT} w mockup")
+                self.close_menu()
+            return True
+        return False
+
+    def on_sswindow_key(self, widget, event):
+        if event.keyval in {Gdk.KEY_Return, Gdk.KEY_KP_Enter}:
+            modifiers = event.get_state()
+            if modifiers & Gdk.ModifierType.SHIFT_MASK:
+                exec_shell_command_async(f"bash {SCREENSHOT_SCRIPT} w mockup")
+                self.close_menu()
+            else:
+                self.sswindow()
+            return True
+        return False
+
+    def screenrecord(self, *args):
+
+        exec_shell_command_async(f"bash -c 'nohup bash {SCREENRECORD_SCRIPT} > /dev/null 2>&1 & disown'")
+        self.close_menu()
+
+    def pomodoro(self, *args):
+        exec_shell_command_async(f"bash -c 'nohup bash {POMODORO_SCRIPT} > /dev/null 2>&1 & disown'")
+        self.close_menu()
+
+    def pomodoro_check(self):
+        """Check pomodoro status using proper background threading"""
+        GLib.Thread.new("pomodoro-check", self._pomodoro_check_thread, None)
+        return True
     
-    def toggle_recording(self, *_):
-        """Toggle screen recording"""
-        script = os.path.join(self.scripts_dir, "screenrecord.sh")
-        
-        if not os.path.exists(script):
-            print(f"Error: Screen recording script not found at {script}")
-            return
-        
-        cmd = f'bash "{script}"'
-        exec_shell_command_async(cmd)
-        
-        self.recording = not self.recording
-        
-        if self.recording:
-            self.btn_record.set_label("⏹️ Stop")
-            print("Started recording")
+    def _pomodoro_check_thread(self, user_data):
+        """Background thread to check pomodoro status"""
+        try:
+            result = subprocess.run("pgrep -f pomodoro.sh", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            running = result.returncode == 0
+        except Exception:
+            running = False
+
+        GLib.idle_add(self._update_pomodoro_ui, running)
+    
+    def _update_pomodoro_ui(self, running):
+        """Update pomodoro UI from main thread"""
+        if running:
+            self.btn_pomodoro.get_child().set_markup(icons.timer_on)
+            self.btn_pomodoro.add_style_class("pomodoro")
         else:
-            self.btn_record.set_label("⏺️ Record")
-            print("Stopped recording")
+            self.btn_pomodoro.get_child().set_markup(icons.timer_off)
+            self.btn_pomodoro.remove_style_class("pomodoro")
+        return False
+
+    def ocr(self, *args):
+        exec_shell_command_async(f"bash {OCR_SCRIPT} s")
+        self.close_menu()
+
+    def gamemode(self, *args):
+        exec_shell_command_async(f"bash {GAMEMODE_SCRIPT}")
+        self.gamemode_check()
+        self.close_menu()
+
+    def gamemode_check(self):
+        """Check gamemode status using proper background threading"""
+        GLib.Thread.new("gamemode-check", self._gamemode_check_thread, None)
+        return True
     
-    def run_ocr(self):
-        """Run OCR on screen region"""
-        script = os.path.join(self.scripts_dir, "ocr.sh")
-        
-        if not os.path.exists(script):
-            print(f"Error: OCR script not found at {script}")
-            return
-        
-        cmd = f'bash "{script}"'
-        exec_shell_command_async(cmd)
-        print("Running OCR...")
+    def _gamemode_check_thread(self, user_data):
+        """Background thread to check gamemode status"""
+        try:
+            result = subprocess.run(f"bash {GAMEMODE_SCRIPT} check", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            enabled = result.stdout == b't\n'
+        except Exception:
+            enabled = False
+
+        GLib.idle_add(self._update_gamemode_ui, enabled)
     
-    def color_picker(self):
-        """Launch color picker"""
-        cmd = "hyprpicker -a"
-        exec_shell_command_async(cmd)
-        print("Color picker launched")
+    def _update_gamemode_ui(self, enabled):
+        """Update gamemode UI from main thread"""
+        if enabled:
+            self.btn_gamemode.get_child().set_markup(icons.gamemode_off)
+        else:
+            self.btn_gamemode.get_child().set_markup(icons.gamemode)
+        return False
+
+    def colorpicker(self, button, event):
+        if event.type == Gdk.EventType.BUTTON_PRESS:
+            cmd = {
+                1: "-hex",
+                2: "-hsv",
+                3: "-rgb"
+            }.get(event.button)
+            
+            if cmd:
+                exec_shell_command_async(f"bash {get_relative_path('../scripts/hyprpicker.sh')} {cmd}")
+                self.close_menu()
+
+    def colorpicker_key(self, widget, event):
+        if event.keyval in {Gdk.KEY_Return, Gdk.KEY_KP_Enter}:
+            modifiers = event.get_state()
+            cmd = "-hex"
+            
+            match modifiers & (Gdk.ModifierType.SHIFT_MASK | Gdk.ModifierType.CONTROL_MASK):
+                case Gdk.ModifierType.SHIFT_MASK:
+                    cmd = "-rgb"
+                case Gdk.ModifierType.CONTROL_MASK:
+                    cmd = "-hsv"
+                
+            exec_shell_command_async(f"bash {get_relative_path('../scripts/hyprpicker.sh')} {cmd}")
+            self.close_menu()
+            return True
+        return False
+
+    def update_screenrecord_state(self):
+        """Check screen recording status using proper background threading"""
+        GLib.Thread.new("screenrecord-check", self._screenrecord_check_thread, None)
+        return True
     
-    def toggle_gamemode(self):
-        """Toggle game mode"""
-        script = os.path.join(self.scripts_dir, "gamemode.sh")
-        
-        if not os.path.exists(script):
-            print(f"Error: Game mode script not found at {script}")
-            return
-        
-        cmd = f'bash "{script}"'
-        exec_shell_command_async(cmd)
-        print("Toggled game mode")
+    def _screenrecord_check_thread(self, user_data):
+        """Background thread to check screen recording status"""
+        try:
+            result = subprocess.run("pgrep -f gpu-screen-recorder", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            running = result.returncode == 0
+        except Exception:
+            running = False
+
+        GLib.idle_add(self._update_screenrecord_ui, running)
+    
+    def _update_screenrecord_ui(self, running):
+        """Update screen recording UI from main thread"""
+        if running:
+            self.btn_screenrecord.get_child().set_markup(icons.stop)
+            self.btn_screenrecord.add_style_class("recording")
+        else:
+            self.btn_screenrecord.get_child().set_markup(icons.screenrecord)
+            self.btn_screenrecord.remove_style_class("recording")
+        return False
+
+    def open_screenshots_folder(self, *args):
+        screenshots_dir = os.path.join(os.environ.get('XDG_PICTURES_DIR', 
+                                                    os.path.expanduser('~/Pictures')), 
+                                     'Screenshots')
+
+        os.makedirs(screenshots_dir, exist_ok=True)
+        exec_shell_command_async(f"xdg-open {screenshots_dir}")
+        self.close_menu()
+
+    def open_recordings_folder(self, *args):
+        recordings_dir = os.path.join(os.environ.get('XDG_VIDEOS_DIR', 
+                                                   os.path.expanduser('~/Videos')), 
+                                    'Recordings')
+
+        os.makedirs(recordings_dir, exist_ok=True)
+        exec_shell_command_async(f"xdg-open {recordings_dir}")
+        self.close_menu()
+
+    def emoji(self, *args):
+        self.notch.open_notch("emoji")

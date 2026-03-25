@@ -1879,7 +1879,7 @@ section {
 }
 
 .feature-card {
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.6);
     border: 2px solid var(--border);
     border-radius: 16px;
     padding: 2.5rem;

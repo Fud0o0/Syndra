@@ -5,41 +5,40 @@
 > Built with Fabric framework - inspired by Ax-Shell.
 
 > [!TIP]
-> 📖 For a complete dependency reference with links and usage details, see [DEPENDENCIES.md](docs/DEPENDENCIES.md)
-> 🎨 Découvrez nos 6 thèmes dynamiques: [THEMES.md](docs/THEMES.md) | [Preview](https://fud0o0.github.io/Syndra/themes.html)
+> [DOCS] For a complete dependency reference with links and usage details, see [DEPENDENCIES.md](docs/DEPENDENCIES.md)
 
-## ✨ Nouvelles Fonctionnalités
+## [NEW] Nouvelles Fonctionnalités
 
 - **� Fonds d'Écran Vidéo** : Support MP4/WebM/MKV avec mpvpaper ([Guide](docs/VIDEO-WALLPAPERS.md))
-- **�🎨 Thèmes Dynamiques** : 6 thèmes (Iceland, Tokyo Night, Sunset, Forest, Purple Haze, Cyberpunk)
-- **✕ Boutons de Fermeture** : Toutes les interfaces ont maintenant des boutons de fermeture visibles
-- **🖱️ Fenêtres Déplaçables** : Cliquez et déplacez depuis le header
-- **🎯 Interface Provisoire** : Interface de test avec onglets Système/Modules/Configuration
-- **🚀 App Launcher** : Menu style Windows avec catégories (SUPER+A)
-- **⚙️ Commandes Syndra** : CLI intégré pour gérer l'environnement
+- **[THEMES] Thèmes Dynamiques** : 6 thèmes (Iceland, Tokyo Night, Sunset, Forest, Purple Haze, Cyberpunk)
+- **[CLOSE] Boutons de Fermeture** : Toutes les interfaces ont maintenant des boutons de fermeture visibles
+- **[DRAG] Fenêtres Déplaçables** : Cliquez et déplacez depuis le header
+- **[UI] Interface Provisoire** : Interface de test avec onglets Système/Modules/Configuration
+- **[LAUNCH] App Launcher** : Menu style Windows avec catégories (SUPER+A)
+- **[CONFIG] Commandes Syndra** : CLI intégré pour gérer l'environnement
 
-## 🚀 Quick Installation
+## [INSTALL] Quick Installation
 
 ### Installation complète avec profil (Recommandé)
 
 Choisissez votre profil et installez Syndra + les outils en une commande :
 
-**🔵 Blue Team (Défensif - IDS, Firewall, SIEM)**
+**[BLUE] Blue Team (Défensif - IDS, Firewall, SIEM)**
 ```bash
 curl -fsSL https://raw.githubusercontent.com/Fud0o0/Syndra/main/docs/get/blue.sh | bash
 ```
 
-**🔴 Red Team (Offensif - Pentest, Exploitation)**
+**[RED] Red Team (Offensif - Pentest, Exploitation)**
 ```bash
 curl -fsSL https://raw.githubusercontent.com/Fud0o0/Syndra/main/docs/get/red.sh | bash
 ```
 
-**🟣 Purple Team (Complet - Red + Blue)**
+**[PURPLE] Purple Team (Complet - Red + Blue)**
 ```bash
 curl -fsSL https://raw.githubusercontent.com/Fud0o0/Syndra/main/docs/get/purple.sh | bash
 ```
 
-**⚫ Root Me / CTF (Challenges & CTF)**
+**[ROOT] Root Me / CTF (Challenges & CTF)**
 ```bash
 curl -fsSL https://raw.githubusercontent.com/Fud0o0/Syndra/main/docs/get/root.sh | bash
 ```
@@ -140,7 +139,7 @@ curl -fsSL https://raw.githubusercontent.com/Fud0o0/Syndra/main/install.sh | bas
 - **Dashboard** - Tableau de bord
 - **Launcher** - Menu d'applications moderne (style Windows)
 
-## 🎨 Interface Provisoire (Mode Développement)
+## [UI] Interface Provisoire (Mode Développement)
 
 Une interface de test GTK est disponible après l'installation pour :
 - Visualiser et tester les modules sans Hyprland

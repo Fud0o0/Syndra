@@ -175,10 +175,10 @@ echo ""
 INSTALL_DIR="$HOME/.config/SyndraShell"
 if [ -f "$INSTALL_DIR/provisional_interface.py" ]; then
     echo ""
-    read -p "🎨 Voulez-vous lancer l'interface provisoire de test maintenant? [Y/n]: " -n 1 -r
+    read -p "Voulez-vous lancer l'interface provisoire de test maintenant? [Y/n]: " -n 1 -r
     echo
     if [[ ! $REPLY =~ ^[Nn]$ ]]; then
-        echo "🚀 Lancement de l'interface provisoire..."
+        echo "Lancement de l'interface provisoire..."
         echo ""
         python "$INSTALL_DIR/provisional_interface.py" &
         echo "✓ Interface lancée en arrière-plan"

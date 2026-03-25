@@ -1867,7 +1867,7 @@ section {
 
 /* ===== Features Section ===== */
 .features-section {
-    background: rgba(0, 0, 0, 0.2);
+    background: transparent;
     border-top: 1px solid var(--border);
     border-bottom: 1px solid var(--border);
 }
@@ -1879,7 +1879,7 @@ section {
 }
 
 .feature-card {
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.6);
     border: 2px solid var(--border);
     border-radius: 16px;
     padding: 2.5rem;

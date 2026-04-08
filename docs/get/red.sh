@@ -1,6 +1,6 @@
 #!/bin/bash
 # Syndra Quick Install - Red Team Edition
-# Auto-installs base + Red Team tools
+# Secure flow: sync repo, verify checksum/signature, install profile
 
 set -e
 
@@ -9,8 +9,9 @@ echo "║          SYNDRA SHELL - INSTALLATION RAPIDE RED TEAM          ║"
 echo "╚═══════════════════════════════════════════════════════════════╝"
 echo ""
 echo "Cette installation va automatiquement:"
-echo "  1. Installer Syndra base (Hyprland + Interface)"
-echo "  2. Installer les outils Red Team (Offensif)"
+echo "  1. Synchroniser le depot Syndra"
+echo "  2. Verifier SHA256 (+ signature si disponible)"
+echo "  3. Installer Syndra base + outils Red Team"
 echo ""
 echo "Espace disque requis: ~15 GB"
 echo ""
@@ -27,21 +28,11 @@ else
     cd "$INSTALL_DIR" && git pull
 fi
 
-cd "$INSTALL_DIR"
-
-# Step 1: Install base
 echo ""
 echo "═══════════════════════════════════════════════════════════════"
-echo "ÉTAPE 1/2: Installation de la base Syndra"
+echo "ÉTAPE UNIQUE: Installation sécurisée Red Team"
 echo "═══════════════════════════════════════════════════════════════"
-bash "$INSTALL_DIR/scripts/install-syndra-base.sh"
-
-# Step 2: Install Red Team
-echo ""
-echo "═══════════════════════════════════════════════════════════════"
-echo "ÉTAPE 2/2: Installation Red Team"
-echo "═══════════════════════════════════════════════════════════════"
-bash "$INSTALL_DIR/scripts/install-red.sh"
+bash "$INSTALL_DIR/scripts/secure-install.sh" red
 
 echo ""
 echo "╔═══════════════════════════════════════════════════════════════╗"

@@ -105,9 +105,12 @@ echo ""
 echo "  5) 🎨 Custom      - Personnalisé"
 echo "     Configuration à la carte"
 echo ""
-echo "  6) ⏭️  Passer      - Installer plus tard"
+echo "  6) 🧱 Outils isolés (Docker/Podman)"
+echo "     GUI sur l'hôte, outils en conteneur avec volumes partagés"
 echo ""
-read -p "Votre choix [1-6]: " team_choice
+echo "  7) ⏭️  Passer      - Installer plus tard"
+echo ""
+read -p "Votre choix [1-7]: " team_choice
 
 case $team_choice in
     1)
@@ -141,6 +144,17 @@ case $team_choice in
         fi
         ;;
     6)
+        echo ""
+        echo "🧱 Lancement du mode outils conteneurisés..."
+        echo ""
+        read -p "Profil conteneur [blue/red/purple/root] (defaut: purple): " container_profile
+        container_profile=${container_profile:-purple}
+        read -p "Mode [run/build/shell] (defaut: run): " container_mode
+        container_mode=${container_mode:-run}
+        echo "Volumes partages: ~/.local/share/syndra-tools/{workspace,reports,wordlists,loot}"
+        bash "$SCRIPT_DIR/scripts/container-tools.sh" "$container_profile" "$container_mode"
+        ;;
+    7)
         echo ""
         echo "Installation des outils passée."
         echo "Vous pouvez lancer un script team plus tard depuis scripts/"

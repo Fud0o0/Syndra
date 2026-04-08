@@ -85,7 +85,8 @@ Complete list of SyndraShell dependencies with usage information.
 ### Arch Linux (Automated)
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Fud0o0/Syndra/main/install.sh | bash
+git clone --depth 1 https://github.com/Fud0o0/Syndra.git ~/.config/SyndraShell
+bash ~/.config/SyndraShell/install.sh
 ```
 
 ### Manual Installation

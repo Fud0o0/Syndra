@@ -1,5 +1,28 @@
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 width="100%" viewBox="0 0 500 500" enable-background="new 0 0 500 500" xml:space="preserve">
+<svg viewBox="0 0 300 100" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="neon">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <linearGradient id="purpleGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#c084fc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#a855f7;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Rounded rectangle background -->
+  <rect x="10" y="15" width="280" height="70" rx="20" ry="20" fill="none" stroke="url(#purpleGlow)" stroke-width="2" filter="url(#neon)"/>
+  
+  <!-- Green S icon -->
+  <circle cx="35" cy="50" r="18" fill="#34d399" filter="url(#neon)"/>
+  <text x="35" y="57" font-size="28" font-weight="bold" fill="#1a1a1a" text-anchor="middle" font-family="monospace">S</text>
+  
+  <!-- Syndra text -->
+  <text x="70" y="62" font-size="48" font-weight="bold" fill="url(#purpleGlow)" font-family="monospace" filter="url(#neon)" letter-spacing="1">Syndra</text>
+</svg>
 <path fill="#000000" opacity="1.000000" stroke="none" 
 	d="
 M269.000000,501.000000 

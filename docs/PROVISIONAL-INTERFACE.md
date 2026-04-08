@@ -14,14 +14,15 @@ L'interface provisoire est un outil de développement et de test pour SyndraShel
 L'interface provisoire est automatiquement installée avec la base Syndra :
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Fud0o0/Syndra/main/docs/get/blue.sh | bash
+git clone --depth 1 https://github.com/Fud0o0/Syndra.git ~/.config/SyndraShell
+bash ~/.config/SyndraShell/docs/get/blue.sh
 # ou purple.sh, red.sh, root.sh
 ```
 
 Ou avec l'installation de base uniquement :
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Fud0o0/Syndra/main/install.sh | bash
+bash ~/.config/SyndraShell/install.sh
 ```
 
 **💡 Note :** Pendant l'installation, il vous sera demandé si vous souhaitez :

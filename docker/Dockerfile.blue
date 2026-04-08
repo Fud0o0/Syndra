@@ -1,0 +1,22 @@
+FROM archlinux:latest
+
+LABEL org.opencontainers.image.title="Syndra Blue Team"
+LABEL org.opencontainers.image.description="Isolated Blue Team security toolkit for Syndra"
+
+RUN pacman -Syu --noconfirm \
+    && pacman -S --needed --noconfirm \
+        python python-pip git wget curl base-devel \
+        wireshark-qt snort suricata aide rkhunter \
+        clamav chkrootkit lynis fail2ban ufw iptables nftables \
+        tcpdump tshark nmap tripwire htop iotop nethogs iftop glances \
+        sysstat logwatch rsyslog auditd \
+    && pacman -Scc --noconfirm
+
+RUN pip install --no-cache-dir \
+    volatility3 yara-python sigma-cli splunk-sdk elasticsearch loguru pandas numpy
+
+RUN useradd -m -s /bin/bash syndra
+USER syndra
+WORKDIR /workspace
+
+CMD ["bash"]

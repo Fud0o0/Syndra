@@ -1,11 +1,64 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="0; url=https://raw.githubusercontent.com/Fud0o0/Syndra/main/install.sh">
-    <title>Redirecting to SyndraShell installer...</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Installer SyndraShell</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: "JetBrains Mono", monospace;
+            background: #0c0f16;
+            color: #e6edf3;
+            display: flex;
+            justify-content: center;
+            padding: 40px 16px;
+        }
+        .card {
+            max-width: 860px;
+            width: 100%;
+            background: #121826;
+            border: 1px solid #273247;
+            border-radius: 12px;
+            padding: 24px;
+        }
+        h1, h2 { margin-top: 0; }
+        pre {
+            background: #0b1220;
+            border: 1px solid #24324a;
+            border-radius: 8px;
+            padding: 12px;
+            overflow-x: auto;
+        }
+        code { color: #9cdcfe; }
+        a { color: #4cc2ff; }
+        .muted { color: #a6b5cc; }
+    </style>
 </head>
 <body>
-    <p>Redirecting to SyndraShell installer... If you are not redirected, <a href="https://raw.githubusercontent.com/Fud0o0/Syndra/main/install.sh">click here</a>.</p>
+    <main class="card">
+        <h1>Installation SyndraShell (mise a jour)</h1>
+        <p class="muted">Le flux <code>curl | bash</code> est retire. Installation securisee uniquement.</p>
+
+        <h2>Installation recommandee</h2>
+        <pre><code>git clone --depth 1 https://github.com/Fud0o0/Syndra.git ~/.config/SyndraShell
+bash ~/.config/SyndraShell/scripts/secure-install.sh interactive</code></pre>
+
+        <h2>Profil direct</h2>
+        <pre><code>bash ~/.config/SyndraShell/scripts/secure-install.sh blue
+bash ~/.config/SyndraShell/scripts/secure-install.sh red
+bash ~/.config/SyndraShell/scripts/secure-install.sh purple
+bash ~/.config/SyndraShell/scripts/secure-install.sh root</code></pre>
+
+        <h2>Verification integrite</h2>
+        <pre><code>bash ~/.config/SyndraShell/scripts/verify-artifacts.sh
+SYNDRA_REQUIRE_SIGNATURE=1 bash ~/.config/SyndraShell/scripts/verify-artifacts.sh</code></pre>
+
+        <h2>Outils isoles en conteneur (Docker/Podman)</h2>
+        <pre><code>bash ~/.config/SyndraShell/scripts/container-tools.sh purple build
+bash ~/.config/SyndraShell/scripts/container-tools.sh purple run</code></pre>
+
+        <p class="muted">Details complets: <a href="index.html">page principale</a> et <a href="https://github.com/Fud0o0/Syndra/blob/main/README.md">README</a>.</p>
+    </main>
 </body>
 </html>

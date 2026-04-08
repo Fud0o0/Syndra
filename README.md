@@ -1,287 +1,140 @@
 ﻿﻿# SyndraShell
 
-> [!NOTE]
-> You need a functioning Hyprland installation.
-> Built with Fabric framework - inspired by Ax-Shell.
+SyndraShell est un environnement Hyprland orienté cybersécurité, pensé pour un usage quotidien et des profils opérationnels (Blue, Red, Purple, Root/CTF).
 
-> [!TIP]
-> [DOCS] For a complete dependency reference with links and usage details, see [DEPENDENCIES.md](docs/DEPENDENCIES.md)
+Le projet sépare maintenant clairement :
 
-## [NEW] Nouvelles Fonctionnalités
+- le GUI sur l'hôte (Hyprland, interface Syndra)
+- les outils sécurité dans des conteneurs isolés (Docker ou Podman)
 
-- **� Fonds d'Écran Vidéo** : Support MP4/WebM/MKV avec mpvpaper ([Guide](docs/VIDEO-WALLPAPERS.md))
-- **[THEMES] Thèmes Dynamiques** : 6 thèmes (Iceland, Tokyo Night, Sunset, Forest, Purple Haze, Cyberpunk)
-- **[CLOSE] Boutons de Fermeture** : Toutes les interfaces ont maintenant des boutons de fermeture visibles
-- **[DRAG] Fenêtres Déplaçables** : Cliquez et déplacez depuis le header
-- **[UI] Interface Provisoire** : Interface de test avec onglets Système/Modules/Configuration
-- **[LAUNCH] App Launcher** : Menu style Windows avec catégories (SUPER+A)
-- **[CONFIG] Commandes Syndra** : CLI intégré pour gérer l'environnement
+## Pourquoi ce changement
 
-## [INSTALL] Quick Installation
+- plus de flux `curl | bash`
+- vérification d'intégrité SHA256 avant installation
+- vérification de signature possible en mode strict
+- isolation outillage offensive/défensive par profil
 
-### Installation complète avec profil (Recommandé)
+## Prérequis
 
-Choisissez votre profil et installez Syndra + les outils en une commande :
+- Arch Linux pour l'installation GUI complète
+- git
+- Hyprland fonctionnel
+- Docker ou Podman si vous utilisez le mode outils conteneurisés
 
-**[BLUE] Blue Team (Défensif - IDS, Firewall, SIEM)**
+## Installation recommandée (sécurisée)
+
+Clone puis exécute l'installateur sécurisé :
+
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Fud0o0/Syndra/main/docs/get/blue.sh | bash
+git clone --depth 1 https://github.com/Fud0o0/Syndra.git ~/.config/SyndraShell
+bash ~/.config/SyndraShell/scripts/secure-install.sh interactive
 ```
 
-**[RED] Red Team (Offensif - Pentest, Exploitation)**
+### Installation directe par profil
+
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Fud0o0/Syndra/main/docs/get/red.sh | bash
+bash ~/.config/SyndraShell/scripts/secure-install.sh blue
+bash ~/.config/SyndraShell/scripts/secure-install.sh red
+bash ~/.config/SyndraShell/scripts/secure-install.sh purple
+bash ~/.config/SyndraShell/scripts/secure-install.sh root
 ```
 
-**[PURPLE] Purple Team (Complet - Red + Blue)**
+## Vérification intégrité et signature
+
+Vérification SHA256 :
+
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Fud0o0/Syndra/main/docs/get/purple.sh | bash
+bash ~/.config/SyndraShell/scripts/verify-artifacts.sh
 ```
 
-**[ROOT] Root Me / CTF (Challenges & CTF)**
+Mode strict avec signature obligatoire :
+
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Fud0o0/Syndra/main/docs/get/root.sh | bash
+SYNDRA_REQUIRE_SIGNATURE=1 bash ~/.config/SyndraShell/scripts/verify-artifacts.sh
 ```
 
-### Installation de base uniquement
+Politique de signature mainteneur : [checksums/SIGNING.md](checksums/SIGNING.md)
 
-Si vous voulez installer uniquement l'interface Syndra sans les outils de sécurité :
+## Outils isolés en conteneur (Docker ou Podman)
+
+Le script choisit automatiquement Podman si présent, sinon Docker.
+
+Build d'un profil :
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Fud0o0/Syndra/main/install.sh | bash
+bash ~/.config/SyndraShell/scripts/container-tools.sh purple build
 ```
 
-> [!TIP]
-> Cette commande fonctionne aussi pour mettre à jour une installation existante !
+Run d'un profil :
 
----
-
-## 📦 Arch Linux
-
-### Installation standard
-
-**Exécutez cette commande dans votre terminal une fois connecté dans Hyprland :**
 ```bash
-curl -L get.syndra.me | sh
+bash ~/.config/SyndraShell/scripts/container-tools.sh purple run
 ```
 
-Méthode alternative (via GitHub directement) :
+Shell interactif dans le conteneur :
+
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Fud0o0/Syndra/main/install.sh | bash
+bash ~/.config/SyndraShell/scripts/container-tools.sh purple shell
 ```
 
-### Manual Installation
+Volumes partagés par défaut :
 
-#### System Dependencies
+- ~/.local/share/syndra-tools/workspace
+- ~/.local/share/syndra-tools/reports
+- ~/.local/share/syndra-tools/wordlists
+- ~/.local/share/syndra-tools/loot
 
-**Core Framework:**
-- [Fabric](https://github.com/Fabric-Development/fabric)
-- [fabric-cli](https://github.com/Fabric-Development/fabric-cli)
-- [Matugen](https://github.com/InioX/matugen)
+Tu peux changer l'emplacement via `SYNDRA_SHARED_ROOT`.
 
-**Hyprland & Wayland:**
-- [Hyprland](https://github.com/hyprwm/Hyprland)
-- [hypridle](https://github.com/hyprwm/hypridle)
-- [hyprlock](https://github.com/hyprwm/hyprlock)
-- [hyprshot](https://github.com/Gustash/Hyprshot)
-- [hyprpicker](https://github.com/hyprwm/hyprpicker)
-- [swww](https://github.com/LGFae/swww)
-- [swaybg](https://github.com/swaywm/swaybg)
+## Profils disponibles
 
-**Screenshot & Recording:**
-- [gpu-screen-recorder](https://git.dec05eba.com/gpu-screen-recorder/about/)
-- [tesseract](https://github.com/tesseract-ocr/tesseract)
-- [ImageMagick](https://imagemagick.org/)
-- [swappy](https://github.com/jtheoof/swappy)
+- Blue : défense, monitoring, détection
+- Red : pentest, exploitation, reverse
+- Purple : couverture complète Red + Blue
+- Root : CTF, pwn, forensics, crypto
 
-**System Utilities:**
-- `brightnessctl`
-- `networkmanager`
-- `network-manager-applet`
-- `playerctl`
-- `wl-clipboard`
-- `cliphist`
+## Interface provisoire
 
-**Terminals & UI:**
-- [kitty](https://sw.kovidgoyal.net/kitty/)
-- [wofi](https://hg.sr.ht/~scoopta/wofi)
-- [waybar](https://github.com/Alexays/Waybar)
-- [dunst](https://dunst-project.org/)
+L'interface provisoire est installée avec la base et utile pour tester les modules sans session complète.
 
-#### Python Dependencies
-
-- [PyGObject](https://pypi.org/project/PyGObject/)
-- [Pillow](https://pypi.org/project/Pillow/)
-- [pywayland](https://pypi.org/project/pywayland/)
-- [setproctitle](https://pypi.org/project/setproctitle/)
-- [watchdog](https://pypi.org/project/watchdog/)
-- [loguru](https://pypi.org/project/loguru/)
-
-#### Fonts (Auto-downloaded on first run)
-
-- [Zed Sans](https://github.com/zed-industries/zed-fonts)
-- [JetBrainsMono Nerd Font](https://www.nerdfonts.com/)
-- [Tabler Icons](https://tabler-icons.io/)
-
-2. Download and run SyndraShell:
-    ```bash
-    git clone https://github.com/Fud0o0/Syndra.git ~/.config/SyndraShell
-    cd ~/.config/SyndraShell
-    pip install --user -r requirements.txt
-    uwsm app -- python ~/.config/SyndraShell/main.py > /dev/null 2>&1 & disown
-    ```
-
-## Components
-
-- **Bar** - Barre supérieure
-- **Dock** - Dock d'applications
-- **Notch** - Zone de notifications
-- **Dashboard** - Tableau de bord
-- **Launcher** - Menu d'applications moderne (style Windows)
-
-## [UI] Interface Provisoire (Mode Développement)
-
-Une interface de test GTK est disponible après l'installation pour :
-- Visualiser et tester les modules sans Hyprland
-- Développer et déboguer l'interface
-- Configurer rapidement les thèmes et paramètres
-
-**L'interface se lance automatiquement après l'installation** (vous pouvez choisir de la désactiver).
-
-**Lancement manuel :**
 ```bash
-# Via le script de lancement
 ~/.config/SyndraShell/launch-provisional.sh
-
-# Ou directement
-python ~/.config/SyndraShell/provisional_interface.py
-
-# Ou via le menu d'applications (cherchez "Syndra Provisional")
 ```
 
-**Fonctionnalités :**
-- Onglet Système : Informations de base
-- Onglet Modules : Test des modules SyndraShell
-- Onglet Configuration : Thèmes, mode sombre, transparence, autostart
+Docs dédiées :
 
-## Keybinds
+- [docs/PROVISIONAL-INTERFACE.md](docs/PROVISIONAL-INTERFACE.md)
+- [docs/PROVISIONAL-CUSTOMIZATION.md](docs/PROVISIONAL-CUSTOMIZATION.md)
+- [docs/PROVISIONAL-CONTROL.md](docs/PROVISIONAL-CONTROL.md)
 
-### General
-- `SUPER + A` - Menu Syndra (Lanceur d'applications)
-- `SUPER + D` - Open Dashboard
-- `SUPER + R` - App Launcher (Wofi)
-- `SUPER + L` - Lock session
-- `SUPER + ALT + B` - Reload SyndraShell
+## Raccourcis principaux
 
-### Window Management
-- `SUPER + Q` or `ALT + F4` - Close window
+- SUPER + A : menu Syndra
+- SUPER + D : dashboard
+- SUPER + R : launcher
+- SUPER + Enter : terminal
+- SUPER + Q : fermer fenêtre
 
-### Screenshots (recommended bindings)
-- `SUPER + SHIFT + S` - Screenshot region
-- `SUPER + SHIFT + W` - Screenshot window
-- `SUPER + SHIFT + P` - Screenshot screen
-- `SUPER + SHIFT + M` - Screenshot region (mockup mode)
+## Désinstallation
 
-### Tools
-- `SUPER + ALT + R` - Toggle screen recording
-- `SUPER + ALT + O` - OCR (extract text from screen)
-- `SUPER + ALT + C` - Color picker
-- `SUPER + ALT + G` - Toggle game mode
-
-## 🗑️ Uninstall / Désinstallation
-
-Pour désinstaller complètement Syndra Shell :
-
-**Méthode 1 - Script bash (Recommandé)**
 ```bash
 cd ~/.config/SyndraShell
 bash uninstall.sh
 ```
 
-**Méthode 2 - Via Python**
-```bash
-python ~/.config/SyndraShell/main.py uninstall
-```
+## Documentation
 
-**Méthode 3 - Via commande syndra**
-```bash
-syndra uninstall
-```
+- [docs/INSTALLATION.md](docs/INSTALLATION.md)
+- [docs/DEPENDENCIES.md](docs/DEPENDENCIES.md)
+- [docker/README.md](docker/README.md)
+- [docs/THEMES.md](docs/THEMES.md)
 
-Le script de désinstallation supprimera :
-- Syndra Shell (`~/.config/SyndraShell`)
-- Configurations Hyprland, Waybar, Kitty, Wofi, Dunst
-- Cache et fichiers temporaires
-- Fontes téléchargées
+## Communauté
 
-⚠️ **Note:** Vos wallpapers dans `~/Pictures/Wallpapers` seront **conservés**.
+- Discord : [https://discord.gg/pbrrd5ATK5](https://discord.gg/pbrrd5ATK5)
+- Support : [https://ko-fi.com/syndrashell](https://ko-fi.com/syndrashell)
 
-## Credits
+## Crédit
 
-Inspired by [Ax-Shell](https://github.com/Axenide/Ax-Shell) by Axenide.
-Built with [Fabric](https://github.com/Fabric-Development/fabric).
-
-
-
-<h2><sub><img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Rocket.png" alt="Rocket" width="20" height="20" /></sub> Roadmap</h2>
-
-- [x] App Launcher
-- [ ] Bluetooth Manager
-- [ ] Calculator
-- [ ] Calendar
-- [ ] Clipboard Manager
-- [ ] Color Picker
-- [ ] Customizable UI
-- [ ] Dashboard
-- [ ] Dock
-- [ ] Emoji Picker
-- [ ] Kanban Board
-- [ ] Network Manager
-- [ ] Notifications
-- [ ] OCR
-- [ ] Pins
-- [ ] Power Manager
-- [ ] Power Menu
-- [ ] Screen Recorder
-- [ ] Screenshot
-- [ ] Settings
-- [ ] System Tray
-- [ ] Terminal
-- [ ] Tmux Session Manager
-- [ ] Update checker
-- [ ] Vertical Layout
-- [x] Wallpaper Selector
-- [ ] Workspaces Overview
-- [ ] Multi-monitor support
-- [ ] Multimodal AI Assistant
-- [ ] OSD
-- [ ] OTP Manager
-
----
-
-<table align="center">
-  <tr>
-    <td align="center"><img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Activity/Sparkles.webp" alt="Sparkles" width="16" height="16" /><sup> ꜱᴜᴘᴘᴏʀᴛ & ᴄᴏᴍᴍᴜɴɪᴛʏ </sup><img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Activity/Sparkles.webp" alt="Sparkles" width="16" height="16" /></td>
-  </tr>
-  <tr>
-    <td align="center">
-      <a href='https://discord.gg/pbrrd5ATK5' target='_blank'>
-        <img style='border:0px;height:48px;margin:8px;'
-             src='https://img.shields.io/discord/YOUR_DISCORD_ID?style=for-the-badge&logo=discord&logoColor=white&label=Join%20Discord&color=5865F2'
-             border='0' alt='Join our Discord!' />
-      </a>
-      <br/>
-      <a href='https://ko-fi.com/syndrashell' target='_blank'>
-        <img style='border:0px;height:48px;margin:8px;'
-             src='https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExc3N4NzlvZWs2Z2tsaGx4aHgwa3UzMWVpcmNwZTNraTM2NW84ZDlqbiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/PaF9a1MpqDzovyqVKj/giphy.gif'
-             border='0' alt='Support me on Ko-fi!' />
-      </a>
-    </td>
-  </tr>
-  <tr>
-    <td align="center" style="font-size: 12px; padding: 10px;">
-      💬 <strong>Discord:</strong> Rejoignez notre communauté pour de l'aide, partager vos setups et discuter !<br/>
-      ☕ <strong>Ko-fi:</strong> Soutenez le développement de Syndra Shell
-    </td>
-  </tr>
-</table>
+Inspiré par Ax-Shell.
+Construit avec Fabric.

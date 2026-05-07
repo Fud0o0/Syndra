@@ -10,8 +10,16 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Bytesized&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <script src="translations.js"></script>
 </head>
 <body class="purple-theme">
+    <div class="language-selector-container">
+        <select id="language-selector">
+            <option value="fr">Français</option>
+            <option value="en">English</option>
+            <option value="es">Español</option>
+        </select>
+    </div>
     <div class="container">
         <div class="hero-container">
             <div class="hero-content">
@@ -24,15 +32,15 @@
                     <span class="retro-letter" style="--i:6" data-text="a">a</span>
                 </h1>
 
-                <p class="hero-tagline">For Red, Blue & Purple Teams</p>
+                <p class="hero-tagline" data-i18n="tagline">For Red, Blue & Purple Teams</p>
                 
                 <p class="hero-description">
-                    Made by <mark>Fud0o0</mark> & <mark>Ax0-0</mark> — <mark>Syndra</mark> is a customized Hyprland setup with integrated security tools.<br><br>
-                    Everything you need for penetration testing, defense, or CTF challenges. Fast, minimal dependencies, fully themeable.
+                    <span data-i18n="description">Made by <mark>Fud0o0</mark> & <mark>Ax0-0</mark> — <mark>Syndra</mark> is a customized Hyprland setup with integrated security tools.</span><br><br>
+                    <span data-i18n="description2">Everything you need for penetration testing, defense, or CTF challenges. Fast, minimal dependencies, fully themeable.</span>
                 </p>
 
                 <div class="install-section">
-                    <h3>Quick Install</h3>
+                    <h3 data-i18n="quickInstall">Quick Install</h3>
                     <div class="install-command">
                         <code id="install-cmd">git clone --depth 1 https://github.com/Fud0o0/Syndra.git ~/.config/SyndraShell && bash ~/.config/SyndraShell/scripts/secure-install.sh purple</code>
                         <button class="copy-btn" id="copy-install-btn">
@@ -49,34 +57,34 @@
                             <span id="disk-space-text">25 GB requis</span>
                         </span>
                     </div>
-                    <p class="install-note">Requires Arch Linux with Hyprland</p>
-                    <p class="install-note" style="margin-top: 8px; color: #7aa2f7;">Includes provisional interface & app launcher</p>
+                    <p class="install-note" data-i18n="requiresArch">Requires Arch Linux with Hyprland</p>
+                    <p class="install-note" style="margin-top: 8px; color: #7aa2f7;" data-i18n="includesProvisional">Includes provisional interface & app launcher</p>
                 </div>
 
                 <div class="hero-actions">
-                    <a class="doc-button" href="SYNDRA-DOCUMENTATION.html" target="_blank" rel="noopener noreferrer">
-                        Ouvrir la documentation
+                    <a class="doc-button" href="SYNDRA-DOCUMENTATION.html" target="_blank" rel="noopener noreferrer" data-i18n="openDocumentation">
+                        Open Documentation
                     </a>
                 </div>
 
                 <div class="pills">
-                    <button class="pill" data-team="red">
+                    <button class="pill" data-team="red" data-i18n="redTeam">
                         <span class="pill-dot"></span>
                         Red Team
                     </button>
-                    <button class="pill" data-team="blue">
+                    <button class="pill" data-team="blue" data-i18n="blueTeam">
                         <span class="pill-dot"></span>
                         Blue Team
                     </button>
-                    <button class="pill active" data-team="purple">
+                    <button class="pill active" data-team="purple" data-i18n="purpleTeam">
                         <span class="pill-dot"></span>
                         Purple Team
                     </button>
-                    <button class="pill" data-team="root">
+                    <button class="pill" data-team="root" data-i18n="rootMe">
                         <span class="pill-dot"></span>
                         Root Me
                     </button>
-                    <button class="pill" data-team="custom">
+                    <button class="pill" data-team="custom" data-i18n="custom">
                         <span class="pill-dot"></span>
                         Custom
                     </button>
@@ -122,24 +130,24 @@
         <div class="container">
             <h2 class="section-title">
                 <span class="title-bracket">[</span>
-                Features
+                <span data-i18n="features">Features</span>
                 <span class="title-bracket">]</span>
             </h2>
             <div class="features-grid">
                 <div class="feature-card">
                     <div class="feature-icon"></div>
-                    <h3>Lightweight</h3>
-                    <p>Hyprland is snappy. Everything responds instantly. No bloat.</p>
+                    <h3 data-i18n="lightweight">Lightweight</h3>
+                    <p data-i18n="lightweightDesc">Hyprland is snappy. Everything responds instantly. No bloat.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon"></div>
-                    <h3>Tools Included</h3>
-                    <p>Nmap, Burp, Metasploit, Wireshark, and more. Choose your profile (Red/Blue/Purple/CTF).</p>
+                    <h3 data-i18n="toolsIncluded">Tools Included</h3>
+                    <p data-i18n="toolsIncludedDesc">Nmap, Burp, Metasploit, Wireshark, and more. Choose your profile (Red/Blue/Purple/CTF).</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon"></div>
-                    <h3>Pick Your Colors</h3>
-                    <p>Red, Blue, or Purple. Switch themes without restarting. Wallpapers included.</p>
+                    <h3 data-i18n="pickColors">Pick Your Colors</h3>
+                    <p data-i18n="pickColorsDesc">Red, Blue, or Purple. Switch themes without restarting. Wallpapers included.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon"></div>

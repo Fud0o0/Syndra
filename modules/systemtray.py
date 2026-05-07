@@ -27,6 +27,9 @@ class _DummySystemTray(Box):
     def set_visible(self, visible: bool):
         pass
 
+    def _update_visibility(self):
+        pass
+
 
 if not GRAY_AVAILABLE:
     SystemTray = _DummySystemTray

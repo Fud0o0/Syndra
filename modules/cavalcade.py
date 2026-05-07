@@ -13,10 +13,13 @@ from gi.repository import Gdk, GLib, Gtk
 from loguru import logger
 
 
-def get_bars(file_path):
+def get_bars(file_path, default=20):
     config = configparser.ConfigParser()
     config.read(file_path)
-    return int(config['general']['bars'])
+    try:
+        return int(config['general']['bars'])
+    except (KeyError, ValueError):
+        return default
 
 CAVA_CONFIG = get_relative_path("../config/cavalcade/cava.ini")
 

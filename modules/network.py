@@ -1,7 +1,9 @@
 import gi
+import logging
+
+logger = logging.getLogger(__name__)
 
 gi.require_version('Gtk', '3.0')
-gi.require_version('NM', '1.0')
 from fabric.utils import bulk_connect
 from fabric.widgets.box import Box
 from fabric.widgets.button import Button
@@ -9,10 +11,22 @@ from fabric.widgets.centerbox import CenterBox
 from fabric.widgets.image import Image
 from fabric.widgets.label import Label
 from fabric.widgets.scrolledwindow import ScrolledWindow
-from gi.repository import NM, GLib, Gtk
+from gi.repository import GLib, Gtk
+
+try:
+    gi.require_version('NM', '1.0')
+    from gi.repository import NM
+    _NM_AVAILABLE = True
+except (ValueError, ImportError):
+    _NM_AVAILABLE = False
+    logger.warning("NetworkManager GObject (NM) non disponible — réseau Wi-Fi désactivé.")
 
 import modules.icons as icons
-from services.network import NetworkClient
+
+try:
+    from services.network import NetworkClient
+except (ImportError, Exception):
+    NetworkClient = None
 
 
 class WifiAccessPointSlot(CenterBox):
@@ -58,13 +72,16 @@ class WifiAccessPointSlot(CenterBox):
 
 class NetworkConnections(Box):
     def __init__(self, **kwargs):
+        self._widgets_ref = kwargs.pop("widgets", None)
         super().__init__(
             name="network-connections",
             orientation="vertical",
             spacing=4,
             **kwargs,
         )
-        self.widgets = kwargs.get("widgets")
+        self.widgets = self._widgets_ref
+        if not _NM_AVAILABLE or NetworkClient is None:
+            return
         self.network_client = NetworkClient()
 
         self.status_label = Label(label="Initializing Wi-Fi...", h_expand=True, h_align="center")

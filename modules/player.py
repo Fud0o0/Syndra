@@ -15,7 +15,11 @@ from gi.repository import Gdk, Gio, GLib, Gtk
 import config.data as data
 import modules.icons as icons
 from modules.cavalcade import SpectrumRender
-from services.mpris import MprisPlayer, MprisPlayerManager
+try:
+    from services.mpris import MprisPlayer, MprisPlayerManager
+    _MPRIS_AVAILABLE = True
+except (ImportError, Exception):
+    _MPRIS_AVAILABLE = False
 from widgets.circle_image import CircleImage
 
 vertical_mode = False
@@ -417,18 +421,23 @@ class Player(Box):
         )
         self.switcher.set_stack(self.player_stack)
         self.switcher.set_halign(Gtk.Align.CENTER)
-        self.mpris_manager = MprisPlayerManager()
-        players = self.mpris_manager.players
-        if players:
-            for p in players:
-                mp = MprisPlayer(p)
-                pb = PlayerBox(mpris_player=mp)
-                self.player_stack.add_titled(pb, mp.player_name, mp.player_name)
+        if _MPRIS_AVAILABLE:
+            self.mpris_manager = MprisPlayerManager()
+            players = self.mpris_manager.players
+            if players:
+                for p in players:
+                    mp = MprisPlayer(p)
+                    pb = PlayerBox(mpris_player=mp)
+                    self.player_stack.add_titled(pb, mp.player_name, mp.player_name)
+            else:
+                pb = PlayerBox(mpris_player=None)
+                self.player_stack.add_titled(pb, "nothing", "Nothing Playing")
+            self.mpris_manager.connect("player-appeared", self.on_player_appeared)
+            self.mpris_manager.connect("player-vanished", self.on_player_vanished)
         else:
+            self.mpris_manager = None
             pb = PlayerBox(mpris_player=None)
             self.player_stack.add_titled(pb, "nothing", "Nothing Playing")
-        self.mpris_manager.connect("player-appeared", self.on_player_appeared)
-        self.mpris_manager.connect("player-vanished", self.on_player_vanished)
         self.switcher.set_visible(True)
         self.add(self.player_stack)
         self.add(self.switcher)

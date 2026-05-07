@@ -9,11 +9,16 @@ from pathlib import Path
 
 import gi
 
-# Insertion for embedded VTE terminal
 gi.require_version("Gtk", "3.0")
 gi.require_version("Gdk", "3.0")
-gi.require_version("Vte", "2.91")
-from gi.repository import Gdk, GLib, Gtk, Vte
+from gi.repository import Gdk, GLib, Gtk
+
+try:
+    gi.require_version("Vte", "2.91")
+    from gi.repository import Vte
+    _VTE_AVAILABLE = True
+except (ValueError, ImportError):
+    _VTE_AVAILABLE = False
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from fabric.utils.helpers import get_relative_path
@@ -293,50 +298,40 @@ class UpdateWindow(Gtk.Window):
         # Hide the progress bar (we don't need it now)
         self.progress_bar.set_visible(False)
 
-        # If there's no container for the terminal, create it
-        if self.terminal_container is None:
-            # Scrollable container so the terminal can scroll
-            self.terminal_container = Gtk.ScrolledWindow()
-            self.terminal_container.set_hexpand(True)
-            self.terminal_container.set_vexpand(True)
-            self.terminal_container.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
-
-            # Create the VTE terminal
-            self.vte_terminal = Vte.Terminal()
-            self.vte_terminal.set_size(120, 48)
-            # Make update window larger
-            self.set_default_size(720, 540)
-            self.terminal_container.add(self.vte_terminal)
-            # Insert the terminal at the end of main_vbox
-            self.main_vbox.pack_start(self.terminal_container, True, True, 0)
-
-        # Show everything
-        self.show_all()
-
-        # Command to run in the terminal
+        # Command to run
         if self.pkg_update:
-            # TODO: Update to SyndraShell's own install script URL
             update_command = "curl -fsSL https://raw.githubusercontent.com/Fud0o0/SyndraShell/main/install.sh | bash"
         else:
-            # Ensure REPO_DIR is correctly defined at the top of the file.
             update_command = f"git -C \"{REPO_DIR}\" pull && echo 'Reloading in 3...' && sleep 1 && echo '2...' && sleep 1 && echo '1...' && sleep 1 && killall {data.APP_NAME} && setsid python \"{REPO_DIR}main.py\""
 
+        if _VTE_AVAILABLE:
+            # If there's no container for the terminal, create it
+            if self.terminal_container is None:
+                self.terminal_container = Gtk.ScrolledWindow()
+                self.terminal_container.set_hexpand(True)
+                self.terminal_container.set_vexpand(True)
+                self.terminal_container.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
+                self.vte_terminal = Vte.Terminal()
+                self.vte_terminal.set_size(120, 48)
+                self.set_default_size(720, 540)
+                self.terminal_container.add(self.vte_terminal)
+                self.main_vbox.pack_start(self.terminal_container, True, True, 0)
 
-        # Spawn the process asynchronously inside the terminal
-        self.vte_terminal.spawn_async(
-            Vte.PtyFlags.DEFAULT,
-            os.environ.get("HOME", "/"), # CWD for the command
-            ["/bin/bash", "-lc", update_command], # Command and args
-            [], # envv
-            GLib.SpawnFlags.DO_NOT_REAP_CHILD, # spawn_flags
-            None, # child_setup
-            None, # child_setup_data
-            -1, # timeout
-            None, # cancellable
-            None, # callback_data for Vte.Terminal.spawn_async_wait_finish
-            self.on_curl_script_exit, # callback for when process finishes
-            None # user_data for callback
-        )
+            self.show_all()
+            self.vte_terminal.spawn_async(
+                Vte.PtyFlags.DEFAULT,
+                os.environ.get("HOME", "/"),
+                ["/bin/bash", "-lc", update_command],
+                [],
+                GLib.SpawnFlags.DO_NOT_REAP_CHILD,
+                None, None, -1, None, None,
+                self.on_curl_script_exit,
+                None
+            )
+        else:
+            # Fallback sans VTE : lancer en arrière-plan
+            self.show_all()
+            subprocess.Popen(["/bin/bash", "-lc", update_command])
 
     def on_curl_script_exit(self, terminal, exit_status, user_data):
         """

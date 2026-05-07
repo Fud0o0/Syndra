@@ -6,9 +6,53 @@ import time
 from pathlib import Path
 
 import gi
-import toml
 
 gi.require_version("Gtk", "3.0")
+
+# toml n'est pas dans le stdlib Python 3.11+ — utiliser tomllib (lecture) + sérialiseur maison (écriture)
+try:
+    import toml as _toml_mod
+    _toml_load = _toml_mod.load
+    _toml_dump = _toml_mod.dump
+    _TomlDecodeError = _toml_mod.TomlDecodeError
+except ImportError:
+    try:
+        import tomllib as _tomllib
+    except ImportError:
+        import tomli as _tomllib  # pip install tomli si Python < 3.11
+
+    def _toml_load(f):
+        content = f.read()
+        if isinstance(content, str):
+            content = content.encode()
+        return _tomllib.loads(content.decode())
+
+    _TomlDecodeError = Exception
+
+    def _toml_value(v):
+        if isinstance(v, bool):
+            return "true" if v else "false"
+        if isinstance(v, str):
+            return f'"{v}"'
+        return str(v)
+
+    def _toml_dump(data: dict, f, _prefix: str = ""):
+        scalars = {k: v for k, v in data.items() if not isinstance(v, dict)}
+        sections = {k: v for k, v in data.items() if isinstance(v, dict)}
+        for k, v in scalars.items():
+            f.write(f"{k} = {_toml_value(v)}\n")
+        for section, content in sections.items():
+            header = f"{_prefix}.{section}" if _prefix else section
+            f.write(f"\n[{header}]\n")
+            sub_scalars = {k: v for k, v in content.items() if not isinstance(v, dict)}
+            sub_sections = {k: v for k, v in content.items() if isinstance(v, dict)}
+            for k, v in sub_scalars.items():
+                f.write(f"{k} = {_toml_value(v)}\n")
+            for sub, sub_content in sub_sections.items():
+                sub_header = f"{header}.{sub}"
+                f.write(f"\n[{sub_header}]\n")
+                for k, v in sub_content.items():
+                    f.write(f"{k} = {_toml_value(v)}\n")
 from fabric.utils.helpers import exec_shell_command_async
 from gi.repository import GLib
 
@@ -99,9 +143,9 @@ def ensure_matugen_config():
     if os.path.exists(config_path):
         try:
             with open(config_path, "r") as f:
-                existing_config = toml.load(f)
+                existing_config = _toml_load(f)
             shutil.copyfile(config_path, config_path + ".bak")
-        except toml.TomlDecodeError:
+        except _TomlDecodeError:
             print(
                 f"Warning: Could not decode TOML from {config_path}. A new default config will be created."
             )
@@ -123,7 +167,7 @@ def ensure_matugen_config():
 
     try:
         with open(config_path, "w") as f:
-            toml.dump(merged_config, f)
+            _toml_dump(merged_config, f)
     except Exception as e:
         print(f"Error writing matugen config to {config_path}: {e}")
 

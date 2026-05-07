@@ -6,7 +6,40 @@ import re
 import subprocess
 from collections.abc import Iterator
 
-import numpy as np
+try:
+    import numpy as np
+except ImportError:
+    import math as _math
+    class _NpShim:
+        pi = _math.pi
+        e = _math.e
+        sin = staticmethod(_math.sin)
+        cos = staticmethod(_math.cos)
+        tan = staticmethod(_math.tan)
+        log10 = staticmethod(_math.log10)
+        log = staticmethod(_math.log)
+        sqrt = staticmethod(_math.sqrt)
+        abs = staticmethod(abs)
+        exp = staticmethod(_math.exp)
+        factorial = staticmethod(_math.factorial)
+        floor = staticmethod(_math.floor)
+        ceil = staticmethod(_math.ceil)
+        @staticmethod
+        def arange(start, stop=None, step=1):
+            if stop is None: start, stop = 0, start
+            r, x = [], start
+            while x < stop: r.append(x); x += step
+            return r
+        @staticmethod
+        def linspace(start, stop, num=50):
+            if num <= 1: return [start]
+            return [start + (stop - start) * i / (num - 1) for i in range(num)]
+        @staticmethod
+        def array(x): return list(x)
+        class ndarray(list): pass
+        class number(float): pass
+        class integer(int): pass
+    np = _NpShim()
 from fabric.utils import (DesktopApp, exec_shell_command_async,
                           get_desktop_applications, idle_add, remove_handler)
 from fabric.utils.helpers import get_relative_path

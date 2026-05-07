@@ -69,6 +69,15 @@ class Cava:
         is_16bit = True
         self.byte_type, self.byte_size, self.byte_norm = ("H", 2, 65535) if is_16bit else ("B", 1, 255)
 
+        import shutil
+        self._cava_available = shutil.which("cava") is not None
+        if not self._cava_available:
+            logger.warning("cava non trouvé — visualiseur audio désactivé.")
+            self.fifo_fd = None
+            self.fifo_dummy_fd = None
+            self.io_watch_id = None
+            return
+
         if not os.path.exists(self.path):
             os.mkfifo(self.path)
 
@@ -139,7 +148,7 @@ class Cava:
 
     def start(self):
         """Launch cava"""
-        if self._started:
+        if self._started or not getattr(self, '_cava_available', True):
             return
         self._start_io_reader()
         self._run_process()

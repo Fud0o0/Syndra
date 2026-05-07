@@ -12,6 +12,11 @@ echo "Démarrage de SyndraShell..."
 
 export PROC_TITLE="syndrashell"
 
+# Tuer toute instance existante
+pkill -f "python.*main\.py" 2>/dev/null || true
+pkill -f "syndrashell" 2>/dev/null || true
+sleep 0.5
+
 # Installer la police tabler-icons si absente
 FONT_DEST="$HOME/.local/share/fonts/tabler-icons"
 FONT_SRC="$INSTALL_DIR/assets/fonts/tabler-icons/tabler-icons.ttf"

@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Documentation Syndra</title>
+  <script src="translations.js"></script>
   <style>
     :root {
       --bg: #090412;
@@ -136,9 +137,46 @@
       .toc a { color: #1d4ed8; }
       pre { background: #f3f4f6; color: #111827; border-color: #d1d5db; }
     }
+
+    /* Language Selector */
+    .language-selector-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 2000;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    #language-selector {
+      padding: 8px 12px;
+      background: rgba(0, 0, 0, 0.6);
+      border: 2px solid rgba(179, 102, 255, 0.5);
+      border-radius: 8px;
+      color: #f3ecff;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    #language-selector:hover {
+      box-shadow: 0 0 15px rgba(179, 102, 255, 0.6);
+      background: rgba(179, 102, 255, 0.1);
+      border-color: #d699ff;
+    }
   </style>
 </head>
 <body>
+  <div class="language-selector-container">
+    <select id="language-selector">
+      <option value="fr">Français</option>
+      <option value="en">English</option>
+      <option value="es">Español</option>
+    </select>
+  </div>
   <main class="page">
     <section class="hero">
       <span class="tag">Documentation officielle</span>

@@ -11,10 +11,22 @@ import sys
 import gi
 
 gi.require_version("GLib", "2.0")
-import setproctitle
-from fabric import Application
-from fabric.utils import exec_shell_command_async, get_relative_path
-from gi.repository import GLib
+
+# S'assurer que le répertoire du script est dans sys.path
+_script_dir = os.path.dirname(os.path.abspath(__file__))
+if _script_dir not in sys.path:
+    sys.path.insert(0, _script_dir)
+
+try:
+    import setproctitle
+    from fabric import Application
+    from fabric.utils import exec_shell_command_async, get_relative_path
+    from gi.repository import GLib
+except ImportError as e:
+    print(f"Erreur: dépendance manquante — {e}")
+    print("Installez les dépendances avec: pip install -r requirements.txt")
+    print("Et assurez-vous que python-fabric-git est installé (AUR).")
+    sys.exit(1)
 
 from config.data import APP_NAME, APP_NAME_CAP, CACHE_DIR, CONFIG_FILE, HOME_DIR
 from modules.bar import Bar

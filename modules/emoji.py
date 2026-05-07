@@ -1,7 +1,12 @@
 import os
 import subprocess
 
-import ijson
+try:
+    import ijson
+    _IJSON_AVAILABLE = True
+except ImportError:
+    import json as _json_fallback
+    _IJSON_AVAILABLE = False
 from fabric.utils import remove_handler
 from fabric.utils.helpers import get_relative_path
 from fabric.widgets.box import Box
@@ -93,8 +98,11 @@ class EmojiPicker(Box):
             return {}
 
         with open(emoji_file_path, 'r') as f:
-            for emoji_char, emoji_info in ijson.kvitems(f, ''):
-                emoji_data[emoji_char] = emoji_info
+            if _IJSON_AVAILABLE:
+                for emoji_char, emoji_info in ijson.kvitems(f, ''):
+                    emoji_data[emoji_char] = emoji_info
+            else:
+                emoji_data = _json_fallback.load(f)
         return emoji_data
 
     def close_picker(self):

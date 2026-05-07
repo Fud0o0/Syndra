@@ -208,6 +208,11 @@ class WallpaperSelector(Box):
 
     def _load_wallpapers_async(self):
         """Non-blocking wallpaper processing."""
+        if not os.path.isdir(data.WALLPAPERS_DIR):
+            try:
+                os.makedirs(data.WALLPAPERS_DIR, exist_ok=True)
+            except Exception:
+                return
 
         # Process old wallpapers: use os.scandir for efficiency and only loop
         # over image files that actually need renaming (they're not already lowercase

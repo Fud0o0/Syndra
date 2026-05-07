@@ -1,4 +1,9 @@
-import requests
+try:
+    import requests as _requests
+    _REQUESTS_AVAILABLE = True
+except ImportError:
+    _requests = None
+    _REQUESTS_AVAILABLE = False
 
 
 class Units():
@@ -380,8 +385,11 @@ class Conversion():
         if from_lower == to_lower:
             return value
 
+        if not _REQUESTS_AVAILABLE:
+            raise ValueError("Currency conversion requires the 'requests' package (not installed)")
+
         url = f"https://www.floatrates.com/daily/{from_lower}.json"
-        resp = requests.get(url, timeout=5)
+        resp = _requests.get(url, timeout=5)
         if resp.status_code != 200:
             raise ValueError(f"Error al obtener datos de floatrates para {from_code}")
 

@@ -5,6 +5,8 @@ Powered by Fabric Framework
 Inspired by Ax-Shell by Axenide
 """
 
+import ctypes
+import ctypes.util
 import os
 import sys
 
@@ -16,6 +18,24 @@ gi.require_version("GLib", "2.0")
 _script_dir = os.path.dirname(os.path.abspath(__file__))
 if _script_dir not in sys.path:
     sys.path.insert(0, _script_dir)
+
+def _register_app_fonts():
+    """Charge la police tabler-icons via fontconfig sans installation système."""
+    font_dir = os.path.join(_script_dir, "assets", "fonts", "tabler-icons")
+    if not os.path.isdir(font_dir):
+        return
+    try:
+        lib_name = ctypes.util.find_library("fontconfig")
+        if not lib_name:
+            return
+        libfc = ctypes.CDLL(lib_name)
+        libfc.FcConfigAppFontAddDir.restype = ctypes.c_bool
+        libfc.FcConfigAppFontAddDir.argtypes = [ctypes.c_void_p, ctypes.c_char_p]
+        libfc.FcConfigAppFontAddDir(None, font_dir.encode())
+    except Exception:
+        pass
+
+_register_app_fonts()
 
 try:
     import setproctitle

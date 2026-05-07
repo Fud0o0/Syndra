@@ -19,12 +19,12 @@ All notable changes to SyndraShell will be documented in this file.
   - `scripts/install-root.sh` - Root Me/CTF tools only (~13 GB)
   - Each script checks for base installation before proceeding
 
-- **⚡ Quick Install Scripts** 
+- **⚡ Quick Install Scripts**
   - `docs/get/blue.sh` - One-command install: base + Blue Team
   - `docs/get/red.sh` - One-command install: base + Red Team
   - `docs/get/purple.sh` - One-command install: base + Purple Team
   - `docs/get/root.sh` - One-command install: base + Root Me/CTF
-  - Designed for `curl | bash` installation method
+  - Legacy `curl | bash` flow replaced by clone-and-run instructions
 
 - **🎨 Enhanced Main Installer**
   - `install.sh` - Interactive guided installation
@@ -162,7 +162,9 @@ All notable changes to SyndraShell will be documented in this file.
   - Added recommended keybinds
   - Updated installation dependencies
 
+
 ### Dependencies
+
 - **Required:**
   - hyprshot
   - hyprpicker

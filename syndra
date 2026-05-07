@@ -63,7 +63,10 @@ update_syndra() {
             echo "📦 Téléchargement des mises à jour depuis main..."
             git pull origin main 2>&1
             
-            echo "🔧 Installation des nouvelles dépendances..."
+            echo "� Vérification de l'intégrité des fichiers..."
+            bash "$INSTALL_DIR/scripts/verify-artifacts.sh"
+            
+            echo "�🔧 Installation des nouvelles dépendances..."
             if [ -f "requirements.txt" ]; then
                 pip install --user --break-system-packages -r requirements.txt --upgrade 2>/dev/null
             fi

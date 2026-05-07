@@ -2,11 +2,11 @@
 
 // Install commands per team
 const installCommands = {
-    red: 'curl -fsSL https://raw.githubusercontent.com/Fud0o0/Syndra/main/docs/get/red.sh | bash',
-    blue: 'curl -fsSL https://raw.githubusercontent.com/Fud0o0/Syndra/main/docs/get/blue.sh | bash',
-    purple: 'curl -fsSL https://raw.githubusercontent.com/Fud0o0/Syndra/main/docs/get/purple.sh | bash',
-    root: 'curl -fsSL https://raw.githubusercontent.com/Fud0o0/Syndra/main/docs/get/root.sh | bash',
-    custom: 'curl -fsSL https://raw.githubusercontent.com/Fud0o0/Syndra/main/install.sh | bash'
+    red: 'git clone --depth 1 https://github.com/Fud0o0/Syndra.git ~/.config/SyndraShell && bash ~/.config/SyndraShell/scripts/secure-install.sh red',
+    blue: 'git clone --depth 1 https://github.com/Fud0o0/Syndra.git ~/.config/SyndraShell && bash ~/.config/SyndraShell/scripts/secure-install.sh blue',
+    purple: 'git clone --depth 1 https://github.com/Fud0o0/Syndra.git ~/.config/SyndraShell && bash ~/.config/SyndraShell/scripts/secure-install.sh purple',
+    root: 'git clone --depth 1 https://github.com/Fud0o0/Syndra.git ~/.config/SyndraShell && bash ~/.config/SyndraShell/scripts/secure-install.sh root',
+    custom: 'git clone --depth 1 https://github.com/Fud0o0/Syndra.git ~/.config/SyndraShell && bash ~/.config/SyndraShell/scripts/secure-install.sh interactive'
 };
 
 // Disk space requirements per team

@@ -71,9 +71,8 @@ Nouveaux scripts pour installation en une commande :
 
 **Utilisation :**
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Fud0o0/Syndra/main/docs/get/red.sh | bash
-# Ou avec raccourci (si configuré) :
-curl -L get.syndra.me/red.sh | sh
+git clone --depth 1 https://github.com/Fud0o0/Syndra.git ~/.config/SyndraShell
+bash ~/.config/SyndraShell/docs/get/red.sh
 ```
 
 ---
@@ -186,16 +185,17 @@ install.sh               # 182 lignes - Menu interactif guidé
 
 ```bash
 # Blue Team (Défensif)
-curl -L get.syndra.me/blue.sh | sh
+git clone --depth 1 https://github.com/Fud0o0/Syndra.git ~/.config/SyndraShell
+bash ~/.config/SyndraShell/docs/get/blue.sh
 
 # Red Team (Offensif)
-curl -L get.syndra.me/red.sh | sh
+bash ~/.config/SyndraShell/docs/get/red.sh
 
 # Purple Team (Complet)
-curl -L get.syndra.me/purple.sh | sh
+bash ~/.config/SyndraShell/docs/get/purple.sh
 
 # Root Me/CTF
-curl -L get.syndra.me/root.sh | sh
+bash ~/.config/SyndraShell/docs/get/root.sh
 ```
 
 ### Installation Manuelle (2 étapes)

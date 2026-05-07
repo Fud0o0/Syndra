@@ -12,6 +12,16 @@ echo "Démarrage de SyndraShell..."
 
 export PROC_TITLE="syndrashell"
 
+# Installer la police tabler-icons si absente
+FONT_DEST="$HOME/.local/share/fonts/tabler-icons"
+FONT_SRC="$INSTALL_DIR/assets/fonts/tabler-icons/tabler-icons.ttf"
+if [ -f "$FONT_SRC" ] && [ ! -f "$FONT_DEST/tabler-icons.ttf" ]; then
+    mkdir -p "$FONT_DEST"
+    cp "$FONT_SRC" "$FONT_DEST/"
+    fc-cache -f "$FONT_DEST" 2>/dev/null || true
+    echo "Police tabler-icons installée."
+fi
+
 # Attendre que Hyprland soit prêt
 sleep 1
 

@@ -60,9 +60,12 @@ class CircleImage(Gtk.DrawingArea, Widget):
         self._orig_image: GdkPixbuf.Pixbuf | None = None  # Original image for reprocessing
         self._image: GdkPixbuf.Pixbuf | None = None
         if image_file:
-            pix = GdkPixbuf.Pixbuf.new_from_file(image_file)
-            self._orig_image = pix
-            self._image = self._process_image(pix)
+            try:
+                pix = GdkPixbuf.Pixbuf.new_from_file(image_file)
+                self._orig_image = pix
+                self._image = self._process_image(pix)
+            except Exception:
+                pass
         elif pixbuf:
             self._orig_image = pixbuf
             self._image = self._process_image(pixbuf)
@@ -99,10 +102,13 @@ class CircleImage(Gtk.DrawingArea, Widget):
     def set_image_from_file(self, new_image_file: str):
         if not new_image_file:
             return
-        pixbuf = GdkPixbuf.Pixbuf.new_from_file(new_image_file)
-        self._orig_image = pixbuf
-        self._image = self._process_image(pixbuf)
-        self.queue_draw()
+        try:
+            pixbuf = GdkPixbuf.Pixbuf.new_from_file(new_image_file)
+            self._orig_image = pixbuf
+            self._image = self._process_image(pixbuf)
+            self.queue_draw()
+        except Exception:
+            pass
 
     def set_image_from_pixbuf(self, pixbuf: GdkPixbuf.Pixbuf):
         if not pixbuf:

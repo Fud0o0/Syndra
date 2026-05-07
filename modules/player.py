@@ -49,9 +49,10 @@ class PlayerBox(Box):
         self.mpris_player = mpris_player
         self._progress_timer_id = None
 
+        _wall = os.path.expanduser("~/.current.wall")
         self.cover = CircleImage(
             name="player-cover",
-            image_file=os.path.expanduser("~/.current.wall"),
+            image_file=_wall if os.path.isfile(_wall) else None,
             size=162 if not vertical_mode else 96,
             h_align="center",
             v_align="center",

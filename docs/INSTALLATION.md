@@ -1,5 +1,9 @@
 # 📋 Guide d'Installation Syndra Shell
 
+> [!IMPORTANT]
+> Le flux `curl | bash` est retire.
+> Le flux recommande est: `git clone` + `scripts/secure-install.sh`.
+
 ## 🎯 Nouvelle Structure Modulaire
 
 Syndra Shell utilise maintenant une **installation en 2 étapes** pour plus de flexibilité et moins d'espace disque gaspillé.
@@ -10,6 +14,49 @@ Syndra Shell utilise maintenant une **installation en 2 étapes** pour plus de f
 - ✅ **Moins d'espace gaspillé** : Installez uniquement ce dont vous avez besoin
 - ✅ **Changement facile** : Switchez entre profiles sans réinstaller la base
 - ✅ **Plus rapide** : Installation de base ~5GB au lieu de 15-25GB
+
+---
+
+## 🔐 Installation sécurisée (recommandée)
+
+```bash
+git clone --depth 1 https://github.com/Fud0o0/Syndra.git ~/.config/SyndraShell
+bash ~/.config/SyndraShell/scripts/secure-install.sh interactive
+```
+
+### Profils directs
+
+```bash
+bash ~/.config/SyndraShell/scripts/secure-install.sh blue
+bash ~/.config/SyndraShell/scripts/secure-install.sh red
+bash ~/.config/SyndraShell/scripts/secure-install.sh purple
+bash ~/.config/SyndraShell/scripts/secure-install.sh root
+```
+
+### Vérification d'intégrité
+
+```bash
+bash ~/.config/SyndraShell/scripts/verify-artifacts.sh
+SYNDRA_REQUIRE_SIGNATURE=1 bash ~/.config/SyndraShell/scripts/verify-artifacts.sh
+```
+
+---
+
+## 🧱 Outils isolés (Docker/Podman)
+
+Le GUI reste sur l'hôte, les outils sécurité tournent dans un conteneur isolé.
+
+```bash
+bash ~/.config/SyndraShell/scripts/container-tools.sh purple build
+bash ~/.config/SyndraShell/scripts/container-tools.sh purple run
+```
+
+Volumes partagés par défaut:
+
+- `~/.local/share/syndra-tools/workspace`
+- `~/.local/share/syndra-tools/reports`
+- `~/.local/share/syndra-tools/wordlists`
+- `~/.local/share/syndra-tools/loot`
 
 ---
 
@@ -115,7 +162,7 @@ Pour créer votre propre profil, copiez un des scripts existants et modifiez-le 
 Le script principal `install.sh` guide à travers les 2 étapes automatiquement :
 
 ```bash
-bash install.sh
+bash ~/.config/SyndraShell/install.sh
 ```
 
 ### Le script va :

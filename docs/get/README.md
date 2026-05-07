@@ -7,31 +7,37 @@ Installez Syndra Shell avec votre profil préféré en **une seule commande** !
 ## 📋 Profils Disponibles
 
 ### 🔵 Blue Team (Défensif)
+
 **Outils:** IDS/IPS, Firewall, Antivirus, Monitoring, SIEM  
 **Espace:** ~13 GB
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Fud0o0/Syndra/main/docs/get/blue.sh | bash
+git clone --depth 1 https://github.com/Fud0o0/Syndra.git ~/.config/SyndraShell
+bash ~/.config/SyndraShell/docs/get/blue.sh
 ```
 
-Ou avec le raccourci :
+Si le dossier existe deja, mettez a jour puis lancez le script:
 ```bash
-curl -L get.syndra.me/blue.sh | sh
+git -C ~/.config/SyndraShell pull
+bash ~/.config/SyndraShell/docs/get/blue.sh
 ```
 
 ---
 
 ### 🔴 Red Team (Offensif)
+
 **Outils:** Pentest, Exploitation, Password cracking, Reverse engineering  
 **Espace:** ~15 GB
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Fud0o0/Syndra/main/docs/get/red.sh | bash
+git clone --depth 1 https://github.com/Fud0o0/Syndra.git ~/.config/SyndraShell
+bash ~/.config/SyndraShell/docs/get/red.sh
 ```
 
-Ou avec le raccourci :
+Si le dossier existe deja, mettez a jour puis lancez le script :
 ```bash
-curl -L get.syndra.me/red.sh | sh
+git -C ~/.config/SyndraShell pull
+bash ~/.config/SyndraShell/docs/get/red.sh
 ```
 
 ---
@@ -41,12 +47,14 @@ curl -L get.syndra.me/red.sh | sh
 **Espace:** ~25 GB
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Fud0o0/Syndra/main/docs/get/purple.sh | bash
+git clone --depth 1 https://github.com/Fud0o0/Syndra.git ~/.config/SyndraShell
+bash ~/.config/SyndraShell/docs/get/purple.sh
 ```
 
-Ou avec le raccourci :
+Si le dossier existe deja, mettez a jour puis lancez le script :
 ```bash
-curl -L get.syndra.me/purple.sh | sh
+git -C ~/.config/SyndraShell pull
+bash ~/.config/SyndraShell/docs/get/purple.sh
 ```
 
 ---
@@ -56,12 +64,14 @@ curl -L get.syndra.me/purple.sh | sh
 **Espace:** ~18 GB
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Fud0o0/Syndra/main/docs/get/root.sh | bash
+git clone --depth 1 https://github.com/Fud0o0/Syndra.git ~/.config/SyndraShell
+bash ~/.config/SyndraShell/docs/get/root.sh
 ```
 
-Ou avec le raccourci :
+Si le dossier existe deja, mettez a jour puis lancez le script :
 ```bash
-curl -L get.syndra.me/root.sh | sh
+git -C ~/.config/SyndraShell pull
+bash ~/.config/SyndraShell/docs/get/root.sh
 ```
 
 ---
@@ -71,12 +81,14 @@ curl -L get.syndra.me/root.sh | sh
 Pour installer uniquement l'interface Syndra (sans outils de sécurité) :
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Fud0o0/Syndra/main/install.sh | bash
+git clone --depth 1 https://github.com/Fud0o0/Syndra.git ~/.config/SyndraShell
+bash ~/.config/SyndraShell/install.sh
 ```
 
-Ou :
+Si le dossier existe deja, mettez a jour puis lancez l'installation :
 ```bash
-curl -L get.syndra.me | sh
+git -C ~/.config/SyndraShell pull
+bash ~/.config/SyndraShell/install.sh
 ```
 
 ---

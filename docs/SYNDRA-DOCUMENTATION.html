@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Documentation Syndra</title>
+  <style>
+    :root {
+      --bg: #090412;
+      --panel: rgba(20, 10, 34, 0.94);
+      --panel-2: rgba(28, 14, 47, 0.9);
+      --text: #f3ecff;
+      --muted: #d4c2ff;
+      --accent: #b366ff;
+      --accent-2: #d699ff;
+      --border: rgba(179, 102, 255, 0.22);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(179, 102, 255, 0.16) 0%, transparent 34%),
+        radial-gradient(circle at 80% 80%, rgba(214, 153, 255, 0.1) 0%, transparent 38%),
+        radial-gradient(ellipse at center, #14081f 0%, #090412 100%);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .page {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 56px 28px 72px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, rgba(179, 102, 255, 0.2), rgba(28, 14, 47, 0.96));
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 32px;
+      margin-bottom: 28px;
+      box-shadow:
+        0 24px 80px rgba(0, 0, 0, 0.32),
+        0 0 0 1px rgba(179, 102, 255, 0.06);
+    }
+
+    h1, h2, h3 {
+      margin: 0 0 12px;
+      line-height: 1.2;
+    }
+
+    h1 {
+      font-size: 2.4rem;
+      letter-spacing: 0.02em;
+    }
+
+    .subtitle {
+      margin: 10px 0 0;
+      color: #cbd5e1;
+      max-width: 72ch;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+      margin: 22px 0;
+    }
+
+    .card {
+      background: linear-gradient(180deg, rgba(25, 12, 40, 0.96), rgba(18, 9, 31, 0.96));
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 22px;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(179, 102, 255, 0.18);
+      color: #f1ddff;
+      font-size: 0.9rem;
+      margin-bottom: 14px;
+    }
+
+    ul, ol { margin: 0; padding-left: 22px; }
+    li { margin: 6px 0; }
+
+    code, pre {
+      font-family: Consolas, Monaco, monospace;
+      font-size: 0.95em;
+    }
+
+    pre {
+      margin: 12px 0 0;
+      padding: 16px;
+      border-radius: 16px;
+      background: #08040f;
+      border: 1px solid rgba(179, 102, 255, 0.12);
+      overflow-x: auto;
+      color: #eadcff;
+    }
+
+    .section {
+      margin-top: 26px;
+      background: linear-gradient(180deg, rgba(21, 11, 35, 0.92), rgba(14, 7, 24, 0.96));
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 24px;
+    }
+
+    .section h2 {
+      font-size: 1.5rem;
+      color: #f8fafc;
+    }
+
+    .muted { color: #cbd5e1; }
+    .accent { color: #c4b5fd; }
+
+    .toc a {
+      color: #d699ff;
+      text-decoration: none;
+    }
+
+    .toc a:hover { text-decoration: underline; }
+
+    @media print {
+      body { background: white; color: #111827; }
+      .page { max-width: none; padding: 0.5in; }
+      .hero, .card, .section { box-shadow: none; background: white; border-color: #d1d5db; }
+      .tag { background: #ede9fe; color: #5b21b6; }
+      .muted, .subtitle { color: #374151; }
+      .toc a { color: #1d4ed8; }
+      pre { background: #f3f4f6; color: #111827; border-color: #d1d5db; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <span class="tag">Documentation officielle</span>
+      <h1>Syndra</h1>
+      <p class="subtitle">Syndra est un environnement Hyprland orienté cybersécurité, pensé pour des usages Red Team, Blue Team, Purple Team et CTF. Cette documentation résume l'installation, les commandes principales, les profils disponibles et les bonnes pratiques de sécurité.</p>
+    </section>
+
+    <section class="section toc">
+      <h2>Sommaire</h2>
+      <ol>
+        <li><a href="#presentation">Présentation</a></li>
+        <li><a href="#installation">Installation</a></li>
+        <li><a href="#verification">Vérification d'intégrité</a></li>
+        <li><a href="#profils">Profils disponibles</a></li>
+        <li><a href="#commandes">Commandes principales</a></li>
+        <li><a href="#raccourcis">Raccourcis clavier</a></li>
+        <li><a href="#outils">Outils intégrés</a></li>
+        <li><a href="#desinstallation">Désinstallation</a></li>
+      </ol>
+    </section>
+
+    <section class="section" id="presentation">
+      <h2>1. Présentation</h2>
+      <p class="muted">Syndra combine une interface Hyprland légère avec une logique d'installation sécurisée et des outils séparés en profils. L'objectif est de fournir un environnement utilisable au quotidien sans mélanger directement le GUI et la boîte à outils offensive/défensive.</p>
+      <div class="grid">
+        <div class="card">
+          <h3>Points clés</h3>
+          <ul>
+            <li>Interface principale sur l'hôte avec Hyprland.</li>
+            <li>Outils de sécurité isolés via Docker ou Podman.</li>
+            <li>Installation sécurisée avec contrôle d'intégrité.</li>
+            <li>Profils Blue, Red, Purple et Root/CTF.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Pré-requis</h3>
+          <ul>
+            <li>Arch Linux pour l'installation complète du GUI.</li>
+            <li><code>git</code>.</li>
+            <li>Hyprland fonctionnel.</li>
+            <li>Docker ou Podman pour les outils conteneurisés.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="installation">
+      <h2>2. Installation</h2>
+      <p class="muted">La méthode recommandée consiste à cloner le dépôt puis lancer l'installateur sécurisé.</p>
+      <div class="card">
+        <h3>Installation recommandée</h3>
+        <pre>git clone --depth 1 https://github.com/Fud0o0/Syndra.git ~/.config/SyndraShell
+bash ~/.config/SyndraShell/scripts/secure-install.sh interactive</pre>
+      </div>
+      <div class="card" style="margin-top: 18px;">
+        <h3>Installation directe par profil</h3>
+        <pre>bash ~/.config/SyndraShell/scripts/secure-install.sh blue
+bash ~/.config/SyndraShell/scripts/secure-install.sh red
+bash ~/.config/SyndraShell/scripts/secure-install.sh purple
+bash ~/.config/SyndraShell/scripts/secure-install.sh root</pre>
+      </div>
+    </section>
+
+    <section class="section" id="verification">
+      <h2>3. Vérification d'intégrité</h2>
+      <p class="muted">Les artefacts peuvent être vérifiés avant installation. Le mode strict impose aussi une signature valide.</p>
+      <div class="grid">
+        <div class="card">
+          <h3>Contrôle SHA256</h3>
+          <pre>bash ~/.config/SyndraShell/scripts/verify-artifacts.sh</pre>
+        </div>
+        <div class="card">
+          <h3>Mode strict</h3>
+          <pre>SYNDRA_REQUIRE_SIGNATURE=1 bash ~/.config/SyndraShell/scripts/verify-artifacts.sh</pre>
+        </div>
+      </div>
+      <p class="muted">La politique de signature mainteneur est décrite dans <span class="accent">checksums/SIGNING.md</span>.</p>
+    </section>
+
+    <section class="section" id="profils">
+      <h2>4. Profils disponibles</h2>
+      <div class="grid">
+        <div class="card"><h3>Blue</h3><p class="muted">Défense, monitoring, détection, analyse d'incidents.</p></div>
+        <div class="card"><h3>Red</h3><p class="muted">Pentest, exploitation, reconnaissance, post-exploitation.</p></div>
+        <div class="card"><h3>Purple</h3><p class="muted">Couverture complète Red + Blue pour les opérations mixtes.</p></div>
+        <div class="card"><h3>Root</h3><p class="muted">CTF, pwn, forensics, crypto et laboratoire technique.</p></div>
+      </div>
+    </section>
+
+    <section class="section" id="commandes">
+      <h2>5. Commandes principales</h2>
+      <div class="grid">
+        <div class="card"><h3>syndra update</h3><p class="muted">Met à jour Syndra depuis GitHub avec vérification d'intégrité.</p></div>
+        <div class="card"><h3>syndra restart</h3><p class="muted">Redémarre le shell sans déconnexion.</p></div>
+        <div class="card"><h3>syndra menu</h3><p class="muted">Ouvre le menu d'applications.</p></div>
+        <div class="card"><h3>syndra provisional</h3><p class="muted">Lance l'interface GTK provisoire.</p></div>
+        <div class="card"><h3>syndra autostart</h3><p class="muted">Gère le démarrage automatique.</p></div>
+        <div class="card"><h3>syndra version</h3><p class="muted">Affiche la version et le hash du commit.</p></div>
+      </div>
+    </section>
+
+    <section class="section" id="raccourcis">
+      <h2>6. Raccourcis clavier</h2>
+      <div class="grid">
+        <div class="card"><h3>SUPER + A</h3><p class="muted">Menu Syndra.</p></div>
+        <div class="card"><h3>SUPER + D</h3><p class="muted">Dashboard.</p></div>
+        <div class="card"><h3>SUPER + R</h3><p class="muted">Terminal Kitty.</p></div>
+        <div class="card"><h3>SUPER + L</h3><p class="muted">Verrouillage de session.</p></div>
+        <div class="card"><h3>SUPER + Q</h3><p class="muted">Ferme la fenêtre courante.</p></div>
+        <div class="card"><h3>SUPER + ALT + B</h3><p class="muted">Recharge immédiatement Syndra.</p></div>
+      </div>
+    </section>
+
+    <section class="section" id="outils">
+      <h2>7. Outils intégrés</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Reconnaissance</h3>
+          <ul>
+            <li>Nmap</li>
+            <li>Masscan</li>
+            <li>Amass</li>
+            <li>Subfinder</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Exploitation</h3>
+          <ul>
+            <li>Metasploit</li>
+            <li>SQLmap</li>
+            <li>Burp Suite</li>
+            <li>Scripts personnalisés</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Post-exploitation</h3>
+          <ul>
+            <li>Mimikatz</li>
+            <li>BloodHound</li>
+            <li>Empire</li>
+            <li>LinPEAS</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Analyse</h3>
+          <ul>
+            <li>Wireshark</li>
+            <li>Ghidra</li>
+            <li>Volatility</li>
+            <li>YARA</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="desinstallation">
+      <h2>8. Désinstallation</h2>
+      <p class="muted">Pour supprimer Syndra de la machine :</p>
+      <div class="card">
+        <pre>cd ~/.config/SyndraShell
+bash uninstall.sh</pre>
+      </div>
+    </section>
+
+  </main>
+</body>
+</html>

@@ -5,7 +5,8 @@
 L'interface provisoire s'installe **automatiquement** avec Syndra :
 
 ```bash
-curl -L get.syndra.me/purple | sh
+git clone --depth 1 https://github.com/Fud0o0/Syndra.git ~/.config/SyndraShell
+bash ~/.config/SyndraShell/docs/get/purple.sh
 ```
 
 Pendant l'installation, vous serez invité à :

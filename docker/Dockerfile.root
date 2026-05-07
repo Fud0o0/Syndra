@@ -1,0 +1,24 @@
+FROM archlinux:latest
+
+LABEL org.opencontainers.image.title="Syndra Root Me"
+LABEL org.opencontainers.image.description="Isolated Root Me / CTF toolkit for Syndra"
+
+RUN pacman -Syu --noconfirm \
+    && pacman -S --needed --noconfirm \
+        python python-pip git wget curl base-devel nodejs npm go rust \
+        gdb radare2 ghidra binwalk foremost ltrace strace hexedit xxd file \
+        binutils gcc make cmake nasm yasm qemu-user qemu-system-x86 \
+        wireshark-cli tcpdump nmap masscan hashcat john openssl steghide \
+        exiftool sleuthkit autopsy testdisk photorec burpsuite zaproxy \
+        sqlmap nikto gobuster ffuf wfuzz dirb \
+    && pacman -Scc --noconfirm
+
+RUN pip install --no-cache-dir \
+    pwntools angr z3-solver capstone unicorn keystone-engine \
+    ropper ropgadget pycryptodome gmpy2 sympy requests beautifulsoup4 lxml scapy paramiko
+
+RUN useradd -m -s /bin/bash syndra
+USER syndra
+WORKDIR /workspace
+
+CMD ["bash"]

@@ -21,36 +21,38 @@ if _script_dir not in sys.path:
 
 def _ensure_tabler_icons_font():
     """
-    Installe tabler-icons dans ~/.local/share/fonts/ si absent,
-    puis l'enregistre dans fontconfig pour ce processus.
-    Approche identique à ax-shell install.sh (copie dans ~/.fonts/).
+    Copie tabler-icons dans ~/.fonts/ (exactement comme ax-shell install.sh)
+    et reconstruit le cache fontconfig.
     """
     import shutil, subprocess
     font_src = os.path.join(_script_dir, "assets", "fonts", "tabler-icons", "tabler-icons.ttf")
     if not os.path.isfile(font_src):
         return
 
-    # 1. Copie permanente dans le répertoire utilisateur (comme ax-shell)
-    dest_dir = os.path.expanduser("~/.local/share/fonts/tabler-icons")
-    dest_file = os.path.join(dest_dir, "tabler-icons.ttf")
-    if not os.path.isfile(dest_file):
-        os.makedirs(dest_dir, exist_ok=True)
-        shutil.copy2(font_src, dest_file)
-        subprocess.run(["fc-cache", "-f", dest_dir], capture_output=True)
+    # Copie vers ~/.fonts/tabler-icons/ — emplacement utilisé par ax-shell
+    for dest_dir in [
+        os.path.expanduser("~/.fonts/tabler-icons"),
+        os.path.expanduser("~/.local/share/fonts/tabler-icons"),
+    ]:
+        dest_file = os.path.join(dest_dir, "tabler-icons.ttf")
+        if not os.path.isfile(dest_file):
+            os.makedirs(dest_dir, exist_ok=True)
+            shutil.copy2(font_src, dest_file)
 
-    # 2. Enregistrement immédiat dans fontconfig pour ce processus
+    # Rebuild fontconfig cache pour les fonts utilisateur
+    subprocess.run(["fc-cache", "-f"], capture_output=True)
+
+    # Enregistrement immédiat via fontconfig pour ce processus
     try:
         lib_name = ctypes.util.find_library("fontconfig")
         if lib_name:
             libfc = ctypes.CDLL(lib_name)
-            # Utilise FcConfigGetCurrent() pour la vraie config active
             libfc.FcConfigGetCurrent.restype = ctypes.c_void_p
             libfc.FcConfigAppFontAddDir.restype = ctypes.c_bool
             libfc.FcConfigAppFontAddDir.argtypes = [ctypes.c_void_p, ctypes.c_char_p]
             cfg = libfc.FcConfigGetCurrent()
             font_dir = os.path.join(_script_dir, "assets", "fonts", "tabler-icons")
             libfc.FcConfigAppFontAddDir(cfg, font_dir.encode())
-            libfc.FcConfigAppFontAddDir(cfg, dest_dir.encode())
     except Exception:
         pass
 

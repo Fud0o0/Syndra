@@ -6,7 +6,7 @@ config/secrets/
 *.pem
 .env
 .env.local
-
+claude/settings.local.json
 # Fichiers de configuration personnelle
 config/hypr/hyprland.conf.local
 config/user-config/

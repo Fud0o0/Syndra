@@ -1,3 +1,8 @@
+@font-face {
+  font-family: "tabler-icons";
+  src: url("assets/fonts/tabler-icons/tabler-icons.ttf");
+}
+
 @import url("./styles/applets.css");
 @import url("./styles/bar.css");
 @import url("./styles/battery.css");

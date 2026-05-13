@@ -44,6 +44,17 @@ const translations = {
     "doc_intro": "Syndra est un environnement Hyprland orienté cybersécurité, pensé pour des usages Red Team, Blue Team, Purple Team et CTF. Cette documentation résume l'installation, les commandes principales, les profils disponibles et les bonnes pratiques de sécurité.",
     "doc_presentation_paragraph": "Syndra combine une interface Hyprland légère avec une logique d'installation sécurisée et des outils séparés en profils. L'objectif est de fournir un environnement utilisable au quotidien sans mélanger directement le GUI et la boîte à outils offensive/défensive.",
     "doc_install_method": "La méthode recommandée consiste à cloner le dépôt puis lancer l'installateur sécurisé.",
+    "Interface principale sur l'hôte avec Hyprland.": "Interface principale sur l'hôte avec Hyprland.",
+    "Outils de sécurité isolés via Docker ou Podman.": "Outils de sécurité isolés via Docker ou Podman.",
+    "Installation sécurisée avec contrôle d'intégrité.": "Installation sécurisée avec contrôle d'intégrité.",
+    "Profils Blue, Red, Purple et Root/CTF.": "Profils Blue, Red, Purple et Root/CTF.",
+    "Arch Linux pour l'installation complète du GUI.": "Arch Linux pour l'installation complète du GUI.",
+    "Hyprland fonctionnel.": "Hyprland fonctionnel.",
+    "Docker ou Podman pour les outils conteneurisés.": "Docker ou Podman pour les outils conteneurisés.",
+    "Les artefacts peuvent être vérifiés avant installation. Le mode strict impose aussi une signature valide.": "Les artefacts peuvent être vérifiés avant installation. Le mode strict impose aussi une signature valide.",
+    "La politique de signature mainteneur est décrite dans": "La politique de signature mainteneur est décrite dans",
+    "La politique de signature mainteneur est décrite dans checksums/SIGNING.md.": "La politique de signature mainteneur est décrite dans checksums/SIGNING.md.",
+    "Pour supprimer Syndra de la machine :": "Pour supprimer Syndra de la machine :",
     "Documentation officielle": "Documentation officielle",
     "Sommaire": "Sommaire",
     "1. Présentation": "1. Présentation",
@@ -124,6 +135,17 @@ const translations = {
     "doc_intro": "Syndra is a Hyprland-focused cybersecurity environment, designed for Red Team, Blue Team, Purple Team and CTF use cases. This documentation summarizes installation, main commands, available profiles and security best practices.",
     "doc_presentation_paragraph": "Syndra combines a lightweight Hyprland interface with a secure installation flow and tools separated into profiles. The goal is to provide a daily-usable environment without mixing the GUI and offensive/defensive toolbox directly.",
     "doc_install_method": "The recommended method is to clone the repository then run the secure installer.",
+    "Interface principale sur l'hôte avec Hyprland.": "Main interface on the host with Hyprland.",
+    "Outils de sécurité isolés via Docker ou Podman.": "Security tools isolated through Docker or Podman.",
+    "Installation sécurisée avec contrôle d'intégrité.": "Secure installation with integrity checks.",
+    "Profils Blue, Red, Purple et Root/CTF.": "Blue, Red, Purple and Root/CTF profiles.",
+    "Arch Linux pour l'installation complète du GUI.": "Arch Linux for full GUI installation.",
+    "Hyprland fonctionnel.": "Working Hyprland setup.",
+    "Docker ou Podman pour les outils conteneurisés.": "Docker or Podman for containerized tools.",
+    "Les artefacts peuvent être vérifiés avant installation. Le mode strict impose aussi une signature valide.": "Artifacts can be verified before installation. Strict mode also requires a valid signature.",
+    "La politique de signature mainteneur est décrite dans": "The maintainer signature policy is described in",
+    "La politique de signature mainteneur est décrite dans checksums/SIGNING.md.": "The maintainer signature policy is described in checksums/SIGNING.md.",
+    "Pour supprimer Syndra de la machine :": "To remove Syndra from the machine:",
     "Documentation officielle": "Official Documentation",
     "Sommaire": "Summary",
     "1. Présentation": "1. Presentation",
@@ -204,6 +226,17 @@ const translations = {
     "doc_intro": "Syndra es un entorno de Hyprland orientado a la ciberseguridad, diseñado para los usos de Red Team, Blue Team, Purple Team y CTF. Esta documentación resume la instalación, los comandos principales, los perfiles disponibles y las buenas prácticas de seguridad.",
     "doc_presentation_paragraph": "Syndra combina una interfaz Hyprland ligera con un flujo de instalación seguro y herramientas separadas en perfiles. El objetivo es proporcionar un entorno utilizable a diario sin mezclar directamente la interfaz gráfica y la caja de herramientas ofensiva/defensiva.",
     "doc_install_method": "El método recomendado consiste en clonar el repositorio y luego ejecutar el instalador seguro.",
+    "Interface principale sur l'hôte avec Hyprland.": "Interfaz principal en el host con Hyprland.",
+    "Outils de sécurité isolés via Docker ou Podman.": "Herramientas de seguridad aisladas mediante Docker o Podman.",
+    "Installation sécurisée avec contrôle d'intégrité.": "Instalación segura con verificación de integridad.",
+    "Profils Blue, Red, Purple et Root/CTF.": "Perfiles Blue, Red, Purple y Root/CTF.",
+    "Arch Linux pour l'installation complète du GUI.": "Arch Linux para la instalación completa de la interfaz gráfica.",
+    "Hyprland fonctionnel.": "Hyprland funcional.",
+    "Docker ou Podman pour les outils conteneurisés.": "Docker o Podman para herramientas en contenedores.",
+    "Les artefacts peuvent être vérifiés avant installation. Le mode strict impose aussi une signature valide.": "Los artefactos pueden verificarse antes de la instalación. El modo estricto también exige una firma válida.",
+    "La politique de signature mainteneur est décrite dans": "La política de firma del mantenedor se describe en",
+    "La politique de signature mainteneur est décrite dans checksums/SIGNING.md.": "La política de firma del mantenedor se describe en checksums/SIGNING.md.",
+    "Pour supprimer Syndra de la machine :": "Para eliminar Syndra de la máquina:",
     "Documentation officielle": "Documentación Oficial",
     "Sommaire": "Resumen",
     "1. Présentation": "1. Presentación",
@@ -261,7 +294,7 @@ function translatePage() {
   document.querySelectorAll('[data-i18n]').forEach(element => {
     const key = element.getAttribute('data-i18n');
     const translation = getTranslation(key);
-    if (element.tagName === 'INPUT' && element.type === 'placeholder') {
+    if (element.tagName === 'INPUT' && element.hasAttribute('placeholder')) {
       element.placeholder = translation;
     } else {
       element.innerHTML = translation;
@@ -295,8 +328,8 @@ function translatePage() {
     return s.toString().trim().replace(/\s+/g, ' ').replace(/[\.:,;!\u2026]+$/g, '').toLowerCase();
   }
 
-  // Translate attributes on all elements (alt, title, placeholder, aria-label, value)
-  const ATTRS = ['alt', 'title', 'placeholder', 'aria-label', 'value'];
+  // Translate attributes on all elements (alt, title, placeholder, aria-label)
+  const ATTRS = ['alt', 'title', 'placeholder', 'aria-label'];
   document.querySelectorAll('*').forEach(el => {
     ATTRS.forEach(attr => {
       if (el.hasAttribute(attr)) {
@@ -367,7 +400,7 @@ function translatePage() {
     }
   }
 
-  // Replace content preserving surrounding whitespace and end punctuation, and remove numeric prefixes
+  // Replace content preserving surrounding whitespace and removing numeric prefixes
   for (let i = textNodes.length - 1; i >= 0; i--) {
     const tn = textNodes[i];
     const original = tn.nodeValue;
@@ -380,10 +413,9 @@ function translatePage() {
     const numMatchCore = core.match(/^(\d+\s*[\).\-:]+\s*)/);
     if (numMatchCore) core = core.replace(numMatchCore[1], '');
 
-    // Preserve trailing punctuation (.,:,;,!, …)
+    // Keep the core content for exact translation lookup
     const m = core.match(/^(.*?)([\.:,;!\u2026]+)?$/);
     const textCore = m ? m[1] : core;
-    const punct = m && m[2] ? m[2] : '';
 
     const norm = normalizeForLookup(textCore);
 
@@ -402,21 +434,9 @@ function translatePage() {
       }
     }
 
-    // fuzzy fallback against French reverse map only with length guard
-    if (!key) {
-      for (const frVal in (reverseMaps.fr || {})) {
-        if (!frVal) continue;
-        const lenA = frVal.length; const lenB = norm.length; const ratio = Math.min(lenA,lenB)/Math.max(lenA,lenB);
-        if ((frVal === norm) || ((frVal.includes(norm) || norm.includes(frVal)) && ratio > 0.5)) {
-          key = reverseMaps.fr[frVal];
-          break;
-        }
-      }
-    }
-
     if (key) {
       const translatedCore = getTranslation(key) || textCore;
-      tn.nodeValue = leading + translatedCore + punct + trailing;
+      tn.nodeValue = leading + translatedCore + trailing;
     }
   }
 

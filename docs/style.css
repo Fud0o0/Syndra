@@ -2181,7 +2181,7 @@ section {
 
 #language-selector {
     padding: 8px 12px;
-    background: rgba(0, 0, 0, 0.6);
+    background: rgba(0, 0, 0, 0.8);
     border: 2px solid;
     border-radius: 8px;
     color: var(--text);
@@ -2190,6 +2190,28 @@ section {
     cursor: pointer;
     transition: all 0.3s ease;
     backdrop-filter: blur(10px);
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding-right: 28px;
+    background-image: 
+        linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),
+        url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.8)' stroke-width='2'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat, no-repeat;
+    background-position: 0 0, right 8px center;
+    background-size: 100%, 16px;
+}
+
+#language-selector option {
+    background: rgba(20, 20, 20, 0.95);
+    color: var(--text);
+    padding: 8px;
+    border: none;
+}
+
+#language-selector option:checked {
+    background: linear-gradient(135deg, rgba(50, 50, 50, 0.95), rgba(30, 30, 30, 0.95));
+    color: var(--text);
 }
 
 .red-theme #language-selector {
@@ -2198,7 +2220,12 @@ section {
 
 .red-theme #language-selector:hover {
     box-shadow: 0 0 15px var(--red-primary);
-    background: rgba(255, 0, 102, 0.1);
+    background-image: 
+        linear-gradient(135deg, rgba(255, 0, 102, 0.2), rgba(200, 0, 80, 0.2)),
+        url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='rgba(255,150,200,1)' stroke-width='2'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat, no-repeat;
+    background-position: 0 0, right 8px center;
+    background-size: 100%, 16px;
 }
 
 .blue-theme #language-selector {
@@ -2207,7 +2234,12 @@ section {
 
 .blue-theme #language-selector:hover {
     box-shadow: 0 0 15px var(--blue-primary);
-    background: rgba(0, 212, 255, 0.1);
+    background-image: 
+        linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(0, 150, 200, 0.2)),
+        url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='rgba(150, 240, 255, 1)' stroke-width='2'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat, no-repeat;
+    background-position: 0 0, right 8px center;
+    background-size: 100%, 16px;
 }
 
 .purple-theme #language-selector {
@@ -2216,7 +2248,12 @@ section {
 
 .purple-theme #language-selector:hover {
     box-shadow: 0 0 15px var(--purple-primary);
-    background: rgba(179, 102, 255, 0.1);
+    background-image: 
+        linear-gradient(135deg, rgba(179, 102, 255, 0.2), rgba(120, 60, 200, 0.2)),
+        url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='rgba(200, 150, 255, 1)' stroke-width='2'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat, no-repeat;
+    background-position: 0 0, right 8px center;
+    background-size: 100%, 16px;
 }
 
 .root-theme #language-selector {
@@ -2225,7 +2262,12 @@ section {
 
 .root-theme #language-selector:hover {
     box-shadow: 0 0 15px var(--root-primary);
-    background: rgba(255, 255, 255, 0.1);
+    background-image: 
+        linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(180, 180, 180, 0.1)),
+        url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='rgba(220, 220, 220, 1)' stroke-width='2'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat, no-repeat;
+    background-position: 0 0, right 8px center;
+    background-size: 100%, 16px;
 }
 
 .custom-theme #language-selector {
@@ -2234,7 +2276,12 @@ section {
 
 .custom-theme #language-selector:hover {
     box-shadow: 0 0 15px var(--custom-primary);
-    background: rgba(0, 255, 102, 0.1);
+    background-image: 
+        linear-gradient(135deg, rgba(0, 255, 102, 0.2), rgba(0, 200, 80, 0.2)),
+        url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='rgba(150, 255, 180, 1)' stroke-width='2'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat, no-repeat;
+    background-position: 0 0, right 8px center;
+    background-size: 100%, 16px;
 }
     border-color: var(--blue-primary);
     text-shadow: 0 0 10px var(--blue-primary);
@@ -2612,4 +2659,13 @@ section {
     background: rgba(0, 255, 102, 0.1);
     box-shadow: 0 0 20px rgba(0, 255, 102, 0.4);
     text-shadow: 0 0 10px var(--custom-primary);
+}
+
+/* Force readable text color when language changes (prevents accidental white-on-white)
+   This ensures translations don't trigger unexpected default colors. */
+html[lang] {
+    color: var(--text) !important;
+}
+html[lang] * {
+    color: inherit !important;
 }

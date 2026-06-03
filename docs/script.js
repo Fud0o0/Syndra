@@ -81,9 +81,46 @@ pills.forEach(pill => {
         // Update install command
         updateInstallCommand(team);
         
+        // Update logo color
+        updateLogoColor(team);
+        
         // Save preference
         localStorage.setItem('syndrashell-theme', team);
     });
+});
+
+// Update logo color based on theme
+function updateLogoColor(theme) {
+    const themeFilters = {
+        red: 'hue-rotate(0deg) saturate(1.2) brightness(1.0)',        // Keep red/pink #ff0066
+        blue: 'hue-rotate(-150deg) saturate(1.3) brightness(1.0)',    // Shift to cyan #00d4ff
+        purple: 'hue-rotate(-60deg) saturate(1.2) brightness(1.0)',   // Shift to purple #b366ff
+        root: 'hue-rotate(0deg) saturate(0) brightness(1.8) contrast(1.2)', // Desaturate to white #ffffff
+        custom: 'hue-rotate(180deg) saturate(1.3) brightness(1.0)'    // Shift to green #00ff88
+    };
+    
+    const filter = themeFilters[theme] || 'hue-rotate(-60deg) saturate(1.2) brightness(1.0)';
+    
+    // Apply filter to all logo elements (both object and img)
+    document.querySelectorAll('[data="logo.svg"], img[src="logo.svg"], object[data="logo.svg"]').forEach(el => {
+        el.style.filter = filter;
+        el.style.transition = 'filter 0.3s ease';
+    });
+    
+    // Also apply to retro avatar
+    const retroAvatar = document.querySelector('.retro-avatar');
+    if (retroAvatar) {
+        retroAvatar.style.filter = filter;
+        retroAvatar.style.transition = 'filter 0.3s ease';
+    }
+}
+
+// Call on page load to set initial logo color
+document.addEventListener('DOMContentLoaded', () => {
+    const savedTheme = localStorage.getItem('syndrashell-theme') || 'purple';
+    setTimeout(() => {
+        updateLogoColor(savedTheme);
+    }, 300);
 });
 
 // Add particle effects

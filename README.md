@@ -1,146 +1,206 @@
-# SyndraShell
+<div align="center">
 
-SyndraShell est un environnement Hyprland orienté cybersécurité, pensé pour un usage quotidien et des profils opérationnels (Blue, Red, Purple, Root/CTF).
+# 🐉 SyndraShell
 
-Le projet sépare maintenant clairement :
+**Environnement de bureau Hyprland orienté cybersécurité**
 
-- le GUI sur l'hôte (Hyprland, interface Syndra)
-- les outils sécurité dans des conteneurs isolés (Docker ou Podman)
+Interface moderne sur Wayland · Thème qui suit ton fond d'écran · Outils de sécurité conteneurisés par profil
 
-## Pourquoi ce changement
+[Discord](https://discord.gg/pbrrd5ATK5) · [Support (Ko-fi)](https://ko-fi.com/syndrashell)
 
-- plus de flux `curl | bash`
-- vérification d'intégrité SHA256 avant installation
-- vérification de signature possible en mode strict
-- isolation outillage offensive/défensive par profil
+</div>
 
-## Prérequis
+---
 
-- Arch Linux pour l'installation GUI complète
-- git
-- Hyprland fonctionnel
-- Docker ou Podman si vous utilisez le mode outils conteneurisés
+## ✨ Présentation
 
-## Installation recommandée (sécurisée)
+SyndraShell est un shell de bureau pour **Hyprland** (Wayland), construit avec le framework **Fabric** (Python/GTK3). Il combine une interface épurée et un **toolkit de sécurité conteneurisé**, organisé en profils opérationnels :
 
-Pour installer le profil personnalisé (Custom) directement :
+- 🖥️ **L'interface tourne sur l'hôte** (barre, dashboard, notch, dock, notifications…)
+- 📦 **Les outils de sécurité tournent dans Docker** — isolés, propres, sans polluer le système
+- 🎨 **Les couleurs de l'interface s'adaptent automatiquement au fond d'écran**
+- 🧩 **Chaque profil** (Blue / Red / Purple / Root-Me / Custom) a son thème, son fond d'écran et sa liste d'outils
+
+---
+
+## 🚀 Installation
+
+> Prérequis : **Arch Linux**, une session **Hyprland**, `git` et `curl`. Docker est installé automatiquement.
+
+Une seule commande, avec le profil de ton choix :
 
 ```bash
+bash <(curl -sL https://raw.githubusercontent.com/Fud0o0/Syndra/main/install.sh) <profil>
+```
+
+Exemples :
+
+```bash
+bash <(curl -sL https://raw.githubusercontent.com/Fud0o0/Syndra/main/install.sh) blue-team
+bash <(curl -sL https://raw.githubusercontent.com/Fud0o0/Syndra/main/install.sh) red-team
+bash <(curl -sL https://raw.githubusercontent.com/Fud0o0/Syndra/main/install.sh) purple
+bash <(curl -sL https://raw.githubusercontent.com/Fud0o0/Syndra/main/install.sh) root-me
 bash <(curl -sL https://raw.githubusercontent.com/Fud0o0/Syndra/main/install.sh) custom
 ```
 
-Ou cloner puis exécuter l'installateur de manière interactive :
+L'installateur (7 étapes, vérifie chaque dépendance) :
+
+1. Vérifie le système et l'espace disque
+2. Installe l'AUR helper (`yay`) si absent
+3. Installe Hyprland + les dépendances (`awww`, `kitty`, `docker`, `python-fabric`, …)
+4. Installe les dépendances Python (`setproctitle`, `watchdog`, `Pillow`, …)
+5. Clone Syndra et enregistre ton profil
+6. Configure Hyprland, la police, le fond d'écran du profil
+7. Télécharge les images Docker des outils du profil
+
+> ⚠️ Après l'installation, **déconnecte-toi et choisis la session Hyprland** (ou tape `Hyprland` depuis un TTY). SyndraShell démarre automatiquement.
+
+---
+
+## 🧩 Profils
+
+| Profil | Couleur | Espace conseillé | Orientation |
+|---|---|---|---|
+| 🔵 `blue-team` | Bleu | **6 Go** | Défense, détection, analyse |
+| 🔴 `red-team` | Rouge | **7 Go** | Pentest, exploitation |
+| 🟣 `purple` | Violet | **10 Go** | Red + Blue complet |
+| ⚫ `root-me` | Acier | **7 Go** | CTF, reverse, forensics |
+| 🟢 `custom` | Vert | **4 Go** + | Outils au choix |
+| ⚪ `default` | Bleu nuit | **4 Go** | Base minimale |
+
+Le **profil est fixé à l'installation** : il détermine le thème, le fond d'écran et les outils. Pour en changer, réinstalle avec un autre profil.
+
+---
+
+## 📦 Outils conteneurisés — `syndra-tools`
+
+Tous les outils tournent dans des conteneurs Docker, accessibles via le lanceur `syndra-tools`. Les fichiers sont partagés via `~/syndra-workspace` ↔ `/workspace`.
 
 ```bash
-git clone --depth 1 https://github.com/Fud0o0/Syndra.git ~/.config/SyndraShell
-bash ~/.config/SyndraShell/scripts/secure-install.sh interactive
+syndra-tools                 # liste les outils du profil actif
+syndra-tools catalog         # liste les 36 outils disponibles
+syndra-tools <outil>         # installe l'outil + ouvre un shell prêt à l'emploi
+syndra-tools <outil> [args]  # exécute l'outil une fois (pour scripter)
+syndra-tools shell           # shell Kali complet avec /workspace monté
+syndra-tools pull            # (re)télécharge toutes les images du profil
+syndra-tools customize       # (profil custom) choisir ses outils
+syndra-tools update          # met à jour Syndra (git pull + lanceur)
 ```
 
-### Installation directe par profil
+Exemples :
 
 ```bash
-bash ~/.config/SyndraShell/scripts/secure-install.sh default
-bash ~/.config/SyndraShell/scripts/secure-install.sh blue
-bash ~/.config/SyndraShell/scripts/secure-install.sh red
-bash ~/.config/SyndraShell/scripts/secure-install.sh purple
-bash ~/.config/SyndraShell/scripts/secure-install.sh root
+syndra-tools nmap -sV 10.0.0.1          # scan one-shot
+syndra-tools john                        # ouvre un shell avec John prêt
+syndra-tools shell                       # boîte à outils Kali complète
 ```
 
-## Vérification intégrité et signature
+### Outils par profil
 
-Vérification SHA256 :
+- **🔵 blue-team** — `nmap` · `tshark` · `tcpdump` · `wireshark` · `suricata` · `zeek` · `clamav` · `trivy` · `grype` · `lynis` · `nuclei`
+- **🔴 red-team** — `kali` · `nmap` · `rustscan` · `metasploit` · `nikto` · `sqlmap` · `gobuster` · `ffuf` · `feroxbuster` · `wpscan` · `nuclei` · `whatweb` · `hydra` · `john` · `hashcat`
+- **🟣 purple** — tout blue + red (nmap, metasploit, wireshark, suricata, sqlmap, hashcat, zap…)
+- **⚫ root-me** — `kali` · `nmap` · `radare2` · `gdb` · `ghidra` · `binwalk` · `steghide` · `exiftool` · `foremost` · `volatility3` · `john` · `hashcat` · `sqlmap` · `hydra`
+- **🟢 custom** — au choix parmi les 36 outils du catalogue
+
+---
+
+## 🎨 Thème & fonds d'écran
+
+- L'interface **dérive ses couleurs du fond d'écran** courant (`~/.current.wall`) — change de fond, l'interface se recolore automatiquement.
+- Chaque profil installe son **fond d'écran assorti** (hippocampe Syndra dans la couleur du profil).
+- Sélecteur de fonds intégré : ouvre le **dashboard → onglet Wallpapers**.
+
+Les fonds sont dans `assets/wallpapers/` ; le moteur de couleurs est `config/wallpaper_theme.py`.
+
+---
+
+## ⌨️ Raccourcis principaux
+
+| Raccourci | Action |
+|---|---|
+| `SUPER` + `R` | Terminal (Kitty) |
+| `SUPER` + `D` | Lanceur d'applications |
+| `SUPER` + `E` | Explorateur de fichiers |
+| `SUPER` + `Space` | Basculer flottant |
+| `SUPER` + `C` | Fermer la fenêtre |
+| `SUPER` + `M` | Quitter Hyprland |
+
+Le dashboard, le launcher et le notch sont aussi accessibles en cliquant sur la barre.
+
+---
+
+## 🔄 Mise à jour
 
 ```bash
-bash ~/.config/SyndraShell/scripts/verify-artifacts.sh
+syndra-tools update
 ```
 
-Mode strict avec signature obligatoire :
+Fait un `git pull` du dépôt et recopie le lanceur. Recharge ton interface :
 
 ```bash
-SYNDRA_REQUIRE_SIGNATURE=1 bash ~/.config/SyndraShell/scripts/verify-artifacts.sh
+pkill -f "python.*main.py"; bash ~/.config/SyndraShell/syndrashell.sh &
 ```
 
-Politique de signature mainteneur : [checksums/SIGNING.md](checksums/SIGNING.md)
+---
 
-## Outils isolés en conteneur (Docker ou Podman)
-
-Le script choisit automatiquement Podman si présent, sinon Docker.
-
-Build d'un profil :
+## 🗑️ Désinstallation
 
 ```bash
-bash ~/.config/SyndraShell/scripts/container-tools.sh purple build
+# Standard (garde Hyprland, conserve tes wallpapers perso)
+bash <(curl -sL https://raw.githubusercontent.com/Fud0o0/Syndra/main/uninstall.sh)
+
+# Complète (supprime aussi Hyprland + images Docker Syndra)
+bash <(curl -sL https://raw.githubusercontent.com/Fud0o0/Syndra/main/uninstall.sh) --full
 ```
 
-Run d'un profil :
+---
 
-```bash
-bash ~/.config/SyndraShell/scripts/container-tools.sh purple run
+## 📁 Structure du projet
+
+```
+SyndraShell/
+├── main.py                  # point d'entrée de l'interface
+├── syndrashell.sh           # script de démarrage (lancé par Hyprland)
+├── install.sh               # installateur (profil en argument)
+├── uninstall.sh             # désinstallateur
+├── config/
+│   ├── themes.py            # palettes de couleurs par profil
+│   ├── wallpaper_theme.py   # couleurs dérivées du fond d'écran
+│   ├── hypr/hyprland.conf   # configuration Hyprland
+│   └── ...
+├── modules/                 # widgets (bar, notch, dashboard, dock…)
+├── styles/                  # CSS de l'interface
+├── assets/
+│   ├── wallpapers/          # fonds d'écran par profil
+│   └── fonts/               # police tabler-icons
+├── containers/              # docker-compose par profil
+└── scripts/
+    ├── syndra-tools.sh      # lanceur d'outils conteneurisés
+    └── install/             # scripts d'installation d'outils par profil
 ```
 
-Shell interactif dans le conteneur :
+---
 
-```bash
-bash ~/.config/SyndraShell/scripts/container-tools.sh purple shell
-```
+## 🛠️ Stack technique
 
-Volumes partagés par défaut :
+- **Hyprland** — compositeur Wayland
+- **Fabric** — framework UI Python/GTK3
+- **awww** — gestion du fond d'écran Wayland
+- **Docker** — isolation des outils de sécurité
+- **PIL/Pillow** — extraction des couleurs du fond d'écran
 
-- ~/.local/share/syndra-tools/workspace
-- ~/.local/share/syndra-tools/reports
-- ~/.local/share/syndra-tools/wordlists
-- ~/.local/share/syndra-tools/loot
+---
 
-Tu peux changer l'emplacement via `SYNDRA_SHARED_ROOT`.
+## 🤝 Communauté
 
-## Profils disponibles
+- 💬 Discord : [discord.gg/pbrrd5ATK5](https://discord.gg/pbrrd5ATK5)
+- ☕ Support : [ko-fi.com/syndrashell](https://ko-fi.com/syndrashell)
 
-- Default : minimal avec Kali et Nmap uniquement
-- Blue : défense, monitoring, détection
-- Red : pentest, exploitation, reverse
-- Purple : couverture complète Red + Blue
-- Root : CTF, pwn, forensics, crypto
+---
 
-## Interface provisoire
+<div align="center">
 
-L'interface provisoire est installée avec la base et utile pour tester les modules sans session complète.
+Construit avec ❤️ et **Fabric** · Pour usage en environnement autorisé uniquement.
 
-```bash
-~/.config/SyndraShell/launch-provisional.sh
-```
-
-Docs dédiées :
-
-- [docs/PROVISIONAL-INTERFACE.md](docs/PROVISIONAL-INTERFACE.md)
-- [docs/PROVISIONAL-CUSTOMIZATION.md](docs/PROVISIONAL-CUSTOMIZATION.md)
-- [docs/PROVISIONAL-CONTROL.md](docs/PROVISIONAL-CONTROL.md)
-
-## Raccourcis principaux
-
-- SUPER + A : menu Syndra
-- SUPER + D : dashboard
-- SUPER + R : launcher
-- SUPER + Enter : terminal
-- SUPER + Q : fermer fenêtre
-
-## Désinstallation
-
-```bash
-bash <(curl -sL https://raw.githubusercontent.com/Fud0o0/Syndra/main/uninstall) --full
-```
-
-## Documentation
-
-- [docs/INSTALLATION.md](docs/INSTALLATION.md)
-- [docs/DEPENDENCIES.md](docs/DEPENDENCIES.md)
-- [docker/README.md](docker/README.md)
-- [docs/THEMES.md](docs/THEMES.md)
-
-## Communauté
-
-- Discord : [https://discord.gg/pbrrd5ATK5](https://discord.gg/pbrrd5ATK5)
-- Support : [https://ko-fi.com/syndrashell](https://ko-fi.com/syndrashell)
-
-## Crédit
-
-Construit avec Fabric.
+</div>

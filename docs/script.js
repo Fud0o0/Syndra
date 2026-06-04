@@ -614,6 +614,9 @@ function selectTeam(team) {
     
     // Update logo color (glow effect)
     updateLogoColor(team);
+    
+    // Notify components of theme change (like the 3D carousel)
+    document.dispatchEvent(new CustomEvent('syndraThemeChanged', { detail: { team: team } }));
 }
 
 // Setup click event listeners for desktop and mobile switcher components
@@ -963,18 +966,33 @@ document.addEventListener('DOMContentLoaded', () => {
         updateCarousel();
     }
     
+    let userInteracted = false;
+    let interactionTimeout;
+    let isHovering = false;
+    
+    function handleUserInteraction() {
+        userInteracted = true;
+        stopAutoRotate();
+        
+        clearTimeout(interactionTimeout);
+        interactionTimeout = setTimeout(() => {
+            userInteracted = false;
+            startAutoRotate();
+        }, 60000); // 1 minute
+    }
+    
     // Set up button listeners
     if (nextBtn) {
         nextBtn.addEventListener('click', () => {
             nextSlide();
-            resetAutoRotate();
+            handleUserInteraction();
         });
     }
     
     if (prevBtn) {
         prevBtn.addEventListener('click', () => {
             prevSlide();
-            resetAutoRotate();
+            handleUserInteraction();
         });
     }
     
@@ -983,7 +1001,7 @@ document.addEventListener('DOMContentLoaded', () => {
         indicator.addEventListener('click', function() {
             currentIndex = parseInt(this.getAttribute('data-slide'));
             updateCarousel();
-            resetAutoRotate();
+            handleUserInteraction();
         });
     });
     
@@ -993,30 +1011,53 @@ document.addEventListener('DOMContentLoaded', () => {
             if (currentIndex !== idx) {
                 currentIndex = idx;
                 updateCarousel();
-                resetAutoRotate();
+                handleUserInteraction();
             }
         });
     });
     
+    // Sync carousel with theme switcher
+    document.addEventListener('syndraThemeChanged', (e) => {
+        const team = e.detail.team;
+        const teamToIndex = {
+            'red': 0,
+            'blue': 1,
+            'purple': 2,
+            'root': 3,
+            'custom': 4,
+            'default': 5
+        };
+        const idx = teamToIndex[team];
+        if (idx !== undefined && currentIndex !== idx) {
+            currentIndex = idx;
+            updateCarousel();
+            handleUserInteraction();
+        }
+    });
+    
     // Auto rotate every 5 seconds
     function startAutoRotate() {
-        autoRotateInterval = setInterval(nextSlide, 5000);
+        if (!userInteracted && !isHovering) {
+            clearInterval(autoRotateInterval);
+            autoRotateInterval = setInterval(nextSlide, 5000);
+        }
     }
     
     function stopAutoRotate() {
         clearInterval(autoRotateInterval);
     }
     
-    function resetAutoRotate() {
-        stopAutoRotate();
-        startAutoRotate();
-    }
-    
     // Pause auto-rotation on hover
     const container = document.querySelector('.carousel-3d-container');
     if (container) {
-        container.addEventListener('mouseenter', stopAutoRotate);
-        container.addEventListener('mouseleave', startAutoRotate);
+        container.addEventListener('mouseenter', () => {
+            isHovering = true;
+            stopAutoRotate();
+        });
+        container.addEventListener('mouseleave', () => {
+            isHovering = false;
+            startAutoRotate();
+        });
     }
     
     // Touch support (swipe)
@@ -1041,8 +1082,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else {
                     prevSlide();
                 }
+                handleUserInteraction();
+            } else {
+                startAutoRotate();
             }
-            startAutoRotate();
         }, { passive: true });
     }
     

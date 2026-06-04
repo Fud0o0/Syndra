@@ -58,6 +58,109 @@ def _ensure_tabler_icons_font():
 
 _ensure_tabler_icons_font()
 
+# ── Préprocesseur CSS ────────────────────────────────────────────────────────
+# GTK 3.24 sur Arch ne supporte PAS les CSS custom properties (--var / var()).
+# On inline tous les @imports et on remplace var(--x) par les vraies valeurs.
+import re as _re
+
+_THEME: dict = {
+    "--foreground":      "#cdd6f4",
+    "--background":      "#0a0e14",
+    "--cursor":          "#cdd6f4",
+    "--primary":         "#89b4fa",
+    "--on-primary":      "#0a0e14",
+    "--secondary":       "#89dceb",
+    "--on-secondary":    "#0a0e14",
+    "--tertiary":        "#cba6f7",
+    "--on-tertiary":     "#0a0e14",
+    "--surface":         "#131825",
+    "--surface-bright":  "#1e2a3a",
+    "--surface_bright":  "#1e2a3a",
+    "--error":           "#f38ba8",
+    "--error-dim":       "#d4708a",
+    "--on-error":        "#0a0e14",
+    "--error-container": "#6b1a2a",
+    "--outline":         "#2a3a52",
+    "--shadow":          "#0d1117",
+    "--red":             "#f38ba8",  "--red-dim":     "#d4708a",
+    "--green":           "#a6e3a1",  "--green-dim":   "#88c584",
+    "--yellow":          "#f9e2af",  "--yellow-dim":  "#dbc492",
+    "--blue":            "#89b4fa",  "--blue-dim":    "#6b96dc",
+    "--magenta":         "#cba6f7",  "--magenta-dim": "#ad88d9",
+    "--cyan":            "#89dceb",  "--cyan-dim":    "#6bbece",
+    "--white":           "#cdd6f4",
+}
+
+def _load_colors_from_css(css_path: str) -> None:
+    """Lit les --var: value dans colors.css (généré par matugen) et met à jour _THEME."""
+    try:
+        with open(css_path, "r", encoding="utf-8") as f:
+            txt = f.read()
+        for m in _re.finditer(r"(--[\w-]+)\s*:\s*([^;}\n]+)", txt):
+            name, val = m.group(1).strip(), m.group(2).strip()
+            if name in _THEME:
+                _THEME[name] = val
+    except Exception:
+        pass
+
+def _inline_css(path: str) -> str:
+    """Lit un fichier CSS et remplace chaque @import par le contenu du fichier cible."""
+    base = os.path.dirname(path)
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            src = f.read()
+    except Exception:
+        return ""
+    out = []
+    for line in src.splitlines():
+        m = _re.match(r'\s*@import\s+url\(["\']?([^"\')\s]+)["\']?\)', line)
+        if m:
+            out.append(_inline_css(os.path.join(base, m.group(1))))
+        else:
+            out.append(line)
+    return "\n".join(out)
+
+def _preprocess_css(css: str) -> str:
+    """Supprime --var:val (parse error GTK) et remplace var(--x) par hex."""
+    # Supprimer les déclarations --variable: value;
+    css = _re.sub(r'[ \t]*--[\w-]+[ \t]*:[^;{}\n]+;[ \t]*\n?', '', css)
+    # Supprimer les blocs * {} vides qui restent
+    css = _re.sub(r'\*\s*\{[ \t\n]*\}', '', css)
+    # Remplacer var(--name) et var(--name, fallback)
+    def _repl(m):
+        name = m.group(1).strip()
+        val = _THEME.get(name) or _THEME.get(name.replace("_", "-"))
+        if val:
+            return val
+        fb = m.group(2)
+        return fb.strip() if fb else "transparent"
+    return _re.sub(r'var\(\s*(--[\w_-]+)\s*(?:,\s*([^)]+))?\)', _repl, css)
+
+# ─────────────────────────────────────────────────────────────────────────────
+
+def _load_tabler_icons_css():
+    """
+    Charge la police tabler-icons via un CssProvider GTK avec chemin absolu.
+    Appelé APRÈS init GTK (après Application()), donc Gdk.Screen est disponible.
+    """
+    try:
+        gi.require_version("Gtk", "3.0")
+        gi.require_version("Gdk", "3.0")
+        from gi.repository import Gdk, Gtk
+        font_path = os.path.join(_script_dir, "assets", "fonts", "tabler-icons", "tabler-icons.ttf")
+        if not os.path.isfile(font_path):
+            return
+        css = f'@font-face {{ font-family: "tabler-icons"; src: url("{font_path}"); }}'
+        provider = Gtk.CssProvider()
+        provider.load_from_data(css.encode())
+        screen = Gdk.Screen.get_default()
+        if screen:
+            Gtk.StyleContext.add_provider_for_screen(
+                screen, provider, Gtk.STYLE_PROVIDER_PRIORITY_USER + 1
+            )
+    except Exception as e:
+        print(f"[font] tabler-icons load failed: {e}")
+
 try:
     import setproctitle
     from fabric import Application
@@ -186,7 +289,7 @@ if __name__ == "__main__":
                 f"mpvpaper -o 'loop' '*' '{current_wallpaper}' >/dev/null 2>&1 &"
             ))
         else:
-            exec_shell_command_async("swww-daemon --format xrgb >/dev/null 2>&1 || true")
+            exec_shell_command_async("swww-daemon >/dev/null 2>&1 || true")
             GLib.timeout_add_seconds(2, lambda: exec_shell_command_async(
                 f"swww img '{current_wallpaper}' --transition-type fade --transition-duration 2"
             ) or True)
@@ -309,9 +412,33 @@ if __name__ == "__main__":
     app = Application(f"{APP_NAME}", *app_components)
 
     def set_css():
-        app.set_stylesheet_from_file(
-            get_relative_path("main.css"),
+        from gi.repository import Gdk, Gtk
+
+        screen = Gdk.Screen.get_default()
+        if not screen:
+            return
+
+        # Charger les couleurs matugen si disponibles (override _THEME)
+        colors_file = get_relative_path("styles/colors.css")
+        _load_colors_from_css(colors_file)
+
+        # Inline tous les @imports + préprocesser (remplace var() par hex)
+        main_css_path = get_relative_path("main.css")
+        raw = _inline_css(main_css_path)
+        processed = _preprocess_css(raw)
+
+        provider = Gtk.CssProvider()
+        provider.connect("parsing-error", lambda p, s, e: None)
+        try:
+            provider.load_from_data(processed.encode())
+        except Exception as e:
+            print(f"[CSS] partial load: {e}")
+
+        Gtk.StyleContext.add_provider_for_screen(
+            screen, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
         )
+
+        _load_tabler_icons_css()
 
     app.set_css = set_css
     app.set_css()

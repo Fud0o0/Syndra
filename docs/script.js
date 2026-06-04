@@ -78,10 +78,13 @@ pills.forEach(pill => {
         document.body.className = '';
         document.body.classList.add(`${team}-theme`);
         
+        // Sync html data-theme attribute so CSS pre-render rules stay correct
+        document.documentElement.setAttribute('data-theme', team);
+        
         // Update install command
         updateInstallCommand(team);
         
-        // Update logo color
+        // Update logo color (glow effect)
         updateLogoColor(team);
         
         // Save preference
@@ -89,38 +92,27 @@ pills.forEach(pill => {
     });
 });
 
-// Update logo color based on theme
+// Update logo color based on theme (legacy filter-based, kept for fallback)
 function updateLogoColor(theme) {
-    const themeFilters = {
-        red: 'hue-rotate(0deg) saturate(1.2) brightness(1.0)',        // Keep red/pink #ff0066
-        blue: 'hue-rotate(-150deg) saturate(1.3) brightness(1.0)',    // Shift to cyan #00d4ff
-        purple: 'hue-rotate(-60deg) saturate(1.2) brightness(1.0)',   // Shift to purple #b366ff
-        root: 'hue-rotate(0deg) saturate(0) brightness(1.8) contrast(1.2)', // Desaturate to white #ffffff
-        custom: 'hue-rotate(180deg) saturate(1.3) brightness(1.0)'    // Shift to green #00ff88
+    // Inline SVGs now use CSS classes - no JS needed for color
+    // But we keep a glow filter for visual enhancement
+    const themeGlows = {
+        red:    'drop-shadow(0 0 12px rgba(255,0,102,0.7))',
+        blue:   'drop-shadow(0 0 12px rgba(0,212,255,0.7))',
+        purple: 'drop-shadow(0 0 12px rgba(179,102,255,0.7))',
+        root:   'drop-shadow(0 0 12px rgba(255,255,255,0.5))',
+        custom: 'drop-shadow(0 0 12px rgba(0,255,136,0.7))'
     };
-    
-    const filter = themeFilters[theme] || 'hue-rotate(-60deg) saturate(1.2) brightness(1.0)';
-    
-    // Apply filter to all logo elements (both object and img)
-    document.querySelectorAll('[data="logo.svg"], img[src="logo.svg"], object[data="logo.svg"]').forEach(el => {
-        el.style.filter = filter;
-        el.style.transition = 'filter 0.3s ease';
+    const glow = themeGlows[theme] || themeGlows.purple;
+    document.querySelectorAll('.syndra-logo-inline').forEach(el => {
+        el.style.filter = glow;
     });
-    
-    // Also apply to retro avatar
-    const retroAvatar = document.querySelector('.retro-avatar');
-    if (retroAvatar) {
-        retroAvatar.style.filter = filter;
-        retroAvatar.style.transition = 'filter 0.3s ease';
-    }
 }
 
-// Call on page load to set initial logo color
+// Apply logo glow immediately on load (no delay needed - color handled by CSS)
 document.addEventListener('DOMContentLoaded', () => {
     const savedTheme = localStorage.getItem('syndrashell-theme') || 'purple';
-    setTimeout(() => {
-        updateLogoColor(savedTheme);
-    }, 300);
+    updateLogoColor(savedTheme);
 });
 
 // Add particle effects
@@ -233,4 +225,78 @@ document.addEventListener('DOMContentLoaded', () => {
 
 console.log('%cSyndra', 'color: #b366ff; font-size: 24px; font-weight: bold; text-shadow: 0 0 10px #b366ff;');
 console.log('%cAdvanced Cybersecurity Environment', 'color: #d699ff; font-size: 14px;');
+
+// ===== Custom Language Dropdown =====
+document.addEventListener('DOMContentLoaded', () => {
+    const dropdown   = document.getElementById('lang-dropdown');
+    const trigger    = document.getElementById('lang-trigger');
+    const options    = document.querySelectorAll('.lang-option');
+    const labelEl    = document.getElementById('lang-selected-label');
+    const nativeSelect = document.getElementById('language-selector');
+
+    if (!dropdown || !trigger) return;
+
+    // Label map: value -> short label shown in trigger
+    const labelMap = { fr: 'FR', en: 'EN', es: 'ES', de: 'DE', zh: '中文', ja: '日本語', ko: '한국어', it: 'IT' };
+
+    // Restore saved lang label
+    const savedLang = localStorage.getItem('syndrashell-lang') || 'fr';
+    if (labelEl) labelEl.textContent = labelMap[savedLang] || savedLang.toUpperCase();
+    options.forEach(opt => {
+        opt.classList.toggle('selected', opt.dataset.value === savedLang);
+    });
+    if (nativeSelect) nativeSelect.value = savedLang;
+
+    // Toggle open/close
+    trigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = dropdown.classList.toggle('open');
+        trigger.setAttribute('aria-expanded', isOpen);
+    });
+
+    // Select an option
+    options.forEach(opt => {
+        opt.addEventListener('click', () => {
+            const val = opt.dataset.value;
+
+            // Update label
+            if (labelEl) labelEl.textContent = labelMap[val] || val.toUpperCase();
+
+            // Mark selected
+            options.forEach(o => o.classList.remove('selected'));
+            opt.classList.add('selected');
+
+            // Sync native select and trigger translations.js change event
+            if (nativeSelect) {
+                nativeSelect.value = val;
+                nativeSelect.dispatchEvent(new Event('change'));
+            }
+
+            // Save
+            localStorage.setItem('syndrashell-lang', val);
+
+            // Close dropdown
+            dropdown.classList.remove('open');
+            trigger.setAttribute('aria-expanded', 'false');
+        });
+    });
+
+    // Close on outside click
+    document.addEventListener('click', (e) => {
+        if (!dropdown.contains(e.target)) {
+            dropdown.classList.remove('open');
+            trigger.setAttribute('aria-expanded', 'false');
+        }
+    });
+
+    // Close on Escape
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            dropdown.classList.remove('open');
+            trigger.setAttribute('aria-expanded', 'false');
+        }
+    });
+});
+
+
 

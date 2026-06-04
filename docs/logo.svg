@@ -7,13 +7,15 @@
 
 <style>
   g path {
-    fill: var(--logo-color, #ff0066);
-    transition: fill 0.3s ease;
+    fill: var(--logo-color, #b366ff);
+    stroke: var(--logo-color, #b366ff);
+    stroke-width: 0;
+    transition: fill 0.3s ease, stroke 0.3s ease;
   }
 </style>
 
 <g transform="translate(0.000000,500.000000) scale(0.100000,-0.100000)"
-fill="#ff0066" stroke="none">
+stroke="none">
 <path d="M2394 4050 c-267 -38 -488 -141 -631 -294 -73 -77 -113 -145 -148
 -251 -24 -69 -27 -96 -27 -200 -1 -102 3 -130 24 -185 66 -178 214 -320 459
 -440 l66 -33 54 35 c30 19 81 57 114 84 33 26 103 77 155 112 52 35 96 65 98

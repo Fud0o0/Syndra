@@ -13,7 +13,7 @@
     <link rel="icon" type="image/png" href="logo.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700;800&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700;800&family=Press+Start+2P&display=block" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <script src="translations.js" charset="UTF-8"></script>
     <script src="script.js" defer charset="UTF-8"></script>
@@ -75,7 +75,7 @@
         body.default-theme .syndra-logo-wrapper { filter: drop-shadow(0 0 18px rgba(29,78,216,0.8)); }
     </style>
 </head>
-<body class="purple-theme">
+<body>
 
     <div class="language-selector-container">
         <!-- Hidden native select for translations.js compatibility -->
@@ -173,7 +173,7 @@
                 <div class="theme-switcher pills desktop-pills" style="margin-bottom: 24px; display: inline-flex;">
                     <button class="pill" data-team="red"><span class="pill-dot"></span><span data-i18n="redTeam">Red</span></button>
                     <button class="pill" data-team="blue"><span class="pill-dot"></span><span data-i18n="blueTeam">Blue</span></button>
-                    <button class="pill active" data-team="purple"><span class="pill-dot"></span><span data-i18n="purpleTeam">Purple</span></button>
+                    <button class="pill" data-team="purple"><span class="pill-dot"></span><span data-i18n="purpleTeam">Purple</span></button>
                     <button class="pill" data-team="root"><span class="pill-dot"></span><span data-i18n="rootMe">Root</span></button>
                     <button class="pill" data-team="custom"><span class="pill-dot"></span><span data-i18n="custom">Custom</span></button>
                     <button class="pill" data-team="default"><span class="pill-dot"></span><span data-i18n="defaultTeam">Default</span></button>
@@ -192,13 +192,31 @@
                         <ul class="mobile-pills-options" id="mobile-pills-options" role="listbox">
                             <li class="mobile-pill-option" data-team="red" role="option"><span class="pill-dot"></span><span data-i18n="redTeam">Red</span></li>
                             <li class="mobile-pill-option" data-team="blue" role="option"><span class="pill-dot"></span><span data-i18n="blueTeam">Blue</span></li>
-                            <li class="mobile-pill-option active" data-team="purple" role="option"><span class="pill-dot"></span><span data-i18n="purpleTeam">Purple</span></li>
+                            <li class="mobile-pill-option" data-team="purple" role="option"><span class="pill-dot"></span><span data-i18n="purpleTeam">Purple</span></li>
                             <li class="mobile-pill-option" data-team="root" role="option"><span class="pill-dot"></span><span data-i18n="rootMe">Root</span></li>
                             <li class="mobile-pill-option" data-team="custom" role="option"><span class="pill-dot"></span><span data-i18n="custom">Custom</span></li>
                             <li class="mobile-pill-option" data-team="default" role="option"><span class="pill-dot"></span><span data-i18n="defaultTeam">Default</span></li>
-                        </ul>
                     </div>
                 </div>
+                <!-- Synchronous pill activation to prevent flash -->
+                <script>
+                    (function() {
+                        var theme = localStorage.getItem('syndrashell-theme') || 'purple';
+                        var deskPill = document.querySelector('.desktop-pills .pill[data-team="' + theme + '"]');
+                        if (deskPill) deskPill.classList.add('active');
+                        var mobPill = document.querySelector('.mobile-pills-options .mobile-pill-option[data-team="' + theme + '"]');
+                        if (mobPill) mobPill.classList.add('active');
+                        var mobTrigger = document.getElementById('mobile-pills-trigger');
+                        if (mobTrigger && mobPill) {
+                            mobTrigger.setAttribute('data-team', theme);
+                            var label = document.getElementById('mobile-pills-active-label');
+                            if (label) {
+                                label.textContent = mobPill.textContent;
+                                label.setAttribute('data-i18n', mobPill.querySelector('span[data-i18n]').getAttribute('data-i18n'));
+                            }
+                        }
+                    })();
+                </script>
                 <div class="hero-badge" id="hero-tagline">For Red, Blue & Purple Teams</div>
                 <h1 class="hero-title">
                     Syndra

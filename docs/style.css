@@ -34,35 +34,35 @@
 }
 
 /* --- Theme Overrides --- */
-body.red-theme {
+html[data-theme="red"] body, body.red-theme {
     --theme-primary: var(--red-primary);
     --theme-light: var(--red-light);
     --theme-glow: rgba(255, 0, 102, 0.5);
     --theme-glow-soft: rgba(255, 0, 102, 0.15);
     --border-accent: rgba(255, 0, 102, 0.2);
 }
-body.blue-theme {
+html[data-theme="blue"] body, body.blue-theme {
     --theme-primary: var(--blue-primary);
     --theme-light: var(--blue-light);
     --theme-glow: rgba(0, 212, 255, 0.5);
     --theme-glow-soft: rgba(0, 212, 255, 0.15);
     --border-accent: rgba(0, 212, 255, 0.2);
 }
-body.root-theme {
+html[data-theme="root"] body, body.root-theme {
     --theme-primary: var(--root-primary);
     --theme-light: var(--root-light);
     --theme-glow: rgba(255, 255, 255, 0.4);
     --theme-glow-soft: rgba(255, 255, 255, 0.1);
     --border-accent: rgba(255, 255, 255, 0.15);
 }
-body.custom-theme {
+html[data-theme="custom"] body, body.custom-theme {
     --theme-primary: var(--custom-primary);
     --theme-light: var(--custom-light);
     --theme-glow: rgba(0, 255, 136, 0.5);
     --theme-glow-soft: rgba(0, 255, 136, 0.15);
     --border-accent: rgba(0, 255, 136, 0.2);
 }
-body.default-theme {
+html[data-theme="default"] body, body.default-theme {
     --theme-primary: var(--default-primary);
     --theme-light: var(--default-light);
     --theme-glow: rgba(29, 78, 216, 0.5);

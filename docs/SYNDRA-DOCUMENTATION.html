@@ -92,9 +92,12 @@
         .doc-section h2 {
             font-size: 2rem;
             margin-bottom: 1.5rem;
-            color: #fff;
             padding-bottom: 1rem;
             border-bottom: 1px solid var(--border-light);
+            background: linear-gradient(135deg, var(--theme-light) 0%, var(--theme-primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 10px var(--theme-glow));
         }
 
         .doc-section p {
@@ -130,9 +133,11 @@
         }
 
         .doc-card h3 {
-            color: var(--theme-light);
             margin-bottom: 1rem;
             font-size: 1.25rem;
+            background: linear-gradient(135deg, var(--theme-light) 0%, var(--theme-primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .doc-grid {

@@ -82,7 +82,6 @@ body {
     background-image: 
         radial-gradient(circle at 15% 30%, var(--theme-glow-soft) 0%, transparent 40%),
         radial-gradient(circle at 85% 70%, var(--theme-glow-soft) 0%, transparent 40%);
-    background-attachment: fixed;
     transition: background-image 0.8s ease;
 }
 
@@ -489,6 +488,7 @@ a:hover {
 .retro-avatar-container {
     margin-bottom: 40px;
     animation: float 6s ease-in-out infinite;
+    will-change: transform;
 }
 @keyframes float {
     0%, 100% { transform: translateY(0); }
@@ -636,8 +636,11 @@ a:hover {
 .section-header h2 {
     font-size: 2.5rem;
     font-weight: 700;
-    color: #fff;
     margin-bottom: 10px;
+    background: linear-gradient(135deg, var(--theme-light) 0%, var(--theme-primary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 15px var(--theme-glow));
 }
 .section-header p {
     color: var(--text-muted);
@@ -666,8 +669,10 @@ a:hover {
 }
 .feature-card h3 {
     font-size: 1.25rem;
-    color: var(--text-main);
     margin-bottom: 12px;
+    background: linear-gradient(135deg, var(--theme-light) 0%, var(--theme-primary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 .feature-card p {
     color: var(--text-muted);
@@ -689,10 +694,12 @@ a:hover {
 }
 .command-list h3 {
     font-size: 1.2rem;
-    color: var(--theme-light);
     margin-bottom: 20px;
     border-bottom: 1px solid var(--border-light);
     padding-bottom: 10px;
+    background: linear-gradient(135deg, var(--theme-light) 0%, var(--theme-primary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 .command-list ul {
     list-style: none;

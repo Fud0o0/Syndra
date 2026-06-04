@@ -314,7 +314,7 @@ function createParticles() {
     `;
     document.body.insertBefore(particlesContainer, document.body.firstChild);
 
-    for (let i = 0; i < 30; i++) {
+    for (let i = 0; i < 15; i++) {
         const particle = document.createElement('div');
         particle.className = 'particle';
         
@@ -327,12 +327,12 @@ function createParticles() {
             position: absolute;
             width: ${size}px;
             height: ${size}px;
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.4);
             border-radius: 50%;
             left: ${xPos}%;
             bottom: -10px;
             animation: float-up ${duration}s linear ${delay}s infinite;
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            will-change: transform;
         `;
         
         particlesContainer.appendChild(particle);

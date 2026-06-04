@@ -132,82 +132,37 @@
 }
 
 /* ════════════════════════════════════════════════════════════════════
-   ◍ SYNDRA — IDENTITÉ "ÎLOTS ARRONDIS" (clean / Material You)
-   Pastilles douces, espacements cohérents, accents discrets, ombres
-   légères. Plus rond et plus aéré qu'ax-shell, sans surcharge.
+   ◍ SYNDRA — FINITION PROPRE & ARRONDIE
+   On NE touche PAS à la structure (marges/padding/tailles de la barre)
+   pour ne rien casser. On agit uniquement sur : arrondis, couleurs,
+   ombres et bordures fines. Plus rond et plus défini qu'ax-shell.
    Chargée en dernier → prioritaire. (Réversible.)
    ════════════════════════════════════════════════════════════════════ */
 
-/* Rayon de base généreux et homogène */
-* {
-  border-radius: 18px;
+/* Workspace actif : pastille pleine accent, bien ronde */
+#workspaces > button.active {
+  background-color: var(--primary);
 }
-
-/* ── Barre : transparente, les widgets flottent en îlots ──────────── */
-#bar-inner,
-#bar-inner.pills {
-  background-color: transparent;
-  margin: 6px 10px;
-  padding: 0;
-}
-
-/* ── Widgets barre = pastilles douces, bien rondes ────────────────── */
-#date-time,
-#weather,
-#language,
-#systray,
-#button-bar,
-#workspaces {
-  background-color: var(--surface);
-  border-radius: 20px;
-  padding: 0 12px;
-  margin: 0 3px;
-  min-height: 34px;
-  transition: all 0.2s ease;
-}
-
-#date-time:hover,
-#weather:hover,
-#language:hover,
-#button-bar:hover {
+#workspaces > button.empty {
   background-color: var(--surface-bright);
 }
 
-/* Horloge légèrement accentuée, sobre */
-#date-time > label {
-  color: var(--foreground);
-  font-weight: bold;
-}
-
-/* ── Bouton lanceur (logo) : pastille pleine, ronde ───────────────── */
+/* Bouton lanceur (logo) : pastille pleine accent */
 #button-apps {
   background-color: var(--primary);
-  border-radius: 20px;
 }
 #button-apps #button-bar-label,
 #button-apps label {
   color: var(--on-primary);
 }
 
-/* ── Workspaces : points ronds, actif en pilule allongée douce ────── */
-#workspaces {
-  padding: 0 8px;
-}
-#workspaces > button {
-  border-radius: 20px;
-  background-color: var(--surface-bright);
-  margin: 0 3px;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-}
-#workspaces > button.active {
-  background-color: var(--primary);
-  min-width: 34px;
-}
-#workspaces > button.empty {
-  background-color: var(--outline);
+/* Horloge en gras (sobre) */
+#date-time > label {
+  font-weight: bold;
 }
 
-/* ── Panneaux : grandes cartes douces, ombre légère, sans bord dur ── */
+/* Panneaux : grands arrondis + ombre douce + fin liseré accent.
+   (mêmes éléments que ax-shell, on change juste le rendu) */
 #notch-content,
 #app-launcher,
 #power-menu,
@@ -217,31 +172,22 @@
 #emoji,
 #clip-history,
 #tmux-manager {
-  background-color: var(--surface);
   border-radius: 28px;
+  border: 1px solid var(--surface-bright);
   box-shadow: 0 6px 24px 0 var(--shadow);
 }
 
-/* Cartes internes du dashboard : douces, sans bord */
+/* Cartes internes du dashboard : un peu plus rondes */
 #box-1,
 #box-2,
 #box-3,
 #box-x {
-  background-color: var(--surface-bright);
   border-radius: 22px;
 }
 
-/* ── Champs de recherche : pastille douce, focus discret ──────────── */
-#search-entry,
-#search-entry-walls,
-#search-entry-apps {
-  background-color: var(--surface-bright);
-  border-radius: 20px;
-  padding: 0 14px;
-}
+/* Focus recherche : fin liseré accent, propre */
 #search-entry:focus,
 #search-entry-walls:focus,
 #search-entry-apps:focus {
-  background-color: var(--surface-bright);
   border: 1px solid var(--primary);
 }

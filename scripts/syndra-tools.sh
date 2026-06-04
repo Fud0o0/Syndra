@@ -119,7 +119,7 @@ do_list() {
         printf "  ${G}%-13s${R} %s\n" "$name" "$desc"
     done < <(tools_for_profile "$PROFILE")
     echo ""
-    echo -e "  ${B}syndra-tools <outil> [args]${R}  ·  ${B}shell${R}  ·  ${B}pull${R}  ·  ${B}catalog${R}"
+    echo -e "  ${B}syndra-tools <outil> [args]${R}  ·  ${B}shell${R}  ·  ${B}pull${R}  ·  ${B}catalog${R}  ·  ${B}update${R}"
     [ "$PROFILE" = "custom" ] && echo -e "  ${B}syndra-tools customize${R}      → choisir tes outils"
     echo -e "  Workspace partagé : ${WORKSPACE} → /workspace"
 }
@@ -193,6 +193,31 @@ run_tool() {
     fi
 }
 
+# ── Mise à jour ─────────────────────────────────────────────────────
+do_update() {
+    local repo="$HOME/.config/SyndraShell"
+    echo -e "${C}${B}Mise à jour de Syndra…${R}"
+    if [ -d "$repo/.git" ]; then
+        echo -e "  ${C}→${R} git pull"
+        if git -C "$repo" pull --ff-only 2>&1 | sed 's/^/    /'; then
+            echo -e "  ${G}✓${R} dépôt à jour ($(git -C "$repo" log -1 --format='%h %s' 2>/dev/null))"
+        else
+            echo -e "  ${Y}⚠ git pull a échoué (modifications locales ?)${R}"
+        fi
+    else
+        echo -e "  ${Y}⚠ dépôt git introuvable dans $repo${R}"
+    fi
+    # Recopier le lanceur
+    local src="$repo/scripts/syndra-tools.sh"
+    local dst="$HOME/.local/bin/syndra-tools"
+    if [ -f "$src" ]; then
+        mkdir -p "$HOME/.local/bin"
+        cp "$src" "$dst" && chmod +x "$dst"
+        echo -e "  ${G}✓${R} lanceur mis à jour → $dst"
+    fi
+    echo -e "${G}Terminé.${R}"
+}
+
 # ── Personnalisation (profil custom) ────────────────────────────────
 do_customize() {
     echo -e "${C}${B}Personnalisation des outils — profil custom${R}\n"
@@ -236,6 +261,7 @@ case "${1:-list}" in
     list|"")    do_list ;;
     catalog)    do_catalog ;;
     pull)       do_pull ;;
+    update)     do_update ;;
     shell)      run_tool kali ;;
     customize)  do_customize ;;
     *)          run_tool "$@" ;;

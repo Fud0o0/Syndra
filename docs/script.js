@@ -915,6 +915,142 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+// ===== 3D Showcase Carousel Logic =====
+document.addEventListener('DOMContentLoaded', () => {
+    const track = document.querySelector('.carousel-3d-track');
+    const slides = document.querySelectorAll('.carousel-3d-slide');
+    const prevBtn = document.querySelector('.carousel-3d-nav.prev-btn');
+    const nextBtn = document.querySelector('.carousel-3d-nav.next-btn');
+    const indicators = document.querySelectorAll('.carousel-3d-indicator');
+    
+    if (!track || slides.length === 0) return;
+    
+    let currentIndex = 0;
+    const totalSlides = slides.length;
+    const angleStep = 360 / totalSlides;
+    let autoRotateInterval;
+    
+    function updateCarousel() {
+        // Rotate track around Y axis.
+        track.style.transform = `rotateY(${-currentIndex * angleStep}deg)`;
+        
+        // Update classes on slides
+        slides.forEach((slide, idx) => {
+            if (idx === currentIndex) {
+                slide.classList.add('active');
+            } else {
+                slide.classList.remove('active');
+            }
+        });
+        
+        // Update indicators
+        indicators.forEach((indicator, idx) => {
+            if (idx === currentIndex) {
+                indicator.classList.add('active');
+            } else {
+                indicator.classList.remove('active');
+            }
+        });
+    }
+    
+    function nextSlide() {
+        currentIndex = (currentIndex + 1) % totalSlides;
+        updateCarousel();
+    }
+    
+    function prevSlide() {
+        currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+        updateCarousel();
+    }
+    
+    // Set up button listeners
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            nextSlide();
+            resetAutoRotate();
+        });
+    }
+    
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+            prevSlide();
+            resetAutoRotate();
+        });
+    }
+    
+    // Set up indicator click listeners
+    indicators.forEach((indicator) => {
+        indicator.addEventListener('click', function() {
+            currentIndex = parseInt(this.getAttribute('data-slide'));
+            updateCarousel();
+            resetAutoRotate();
+        });
+    });
+    
+    // Support click direct on a slide to rotate to it
+    slides.forEach((slide, idx) => {
+        slide.addEventListener('click', () => {
+            if (currentIndex !== idx) {
+                currentIndex = idx;
+                updateCarousel();
+                resetAutoRotate();
+            }
+        });
+    });
+    
+    // Auto rotate every 5 seconds
+    function startAutoRotate() {
+        autoRotateInterval = setInterval(nextSlide, 5000);
+    }
+    
+    function stopAutoRotate() {
+        clearInterval(autoRotateInterval);
+    }
+    
+    function resetAutoRotate() {
+        stopAutoRotate();
+        startAutoRotate();
+    }
+    
+    // Pause auto-rotation on hover
+    const container = document.querySelector('.carousel-3d-container');
+    if (container) {
+        container.addEventListener('mouseenter', stopAutoRotate);
+        container.addEventListener('mouseleave', startAutoRotate);
+    }
+    
+    // Touch support (swipe)
+    let startX = 0;
+    let isDragging = false;
+    
+    if (container) {
+        container.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+            isDragging = true;
+            stopAutoRotate();
+        }, { passive: true });
+        
+        container.addEventListener('touchend', (e) => {
+            if (!isDragging) return;
+            isDragging = false;
+            const endX = e.changedTouches[0].clientX;
+            const diffX = startX - endX;
+            if (Math.abs(diffX) > 50) { // threshold of 50px
+                if (diffX > 0) {
+                    nextSlide();
+                } else {
+                    prevSlide();
+                }
+            }
+            startAutoRotate();
+        }, { passive: true });
+    }
+    
+    // Initialize active state
+    updateCarousel();
+    startAutoRotate();
+});
+
 
 
 

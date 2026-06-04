@@ -5,10 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Syndra</title>
     <meta name="description" content="Advanced cybersecurity environment for Red, Blue, and Purple team operations">
+    <meta property="og:title" content="Syndra">
+    <meta property="og:description" content="Advanced cybersecurity environment for Red, Blue, and Purple team operations">
+    <meta property="og:image" content="https://raw.githubusercontent.com/Fud0o0/Syndra/main/docs/logo.png">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
     <link rel="icon" type="image/png" href="logo.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700;800&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <script src="translations.js" charset="UTF-8"></script>
     <script src="script.js" defer charset="UTF-8"></script>
@@ -147,7 +152,7 @@
 
             <div class="social-links">
                 <a href="https://github.com/Fud0o0" target="_blank" rel="noopener noreferrer" title="Fud0o0 GitHub"><img src="https://github.com/Fud0o0.png" alt="Fud0o0"></a>
-                <a href="https://github.com/Ax0-0" target="_blank" rel="noopener noreferrer" title="Ax0-0 GitHub"><img src="https://github.com/Ax0-0.png" alt="Ax0-0"></a>
+                <a href="https://github.com/Ax0-0" target="_blank" rel="noopener noreferrer" title="Ax0-0 GitHub"><img src="https://github.com/Ax0-0.png" alt="Ax0-0" loading="lazy" decoding="async"></a>
                 <a href="https://discord.gg/pbrrd5ATK5" target="_blank" rel="noopener noreferrer" title="Discord"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.492c-1.53-.69-3.17-1.2-4.885-1.49a.075.075 0 0 0-.079.036c-.21.369-.444.85-.608 1.23a18.566 18.566 0 0 0-5.487 0 12.36 12.36 0 0 0-.617-1.23A.077.077 0 0 0 8.562 3c-1.714.29-3.354.8-4.885 1.491a.07.07 0 0 0-.032.027C.533 9.093-.32 13.555.099 17.961a.08.08 0 0 0 .031.055 20.03 20.03 0 0 0 5.993 2.98.078.078 0 0 0 .084-.026c.462-.62.874-1.275 1.226-1.963.021-.04.001-.088-.041-.104a13.201 13.201 0 0 1-1.872-.878.075.075 0 0 1-.008-.125c.126-.093.252-.19.372-.287a.075.075 0 0 1 .078-.01c3.927 1.764 8.18 1.764 12.061 0a.075.075 0 0 1 .079.009c.12.098.245.195.372.288a.075.075 0 0 1-.006.125c-.598.344-1.22.635-1.873.877a.075.075 0 0 0-.041.105c.36.687.772 1.341 1.225 1.962a.077.077 0 0 0 .084.028 19.963 19.963 0 0 0 6.002-2.981.076.076 0 0 0 .032-.054c.5-5.094-.838-9.52-3.549-13.442a.06.06 0 0 0-.031-.028zM8.02 15.278c-1.182 0-2.157-1.069-2.157-2.38 0-1.312.956-2.38 2.157-2.38 1.21 0 2.176 1.077 2.157 2.38 0 1.312-.956 2.38-2.157 2.38zm7.975 0c-1.183 0-2.157-1.069-2.157-2.38 0-1.312.955-2.38 2.157-2.38 1.21 0 2.176 1.077 2.157 2.38 0 1.312-.946 2.38-2.157 2.38z"/></svg></a>
                 <a href="https://ko-fi.com/syndrashell" target="_blank" rel="noopener noreferrer" title="Support on Ko-fi"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.881 8.948c-.773-4.085-4.859-4.593-4.859-4.593H.723c-.604 0-.679.798-.679.798s-.082 7.324-.022 11.822c.164 2.424 2.586 2.672 2.586 2.672s8.267-.023 11.966-.049c2.438-.426 2.683-2.566 2.658-3.734 4.352.24 7.422-2.831 6.649-6.916zm-11.062 3.511c-1.246 1.453-4.011 3.976-4.011 3.976s-.121.119-.31.023c-.076-.057-.108-.09-.108-.09-.443-.441-3.368-3.049-4.034-3.954-.709-.965-1.041-2.7-.091-3.71.951-1.01 3.005-1.086 4.363.407 0 0 1.565-1.782 3.468-.963 1.904.82 1.832 3.011.723 4.311zm6.173.478c-.928.116-1.682.028-1.682.028V7.284h1.77s1.971.551 1.971 2.638c0 1.913-.985 2.667-2.059 3.015z"/></svg></a>
             </div>
@@ -215,7 +220,7 @@
             <div class="hero-right">
                 <div class="retro-avatar-container">
                     <div class="syndra-logo-wrapper retro-avatar">
-                        <img src="logo.png" class="syndra-logo-inline" alt="Syndra logo">
+                        <img src="logo.png" class="syndra-logo-inline" alt="Syndra logo" fetchpriority="high">
                     </div>
                 </div>
 
@@ -250,6 +255,49 @@
                             <p class="uninstall-note"><span data-i18n="uninstall">Pour désinstaller:</span> <code>bash <(curl -sL https://raw.githubusercontent.com/Fud0o0/Syndra/main/uninstall) --full</code></p>
                         </div>
                     </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3D Image Showcase -->
+        <section class="showcase-section">
+            <div class="section-header center-align">
+                <h2 data-i18n="showcaseTitle">Syndra en action</h2>
+                <p data-i18n="showcaseSubtitle">Aperçu en 3D de l'interface et de ses fonctionnalités</p>
+            </div>
+            
+            <div class="carousel-3d-container">
+                <div class="carousel-3d-viewport">
+                    <div class="carousel-3d-track">
+                        <div class="carousel-3d-slide active" style="--index: 0;"><img src="image.png" alt="Syndra Screenshot 1" loading="lazy" decoding="async"></div>
+                        <div class="carousel-3d-slide" style="--index: 1;"><img src="image2.png" alt="Syndra Screenshot 2" loading="lazy" decoding="async"></div>
+                        <div class="carousel-3d-slide" style="--index: 2;"><img src="image3.png" alt="Syndra Screenshot 3" loading="lazy" decoding="async"></div>
+                        <div class="carousel-3d-slide" style="--index: 3;"><img src="image4.png" alt="Syndra Screenshot 4" loading="lazy" decoding="async"></div>
+                        <div class="carousel-3d-slide" style="--index: 4;"><img src="image5.png" alt="Syndra Screenshot 5" loading="lazy" decoding="async"></div>
+                        <div class="carousel-3d-slide" style="--index: 5;"><img src="image6.png" alt="Syndra Screenshot 6" loading="lazy" decoding="async"></div>
+                        <div class="carousel-3d-slide" style="--index: 6;"><img src="image7.png" alt="Syndra Screenshot 7" loading="lazy" decoding="async"></div>
+                        <div class="carousel-3d-slide" style="--index: 7;"><img src="image8.png" alt="Syndra Screenshot 8" loading="lazy" decoding="async"></div>
+                    </div>
+                </div>
+                
+                <!-- Controls -->
+                <button class="carousel-3d-nav prev-btn" aria-label="Previous image">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+                </button>
+                <button class="carousel-3d-nav next-btn" aria-label="Next image">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+                </button>
+                
+                <!-- Indicators -->
+                <div class="carousel-3d-indicators">
+                    <span class="carousel-3d-indicator active" data-slide="0"></span>
+                    <span class="carousel-3d-indicator" data-slide="1"></span>
+                    <span class="carousel-3d-indicator" data-slide="2"></span>
+                    <span class="carousel-3d-indicator" data-slide="3"></span>
+                    <span class="carousel-3d-indicator" data-slide="4"></span>
+                    <span class="carousel-3d-indicator" data-slide="5"></span>
+                    <span class="carousel-3d-indicator" data-slide="6"></span>
+                    <span class="carousel-3d-indicator" data-slide="7"></span>
                 </div>
             </div>
         </section>
@@ -388,6 +436,39 @@
         </div>
     </footer>
 
-    <script src="script.js"></script>
+    <script>
+        // Extend translations for showcase section
+        document.addEventListener('DOMContentLoaded', () => {
+            const extraTranslations = {
+                fr: { showcaseTitle: "Syndra en action", showcaseSubtitle: "Aperçu en 3D de l'interface et de ses fonctionnalités" },
+                en: { showcaseTitle: "Syndra in Action", showcaseSubtitle: "3D preview of the interface and its features" },
+                es: { showcaseTitle: "Syndra en acción", showcaseSubtitle: "Vista previa en 3D de la interfaz y sus características" },
+                de: { showcaseTitle: "Syndra in Aktion", showcaseSubtitle: "3D-Vorschau der Benutzeroberfläche und ihrer Funktionen" },
+                zh: { showcaseTitle: "Syndra 实战", showcaseSubtitle: "界面及其功能的 3D 预览" },
+                ja: { showcaseTitle: "実動中の Syndra", showcaseSubtitle: "インターフェースと機能の 3D プレビュー" },
+                ko: { showcaseTitle: "실행 중인 Syndra", showcaseSubtitle: "인터페이스 및 기능의 3D 미리보기" },
+                it: { showcaseTitle: "Syndra in azione", showcaseSubtitle: "Anteprima 3D dell'interfaccia e delle sue funzionalità" },
+                pt: { showcaseTitle: "Syndra em ação", showcaseSubtitle: "Visualização 3D da interface e suas funcionalidades" },
+                ru: { showcaseTitle: "Syndra в действии", showcaseSubtitle: "3D-просмотр интерфейса и его возможностей" },
+                ar: { showcaseTitle: "سيندرا في العمل", showcaseSubtitle: "معاينة ثلاثية الأبعاد للواجهة وميزاتها" },
+                hi: { showcaseTitle: "सैंड्रा क्रिया में", showcaseSubtitle: "इंटरफ़ेस और इसकी विशेषताओं का 3D पूर्वावलोकन" },
+                tr: { showcaseTitle: "Syndra İş Başında", showcaseSubtitle: "Arayüzün ve özelliklerinin 3D önizlemesi" },
+                nl: { showcaseTitle: "Syndra in actie", showcaseSubtitle: "3D-voorbeeld van de interface en de functies" },
+                pl: { showcaseTitle: "Syndra w akcji", showcaseSubtitle: "Podgląd 3D interfejsu i jego funkcji" },
+                vi: { showcaseTitle: "Syndra hoạt động", showcaseSubtitle: "Xem trước 3D của giao diện và các tính năng" }
+            };
+
+            if (window.translations) {
+                Object.keys(extraTranslations).forEach(lang => {
+                    if (window.translations[lang]) {
+                        Object.assign(window.translations[lang], extraTranslations[lang]);
+                    }
+                });
+                if (window.translatePage) {
+                    window.translatePage();
+                }
+            }
+        });
+    </script>
 </body>
 </html>

@@ -403,15 +403,15 @@ if __name__ == "__main__":
         if not screen:
             return
 
-        # Charger le thème selon le profil sélectionné
-        from config.themes import get_theme
-        import config.data as _data
-        profile_colors = get_theme(_data.SYNDRA_PROFILE)
-        _THEME.update(profile_colors)
-
-        # Matugen override si disponible (priorité sur le profil)
+        # 1. Couleurs de base (styles/colors.css — defaults ou matugen)
         colors_file = get_relative_path("styles/colors.css")
         _load_colors_from_css(colors_file)
+
+        # 2. Profil de sécurité — priorité absolue sur tout le reste
+        from config.themes import get_theme
+        import config.data as _data
+        _THEME.update(get_theme(_data.SYNDRA_PROFILE))
+        print(f"[Syndra] Profil: {_data.SYNDRA_PROFILE} | shadow={_THEME.get('--shadow','?')}")
 
         # Inline tous les @imports + préprocesser (remplace var() par hex)
         main_css_path = get_relative_path("main.css")

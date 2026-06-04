@@ -297,7 +297,7 @@ class WallpaperSelector(Box):
                         stdout=_subp.DEVNULL, stderr=_subp.DEVNULL)
         else:
             if shutil.which("awww"):
-                _subp.Popen(["awww init"], stdout=_subp.DEVNULL, stderr=_subp.DEVNULL)
+                _subp.Popen(["awww-daemon"], stdout=_subp.DEVNULL, stderr=_subp.DEVNULL)
                 _subp.Popen(["awww", "img", full_path,
                               "--transition-type", "fade", "--transition-duration", "1.5"],
                              stdout=_subp.DEVNULL, stderr=_subp.DEVNULL)
@@ -388,7 +388,7 @@ class WallpaperSelector(Box):
                         stdout=_subp.DEVNULL, stderr=_subp.DEVNULL)
         else:
             if shutil.which("awww"):
-                _subp.Popen(["awww init"], stdout=_subp.DEVNULL, stderr=_subp.DEVNULL)
+                _subp.Popen(["awww-daemon"], stdout=_subp.DEVNULL, stderr=_subp.DEVNULL)
                 _subp.Popen(["awww", "img", full_path,
                               "--transition-type", "fade", "--transition-duration", "1.5"],
                              stdout=_subp.DEVNULL, stderr=_subp.DEVNULL)

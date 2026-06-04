@@ -60,7 +60,7 @@ elif [ ! -e "$WALL" ] && [ -f "$INSTALL_DIR/assets/wallpapers/default.png" ]; th
 fi
 
 if command -v awww &>/dev/null; then
-    awww query &>/dev/null 2>&1 || awww init &
+    awww query &>/dev/null 2>&1 || awww-daemon &
     for i in $(seq 1 20); do
         awww query &>/dev/null 2>&1 && break
         sleep 0.5

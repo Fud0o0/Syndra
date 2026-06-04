@@ -129,7 +129,7 @@ class VideoWallpaper:
             if subprocess.run(["which", "awww"], capture_output=True).returncode == 0:
                 # Démarrer swww daemon
                 subprocess.Popen(
-                    ["awww init", "--format", "xrgb"],
+                    ["awww-daemon"],
                     stdout=subprocess.DEVNULL,
                     stderr=subprocess.DEVNULL
                 )

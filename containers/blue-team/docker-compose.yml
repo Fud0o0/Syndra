@@ -1,0 +1,75 @@
+name: syndra-blue-team
+
+volumes:
+  workspace:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${HOME}/syndra-workspace
+
+services:
+
+  # Analyse réseau — Wireshark GUI via XWayland
+  wireshark:
+    image: lscr.io/linuxserver/wireshark:latest
+    container_name: syndra-wireshark
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    network_mode: host
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Paris
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - ${HOME}/syndra-workspace:/captures
+    profiles: ["gui"]
+
+  # Scanner réseau — nmap (CLI)
+  nmap:
+    image: instrumentisto/nmap:latest
+    container_name: syndra-nmap
+    network_mode: host
+    volumes:
+      - ${HOME}/syndra-workspace:/workspace
+    entrypoint: ["nmap"]
+    profiles: ["cli"]
+
+  # IDS/IPS — Suricata
+  suricata:
+    image: jasonish/suricata:latest
+    container_name: syndra-suricata
+    network_mode: host
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    volumes:
+      - ${HOME}/syndra-workspace/suricata:/var/log/suricata
+    profiles: ["daemon"]
+
+  # Antivirus — ClamAV
+  clamav:
+    image: clamav/clamav:stable
+    container_name: syndra-clamav
+    volumes:
+      - ${HOME}/syndra-workspace:/scan:ro
+    profiles: ["daemon"]
+
+  # Analyse de logs — Grafana Loki (léger vs ELK)
+  loki:
+    image: grafana/loki:latest
+    container_name: syndra-loki
+    ports:
+      - "3100:3100"
+    profiles: ["daemon"]
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: syndra-grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=syndra
+    profiles: ["daemon"]

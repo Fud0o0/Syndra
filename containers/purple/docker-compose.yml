@@ -1,0 +1,73 @@
+name: syndra-purple
+
+# Purple = Blue Team + Red Team
+# Inclut tous les services des deux profils
+
+services:
+
+  # ── Blue Team ───────────────────────────────────────────────────
+  nmap:
+    image: instrumentisto/nmap:latest
+    container_name: syndra-nmap
+    network_mode: host
+    volumes:
+      - ${HOME}/syndra-workspace:/workspace
+    entrypoint: ["nmap"]
+    profiles: ["cli"]
+
+  suricata:
+    image: jasonish/suricata:latest
+    container_name: syndra-suricata
+    network_mode: host
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    volumes:
+      - ${HOME}/syndra-workspace/suricata:/var/log/suricata
+    profiles: ["daemon"]
+
+  clamav:
+    image: clamav/clamav:stable
+    container_name: syndra-clamav
+    volumes:
+      - ${HOME}/syndra-workspace:/scan:ro
+    profiles: ["daemon"]
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: syndra-grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=syndra
+    profiles: ["daemon"]
+
+  # ── Red Team ───────────────────────────────────────────────────
+  kali:
+    image: kalilinux/kali-rolling:latest
+    container_name: syndra-kali
+    stdin_open: true
+    tty: true
+    network_mode: host
+    volumes:
+      - ${HOME}/syndra-workspace:/workspace
+    profiles: ["shell"]
+
+  metasploit:
+    image: metasploitframework/metasploit-framework:latest
+    container_name: syndra-msf
+    stdin_open: true
+    tty: true
+    network_mode: host
+    volumes:
+      - ${HOME}/syndra-workspace/msf:/home/msf/.msf4
+    profiles: ["shell"]
+
+  sqlmap:
+    image: paolobasso/sqlmap:latest
+    container_name: syndra-sqlmap
+    network_mode: host
+    volumes:
+      - ${HOME}/syndra-workspace:/workspace
+    entrypoint: ["python", "sqlmap.py"]
+    profiles: ["cli"]

@@ -1,0 +1,59 @@
+name: syndra-red-team
+
+volumes:
+  loot:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${HOME}/syndra-workspace/loot
+
+services:
+
+  # Kali Linux complet — accès shell
+  kali:
+    image: kalilinux/kali-rolling:latest
+    container_name: syndra-kali
+    stdin_open: true
+    tty: true
+    network_mode: host
+    volumes:
+      - ${HOME}/syndra-workspace:/workspace
+    profiles: ["shell"]
+
+  # Metasploit Framework
+  metasploit:
+    image: metasploitframework/metasploit-framework:latest
+    container_name: syndra-msf
+    stdin_open: true
+    tty: true
+    network_mode: host
+    volumes:
+      - ${HOME}/syndra-workspace/msf:/home/msf/.msf4
+    profiles: ["shell"]
+
+  # SQLMap — injection SQL
+  sqlmap:
+    image: paolobasso/sqlmap:latest
+    container_name: syndra-sqlmap
+    network_mode: host
+    volumes:
+      - ${HOME}/syndra-workspace:/workspace
+    entrypoint: ["python", "sqlmap.py"]
+    profiles: ["cli"]
+
+  # Nikto — scanner web
+  nikto:
+    image: securecodebox/nikto:latest
+    container_name: syndra-nikto
+    network_mode: host
+    profiles: ["cli"]
+
+  # Hashcat — cracking de mots de passe (nécessite GPU passthrough)
+  hashcat:
+    image: dizcza/docker-hashcat:intel-cpu
+    container_name: syndra-hashcat
+    volumes:
+      - ${HOME}/syndra-workspace/hashes:/hashes
+      - ${HOME}/syndra-workspace/wordlists:/wordlists
+    profiles: ["cli"]

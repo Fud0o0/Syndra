@@ -63,33 +63,7 @@ _ensure_tabler_icons_font()
 # On inline tous les @imports et on remplace var(--x) par les vraies valeurs.
 import re as _re
 
-_THEME: dict = {
-    "--foreground":      "#cdd6f4",
-    "--background":      "#0a0e14",
-    "--cursor":          "#cdd6f4",
-    "--primary":         "#89b4fa",
-    "--on-primary":      "#0a0e14",
-    "--secondary":       "#89dceb",
-    "--on-secondary":    "#0a0e14",
-    "--tertiary":        "#cba6f7",
-    "--on-tertiary":     "#0a0e14",
-    "--surface":         "#131825",
-    "--surface-bright":  "#1e2a3a",
-    "--surface_bright":  "#1e2a3a",
-    "--error":           "#f38ba8",
-    "--error-dim":       "#d4708a",
-    "--on-error":        "#0a0e14",
-    "--error-container": "#6b1a2a",
-    "--outline":         "#2a3a52",
-    "--shadow":          "#0d1117",
-    "--red":             "#f38ba8",  "--red-dim":     "#d4708a",
-    "--green":           "#a6e3a1",  "--green-dim":   "#88c584",
-    "--yellow":          "#f9e2af",  "--yellow-dim":  "#dbc492",
-    "--blue":            "#89b4fa",  "--blue-dim":    "#6b96dc",
-    "--magenta":         "#cba6f7",  "--magenta-dim": "#ad88d9",
-    "--cyan":            "#89dceb",  "--cyan-dim":    "#6bbece",
-    "--white":           "#cdd6f4",
-}
+_THEME: dict = {}  # Populated at runtime from profile in set_css()
 
 def _load_colors_from_css(css_path: str) -> None:
     """Lit les --var: value dans colors.css (généré par matugen) et met à jour _THEME."""
@@ -270,29 +244,17 @@ if __name__ == "__main__":
         if os.path.exists(example_wallpaper):
             os.system(f"cp '{example_wallpaper}' '{wallpapers_dir}/'")
 
-    # Set current wallpaper
+    # Set current wallpaper symlink
     if not os.path.exists(current_wallpaper):
         if os.path.exists(example_wallpaper):
             os.symlink(example_wallpaper, current_wallpaper)
+            print(f"[wallpaper] symlink → {example_wallpaper}")
         elif os.listdir(wallpapers_dir):
-            first_wall = os.path.join(wallpapers_dir, os.listdir(wallpapers_dir)[0])
+            first_wall = os.path.join(wallpapers_dir, sorted(os.listdir(wallpapers_dir))[0])
             os.symlink(first_wall, current_wallpaper)
+            print(f"[wallpaper] symlink → {first_wall}")
 
-    # Apply wallpaper with swww or swaybg
-    if os.path.exists(current_wallpaper):
-        video_extensions = (".mp4", ".webm", ".mkv", ".avi", ".mov")
-        is_video = current_wallpaper.lower().endswith(video_extensions)
-
-        if is_video:
-            exec_shell_command_async("killall mpvpaper 2>/dev/null || true")
-            GLib.timeout_add_seconds(1, lambda: exec_shell_command_async(
-                f"mpvpaper -o 'loop' '*' '{current_wallpaper}' >/dev/null 2>&1 &"
-            ))
-        else:
-            exec_shell_command_async("swww-daemon >/dev/null 2>&1 || true")
-            GLib.timeout_add_seconds(2, lambda: exec_shell_command_async(
-                f"swww img '{current_wallpaper}' --transition-type fade --transition-duration 2"
-            ) or True)
+    # Le fond d'écran est appliqué par syndrashell.sh avant ce point.
 
     # Download fonts if not already done
     if not os.path.exists(fonts_updated_file):
@@ -418,9 +380,15 @@ if __name__ == "__main__":
         if not screen:
             return
 
-        # Charger les couleurs matugen si disponibles (override _THEME)
+        # 1. Couleurs de base (styles/colors.css — defaults ou matugen)
         colors_file = get_relative_path("styles/colors.css")
         _load_colors_from_css(colors_file)
+
+        # 2. Profil de sécurité — priorité absolue sur tout le reste
+        from config.themes import get_theme
+        import config.data as _data
+        _THEME.update(get_theme(_data.SYNDRA_PROFILE))
+        print(f"[Syndra] Profil: {_data.SYNDRA_PROFILE} | shadow={_THEME.get('--shadow','?')}")
 
         # Inline tous les @imports + préprocesser (remplace var() par hex)
         main_css_path = get_relative_path("main.css")

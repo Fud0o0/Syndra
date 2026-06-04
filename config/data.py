@@ -19,8 +19,12 @@ HOME_DIR = os.path.expanduser("~")
 CONFIG_DIR = os.path.expanduser(f"~/.config/{APP_NAME_CAP}")
 
 screen = Gdk.Screen.get_default()
-CURRENT_WIDTH = screen.get_width()
-CURRENT_HEIGHT = screen.get_height()
+if screen is not None:
+    CURRENT_WIDTH = screen.get_width()
+    CURRENT_HEIGHT = screen.get_height()
+else:
+    CURRENT_WIDTH = 1920
+    CURRENT_HEIGHT = 1080
 
 CONFIG_FILE = get_relative_path("../config/config.json")
 MATUGEN_STATE_FILE = os.path.join(CONFIG_DIR, "matugen")
@@ -90,6 +94,9 @@ DOCK_THEME = _get_config_var("dock_theme")
 PANEL_THEME = _get_config_var("panel_theme")
 PANEL_POSITION = _get_config_var("panel_position")
 NOTIF_POS = _get_config_var("notif_pos")
+
+# Security profile (drives color theme + tool set)
+SYNDRA_PROFILE = config.get("syndra_profile", "default")
 
 # Bar component visibility
 BAR_COMPONENTS_VISIBILITY = {

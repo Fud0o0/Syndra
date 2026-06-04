@@ -2,7 +2,9 @@ import colorsys
 import concurrent.futures
 import hashlib
 import os
-import random  # <--- AÑADIDO
+import random
+import shutil
+import subprocess as _subp
 import shutil
 from concurrent.futures import ThreadPoolExecutor
 
@@ -290,15 +292,15 @@ class WallpaperSelector(Box):
             os.remove(current_wall)
         os.symlink(full_path, current_wall)
 
-        if self.matugen_switcher.get_active():
-            exec_shell_command_async(
-                f'matugen image "{full_path}" -t {selected_scheme}'
-            )
+        if self.matugen_switcher.get_active() and shutil.which("matugen"):
+            _subp.Popen(["matugen", "image", full_path, "-t", selected_scheme],
+                        stdout=_subp.DEVNULL, stderr=_subp.DEVNULL)
         else:
-            exec_shell_command_async("swww-daemon >/dev/null 2>&1 || true")
-            exec_shell_command_async(
-                f'swww img "{full_path}" --transition-type fade --transition-duration 1.5'
-            )
+            if shutil.which("swww"):
+                _subp.Popen(["swww-daemon"], stdout=_subp.DEVNULL, stderr=_subp.DEVNULL)
+                _subp.Popen(["swww", "img", full_path,
+                              "--transition-type", "fade", "--transition-duration", "1.5"],
+                             stdout=_subp.DEVNULL, stderr=_subp.DEVNULL)
 
         print(f"Set random wallpaper: {file_name}")
 

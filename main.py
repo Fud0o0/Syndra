@@ -258,15 +258,26 @@ if __name__ == "__main__":
         is_video = current_wallpaper.lower().endswith(video_extensions)
 
         if is_video:
-            exec_shell_command_async("killall mpvpaper 2>/dev/null || true")
-            GLib.timeout_add_seconds(1, lambda: exec_shell_command_async(
-                f"mpvpaper -o 'loop' '*' '{current_wallpaper}' >/dev/null 2>&1 &"
-            ))
+            import subprocess as _sp
+            _sp.Popen(["killall", "mpvpaper"], stderr=_sp.DEVNULL)
+            GLib.timeout_add_seconds(1, lambda: _sp.Popen(
+                ["mpvpaper", "-o", "loop", "*", current_wallpaper],
+                stdout=_sp.DEVNULL, stderr=_sp.DEVNULL
+            ) and False)
         else:
-            exec_shell_command_async("swww-daemon >/dev/null 2>&1 || true")
-            GLib.timeout_add_seconds(2, lambda: exec_shell_command_async(
-                f"swww img '{current_wallpaper}' --transition-type fade --transition-duration 2"
-            ) or True)
+            import subprocess as _sp, shutil as _sh
+            if _sh.which("swww"):
+                _sp.Popen(["swww-daemon"], stdout=_sp.DEVNULL, stderr=_sp.DEVNULL)
+                GLib.timeout_add_seconds(2, lambda: _sp.Popen(
+                    ["swww", "img", current_wallpaper,
+                     "--transition-type", "fade", "--transition-duration", "2"],
+                    stdout=_sp.DEVNULL, stderr=_sp.DEVNULL
+                ) and False)
+            elif _sh.which("swaybg"):
+                _sp.Popen(["swaybg", "-i", current_wallpaper, "-m", "fill"],
+                          stdout=_sp.DEVNULL, stderr=_sp.DEVNULL)
+            else:
+                print("[wallpaper] swww et swaybg non trouvés — installe swww: sudo pacman -S swww")
 
     # Download fonts if not already done
     if not os.path.exists(fonts_updated_file):

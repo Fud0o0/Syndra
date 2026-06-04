@@ -2,11 +2,11 @@
 
 // Install commands per team
 const installCommands = {
-    red: 'git clone --depth 1 https://github.com/Fud0o0/Syndra.git ~/.config/SyndraShell && bash ~/.config/SyndraShell/scripts/secure-install.sh red',
-    blue: 'git clone --depth 1 https://github.com/Fud0o0/Syndra.git ~/.config/SyndraShell && bash ~/.config/SyndraShell/scripts/secure-install.sh blue',
-    purple: 'git clone --depth 1 https://github.com/Fud0o0/Syndra.git ~/.config/SyndraShell && bash ~/.config/SyndraShell/scripts/secure-install.sh purple',
-    root: 'git clone --depth 1 https://github.com/Fud0o0/Syndra.git ~/.config/SyndraShell && bash ~/.config/SyndraShell/scripts/secure-install.sh root',
-    default: 'git clone --depth 1 https://github.com/Fud0o0/Syndra.git ~/.config/SyndraShell && bash ~/.config/SyndraShell/scripts/secure-install.sh default',
+    red: 'bash <(curl -sL https://raw.githubusercontent.com/Fud0o0/Syndra/main/install.sh) red-team',
+    blue: 'bash <(curl -sL https://raw.githubusercontent.com/Fud0o0/Syndra/main/install.sh) blue-team',
+    purple: 'bash <(curl -sL https://raw.githubusercontent.com/Fud0o0/Syndra/main/install.sh) purple',
+    root: 'bash <(curl -sL https://raw.githubusercontent.com/Fud0o0/Syndra/main/install.sh) root-me',
+    default: 'bash <(curl -sL https://raw.githubusercontent.com/Fud0o0/Syndra/main/install.sh) default',
     custom: 'bash <(curl -sL https://raw.githubusercontent.com/Fud0o0/Syndra/main/install.sh) custom'
 };
 

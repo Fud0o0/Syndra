@@ -143,5 +143,4 @@ bash <(curl -sL https://raw.githubusercontent.com/Fud0o0/Syndra/main/uninstall) 
 
 ## Crédit
 
-Inspiré par Ax-Shell.
 Construit avec Fabric.

@@ -295,7 +295,7 @@ class WallpaperSelector(Box):
                 f'matugen image "{full_path}" -t {selected_scheme}'
             )
         else:
-            exec_shell_command_async("swww-daemon --format xrgb >/dev/null 2>&1 || true")
+            exec_shell_command_async("swww-daemon >/dev/null 2>&1 || true")
             exec_shell_command_async(
                 f'swww img "{full_path}" --transition-type fade --transition-duration 1.5'
             )
@@ -387,7 +387,7 @@ class WallpaperSelector(Box):
                 f'matugen image "{full_path}" -t {selected_scheme}'
             )
         else:
-            exec_shell_command_async("swww-daemon --format xrgb >/dev/null 2>&1 || true")
+            exec_shell_command_async("swww-daemon >/dev/null 2>&1 || true")
             exec_shell_command_async(
                 f'swww img "{full_path}" --transition-type fade --transition-duration 1.5'
             )

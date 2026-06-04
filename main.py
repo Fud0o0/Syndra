@@ -289,7 +289,7 @@ if __name__ == "__main__":
                 f"mpvpaper -o 'loop' '*' '{current_wallpaper}' >/dev/null 2>&1 &"
             ))
         else:
-            exec_shell_command_async("swww-daemon --format xrgb >/dev/null 2>&1 || true")
+            exec_shell_command_async("swww-daemon >/dev/null 2>&1 || true")
             GLib.timeout_add_seconds(2, lambda: exec_shell_command_async(
                 f"swww img '{current_wallpaper}' --transition-type fade --transition-duration 2"
             ) or True)

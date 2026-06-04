@@ -217,12 +217,22 @@ HYPR_DIR="$HOME/.config/hypr"
 mkdir -p "$HYPR_DIR" ~/Pictures/Wallpapers ~/Pictures/Screenshots
 _ok "Répertoires créés"
 
-# Lier hyprland.conf
-if [ ! -e "$HYPR_DIR/hyprland.conf" ]; then
-    ln -sf "$INSTALL_DIR/config/hypr/hyprland.conf" "$HYPR_DIR/hyprland.conf"
-    _ok "hyprland.conf lié"
+# Rendre les scripts exécutables
+chmod +x "$INSTALL_DIR/syndrashell.sh" 2>/dev/null || true
+chmod +x "$INSTALL_DIR/scripts/"*.sh 2>/dev/null || true
+_ok "Scripts rendus exécutables"
+
+# Lier hyprland.conf — TOUJOURS forcer (écrase le config auto-généré de Hyprland)
+rm -f "$HYPR_DIR/hyprland.conf"
+ln -sf "$INSTALL_DIR/config/hypr/hyprland.conf" "$HYPR_DIR/hyprland.conf"
+_ok "hyprland.conf → lien symbolique forcé vers Syndra"
+
+# Vérifier que exec-once syndrashell est bien dans la config
+if ! grep -q "syndrashell" "$INSTALL_DIR/config/hypr/hyprland.conf" 2>/dev/null; then
+    _warn "exec-once syndrashell absent du hyprland.conf !"
+    ((WARNINGS++))
 else
-    _ok "hyprland.conf déjà présent"
+    _ok "exec-once syndrashell.sh présent dans hyprland.conf"
 fi
 
 # Police tabler-icons

@@ -130,3 +130,94 @@
   background-color: var(--outline);
   border-radius: 8px;
 }
+
+/* ════════════════════════════════════════════════════════════════════
+   COUCHE D'IDENTITÉ SYNDRA
+   Différencie l'interface d'ax-shell tout en gardant la même famille :
+   coins plus nets, bulles à bord défini, accents --primary, workspace
+   actif avec halo. (Chargée en dernier → prioritaire.)
+   ════════════════════════════════════════════════════════════════════ */
+
+/* Coins légèrement plus nets — signature "outil de sécurité" */
+* {
+  border-radius: 12px;
+}
+
+/* Barre : bord inférieur accentué (la "ligne Syndra") */
+#bar-inner.dense,
+#bar-inner.edge,
+#bar-inner.edgecenter.vertical {
+  border-color: var(--primary);
+}
+
+/* Widgets de la barre : bord défini + accent --primary au survol */
+#date-time,
+#weather,
+#language,
+#systray,
+#button-bar {
+  border: 1px solid var(--outline);
+  border-radius: 10px;
+  transition: all 0.2s ease;
+}
+
+#date-time:hover,
+#weather:hover,
+#language:hover,
+#button-bar:hover {
+  border: 1px solid var(--primary);
+}
+
+/* Horloge mise en valeur dans la teinte d'accent */
+#date-time > label {
+  color: var(--primary);
+  font-weight: bold;
+}
+
+/* Bouton lanceur (logo) : pastille pleine accentuée */
+#button-apps,
+#button-bar.apps {
+  background-color: var(--primary);
+}
+
+#button-apps #button-bar-label,
+#button-apps label {
+  color: var(--shadow);
+}
+
+/* Workspace actif : barre allongée avec halo lumineux */
+#workspaces > button.active {
+  background-color: var(--primary);
+  box-shadow: 0 0 8px 1px var(--primary);
+}
+
+#workspaces > button {
+  border-radius: 10px;
+}
+
+/* Bulles principales (dashboard, notch, panneaux) : bord défini */
+#notch-content,
+#app-launcher,
+#power-menu,
+#toolbox,
+#dashboard,
+#overview,
+#emoji,
+#clip-history {
+  border: 1px solid var(--outline);
+}
+
+/* Conteneurs internes du dashboard : liseré subtil */
+#box-1,
+#box-2,
+#box-3,
+#box-x {
+  border: 1px solid var(--surface-bright);
+}
+
+/* Accent de focus cohérent sur les champs de recherche */
+#search-entry:focus,
+#search-entry-walls:focus,
+#search-entry-apps:focus {
+  border: 1px solid var(--primary);
+}

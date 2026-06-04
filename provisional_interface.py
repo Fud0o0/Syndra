@@ -62,6 +62,9 @@ class ProvisionalInterface(Gtk.Window):
         # Page 3: Configuration
         self.create_config_page(notebook)
         
+        # Page 4: Collaborateurs
+        self.create_collaborators_page(notebook)
+        
         # Barre de statut
         statusbar = Gtk.Statusbar()
         context_id = statusbar.get_context_id("status")
@@ -291,6 +294,69 @@ class ProvisionalInterface(Gtk.Window):
         box.pack_start(logs_frame, True, True, 0)
         
         notebook.append_page(box, Gtk.Label(label="Configuration"))
+    
+    def create_collaborators_page(self, notebook):
+        """Page des collaborateurs"""
+        box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
+        box.set_margin_top(10)
+        box.set_margin_bottom(10)
+        box.set_margin_start(10)
+        box.set_margin_end(10)
+        
+        # Titre
+        title = Gtk.Label()
+        title.set_markup("<b>Notre Équipe / Collaborateurs</b>")
+        box.pack_start(title, False, False, 5)
+        
+        # Conteneur principal avec défilement si nécessaire
+        scrolled = Gtk.ScrolledWindow()
+        scrolled.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
+        
+        # Grid pour les collaborateurs
+        grid = Gtk.Grid()
+        grid.set_column_spacing(15)
+        grid.set_row_spacing(15)
+        grid.set_margin_top(10)
+        
+        # === Graphiste ===
+        frame = Gtk.Frame(label="Graphiste")
+        vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=5)
+        vbox.set_margin_top(15)
+        vbox.set_margin_bottom(15)
+        vbox.set_margin_start(15)
+        vbox.set_margin_end(15)
+        
+        # Photo (icône par défaut pour le moment car les images IG/X nécessitent des droits d'accès)
+        image = Gtk.Image.new_from_icon_name("avatar-default-symbolic", Gtk.IconSize.DIALOG)
+        image.set_pixel_size(64)
+        vbox.pack_start(image, False, False, 10)
+        
+        name_label = Gtk.Label()
+        name_label.set_markup("<span size='large'><b>Maelle (Pinocokio)</b></span>")
+        vbox.pack_start(name_label, False, False, 5)
+        
+        desc_label = Gtk.Label(label="Création Graphique & Design")
+        vbox.pack_start(desc_label, False, False, 5)
+        
+        # Liens
+        link_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=15)
+        link_box.set_halign(Gtk.Align.CENTER)
+        
+        ig_btn = Gtk.LinkButton.new_with_label("https://www.instagram.com/pinocokio", "Instagram")
+        x_btn = Gtk.LinkButton.new_with_label("https://x.com/maelleez?s=21&t=Fbwjq18zpDlYvS9vL0hglA", "X (Twitter)")
+        
+        link_box.pack_start(ig_btn, False, False, 0)
+        link_box.pack_start(x_btn, False, False, 0)
+        
+        vbox.pack_start(link_box, False, False, 10)
+        frame.add(vbox)
+        
+        grid.attach(frame, 0, 0, 1, 1)
+        
+        scrolled.add(grid)
+        box.pack_start(scrolled, True, True, 0)
+        
+        notebook.append_page(box, Gtk.Label(label="Collaborateurs"))
     
     def on_refresh_clicked(self, button):
         """Callback pour le bouton rafraîchir"""

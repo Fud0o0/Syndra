@@ -305,6 +305,38 @@ for RC in "$HOME/.bashrc" "$HOME/.zshrc"; do
 done
 export PATH="$HOME/.local/bin:$PATH"
 
+# Profil custom : sélection interactive des outils
+if [ "$PROFILE" = "custom" ]; then
+    CUSTOM_CONF="$HOME/.config/SyndraShell/custom-tools.conf"
+    echo ""
+    _info "Profil personnalisé — choisis tes outils :"
+    echo ""
+    # Noms + descriptions depuis le catalogue
+    mapfile -t CAT_LINES < <(bash "$INSTALL_DIR/scripts/syndra-tools.sh" __catalog 2>/dev/null | awk -F'|' 'NF>=6{print $1"|"$6}')
+    i=1
+    CAT_NAMES=()
+    for line in "${CAT_LINES[@]}"; do
+        nm="${line%%|*}"; ds="${line#*|}"
+        CAT_NAMES+=("$nm")
+        printf "  %2d) %-14s %s\n" "$i" "$nm" "$ds"
+        i=$((i+1))
+    done
+    echo ""
+    echo "  Numéros séparés par espaces (ex: 1 3 8), ou 'all' :"
+    read -r SEL </dev/tty 2>/dev/null || SEL=""
+    : > "$CUSTOM_CONF"
+    if [ "$SEL" = "all" ]; then
+        printf '%s\n' "${CAT_NAMES[@]}" > "$CUSTOM_CONF"
+    elif [ -n "$SEL" ]; then
+        for num in $SEL; do
+            idx=$((num-1))
+            [ -n "${CAT_NAMES[$idx]:-}" ] && echo "${CAT_NAMES[$idx]}" >> "$CUSTOM_CONF"
+        done
+    fi
+    grep -qx "kali" "$CUSTOM_CONF" 2>/dev/null || echo "kali" >> "$CUSTOM_CONF"
+    _ok "Outils custom : $(tr '\n' ' ' < "$CUSTOM_CONF")"
+fi
+
 # Télécharger les images Docker du profil (sudo car groupe docker pas encore actif)
 if command -v docker &>/dev/null; then
     _info "Téléchargement des images Docker du profil (peut être long)..."
@@ -314,8 +346,9 @@ if command -v docker &>/dev/null; then
 
     # Extraire les images uniques du manifeste et les pull
     PULLED=0; FAILED=0; SEEN_IMAGES=""
-    while IFS='|' read -r _name image _flags _cmd; do
+    while IFS='|' read -r _name image _flags _pkg _bin _desc; do
         [ -z "$image" ] && continue
+        [ "$image" = "kali" ] && image="kalilinux/kali-rolling"
         echo "$SEEN_IMAGES" | grep -qF "$image" && continue
         SEEN_IMAGES="$SEEN_IMAGES $image"
         _info "pull $image ..."

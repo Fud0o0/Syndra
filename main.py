@@ -332,11 +332,24 @@ if __name__ == "__main__":
     app = Application(f"{APP_NAME}", *app_components)
 
     def set_css():
-        app.set_stylesheet_from_file(
-            get_relative_path("main.css"),
-        )
-        # Charger la police tabler-icons via GTK CSS avec chemin absolu
-        # (après init GTK, chemin absolu = aucune ambiguïté)
+        from gi.repository import Gdk, Gtk
+        css_path = get_relative_path("main.css")
+
+        # Utilise load_from_path (résout les @imports depuis le dossier du fichier)
+        # et connecte parsing-error pour éviter que PyGObject 3.14+ lève une exception
+        provider = Gtk.CssProvider()
+        provider.connect("parsing-error", lambda p, s, e: None)
+        try:
+            provider.load_from_path(css_path)
+        except Exception as e:
+            print(f"[CSS] erreur ignorée : {e}")
+
+        screen = Gdk.Screen.get_default()
+        if screen:
+            Gtk.StyleContext.add_provider_for_screen(
+                screen, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
+            )
+
         _load_tabler_icons_css()
 
     app.set_css = set_css

@@ -937,9 +937,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // Rotate track around Y axis.
         track.style.transform = `rotateY(${-currentIndex * angleStep}deg)`;
         
+        const normalizedIndex = ((currentIndex % totalSlides) + totalSlides) % totalSlides;
+        
         // Update classes on slides
         slides.forEach((slide, idx) => {
-            if (idx === currentIndex) {
+            if (idx === normalizedIndex) {
                 slide.classList.add('active');
             } else {
                 slide.classList.remove('active');
@@ -948,7 +950,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Update indicators
         indicators.forEach((indicator, idx) => {
-            if (idx === currentIndex) {
+            if (idx === normalizedIndex) {
                 indicator.classList.add('active');
             } else {
                 indicator.classList.remove('active');
@@ -957,12 +959,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     function nextSlide() {
-        currentIndex = (currentIndex + 1) % totalSlides;
+        currentIndex++;
         updateCarousel();
     }
     
     function prevSlide() {
-        currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+        currentIndex--;
         updateCarousel();
     }
     
@@ -999,7 +1001,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // Set up indicator click listeners
     indicators.forEach((indicator) => {
         indicator.addEventListener('click', function() {
-            currentIndex = parseInt(this.getAttribute('data-slide'));
+            const targetSlide = parseInt(this.getAttribute('data-slide'));
+            const currentNormalized = ((currentIndex % totalSlides) + totalSlides) % totalSlides;
+            let diff = targetSlide - currentNormalized;
+            
+            // Prendre le chemin le plus court
+            if (diff > totalSlides / 2) diff -= totalSlides;
+            else if (diff < -totalSlides / 2) diff += totalSlides;
+            
+            currentIndex += diff;
             updateCarousel();
             handleUserInteraction();
         });
@@ -1008,8 +1018,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // Support click direct on a slide to rotate to it
     slides.forEach((slide, idx) => {
         slide.addEventListener('click', () => {
-            if (currentIndex !== idx) {
-                currentIndex = idx;
+            const currentNormalized = ((currentIndex % totalSlides) + totalSlides) % totalSlides;
+            if (currentNormalized !== idx) {
+                let diff = idx - currentNormalized;
+                if (diff > totalSlides / 2) diff -= totalSlides;
+                else if (diff < -totalSlides / 2) diff += totalSlides;
+                
+                currentIndex += diff;
                 updateCarousel();
                 handleUserInteraction();
             }
@@ -1027,11 +1042,18 @@ document.addEventListener('DOMContentLoaded', () => {
             'custom': 4,    // image 5
             'default': 0    // image 1
         };
-        const idx = teamToIndex[team];
-        if (idx !== undefined && currentIndex !== idx) {
-            currentIndex = idx;
-            updateCarousel();
-            handleUserInteraction();
+        const targetSlide = teamToIndex[team];
+        if (targetSlide !== undefined) {
+            const currentNormalized = ((currentIndex % totalSlides) + totalSlides) % totalSlides;
+            if (currentNormalized !== targetSlide) {
+                let diff = targetSlide - currentNormalized;
+                if (diff > totalSlides / 2) diff -= totalSlides;
+                else if (diff < -totalSlides / 2) diff += totalSlides;
+                
+                currentIndex += diff;
+                updateCarousel();
+                handleUserInteraction();
+            }
         }
     });
     

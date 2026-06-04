@@ -63,33 +63,7 @@ _ensure_tabler_icons_font()
 # On inline tous les @imports et on remplace var(--x) par les vraies valeurs.
 import re as _re
 
-_THEME: dict = {
-    "--foreground":      "#cdd6f4",
-    "--background":      "#0a0e14",
-    "--cursor":          "#cdd6f4",
-    "--primary":         "#89b4fa",
-    "--on-primary":      "#0a0e14",
-    "--secondary":       "#89dceb",
-    "--on-secondary":    "#0a0e14",
-    "--tertiary":        "#cba6f7",
-    "--on-tertiary":     "#0a0e14",
-    "--surface":         "#131825",
-    "--surface-bright":  "#1e2a3a",
-    "--surface_bright":  "#1e2a3a",
-    "--error":           "#f38ba8",
-    "--error-dim":       "#d4708a",
-    "--on-error":        "#0a0e14",
-    "--error-container": "#6b1a2a",
-    "--outline":         "#2a3a52",
-    "--shadow":          "#0d1117",
-    "--red":             "#f38ba8",  "--red-dim":     "#d4708a",
-    "--green":           "#a6e3a1",  "--green-dim":   "#88c584",
-    "--yellow":          "#f9e2af",  "--yellow-dim":  "#dbc492",
-    "--blue":            "#89b4fa",  "--blue-dim":    "#6b96dc",
-    "--magenta":         "#cba6f7",  "--magenta-dim": "#ad88d9",
-    "--cyan":            "#89dceb",  "--cyan-dim":    "#6bbece",
-    "--white":           "#cdd6f4",
-}
+_THEME: dict = {}  # Populated at runtime from profile in set_css()
 
 def _load_colors_from_css(css_path: str) -> None:
     """Lit les --var: value dans colors.css (généré par matugen) et met à jour _THEME."""
@@ -418,7 +392,13 @@ if __name__ == "__main__":
         if not screen:
             return
 
-        # Charger les couleurs matugen si disponibles (override _THEME)
+        # Charger le thème selon le profil sélectionné
+        from config.themes import get_theme
+        import config.data as _data
+        profile_colors = get_theme(_data.SYNDRA_PROFILE)
+        _THEME.update(profile_colors)
+
+        # Matugen override si disponible (priorité sur le profil)
         colors_file = get_relative_path("styles/colors.css")
         _load_colors_from_css(colors_file)
 

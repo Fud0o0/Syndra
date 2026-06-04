@@ -91,6 +91,9 @@ PANEL_THEME = _get_config_var("panel_theme")
 PANEL_POSITION = _get_config_var("panel_position")
 NOTIF_POS = _get_config_var("notif_pos")
 
+# Security profile (drives color theme + tool set)
+SYNDRA_PROFILE = config.get("syndra_profile", "default")
+
 # Bar component visibility
 BAR_COMPONENTS_VISIBILITY = {
     "button_apps": _get_config_var("bar_button_apps_visible"),

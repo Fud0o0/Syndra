@@ -1,206 +1,193 @@
 <div align="center">
 
-# 🐉 SyndraShell
+<img src="docs/logo.png" width="130" alt="Syndra logo" />
 
-**Environnement de bureau Hyprland orienté cybersécurité**
+# SyndraShell
 
-Interface moderne sur Wayland · Thème qui suit ton fond d'écran · Outils de sécurité conteneurisés par profil
+**Un environnement de bureau Hyprland orienté cybersécurité.**
 
-[Discord](https://discord.gg/pbrrd5ATK5) · [Support (Ko-fi)](https://ko-fi.com/syndrashell)
+Interface Wayland épurée · thème qui suit le fond d'écran · outils de sécurité conteneurisés par profil.
+
+<a href="https://discord.gg/pbrrd5ATK5">Discord</a> · <a href="https://ko-fi.com/syndrashell">Support</a>
+
+<br/>
+
+<img src="docs/image.png" width="820" alt="Aperçu de SyndraShell" />
 
 </div>
 
----
+<br/>
 
-## ✨ Présentation
+## Aperçu
 
-SyndraShell est un shell de bureau pour **Hyprland** (Wayland), construit avec le framework **Fabric** (Python/GTK3). Il combine une interface épurée et un **toolkit de sécurité conteneurisé**, organisé en profils opérationnels :
+SyndraShell est un shell de bureau pour **Hyprland**, écrit avec le framework **Fabric** (Python / GTK3). Il réunit une interface soignée et un toolkit de sécurité isolé en conteneurs, organisé en profils opérationnels.
 
-- 🖥️ **L'interface tourne sur l'hôte** (barre, dashboard, notch, dock, notifications…)
-- 📦 **Les outils de sécurité tournent dans Docker** — isolés, propres, sans polluer le système
-- 🎨 **Les couleurs de l'interface s'adaptent automatiquement au fond d'écran**
-- 🧩 **Chaque profil** (Blue / Red / Purple / Root-Me / Custom) a son thème, son fond d'écran et sa liste d'outils
+- L'interface (barre, dashboard, dynamic island, dock, notifications) tourne sur l'hôte.
+- Les outils offensifs et défensifs tournent dans **Docker**, isolés du système.
+- Les couleurs de l'interface sont **dérivées automatiquement du fond d'écran**.
+- Chaque profil possède son thème, son fond d'écran et sa sélection d'outils.
 
----
+<br/>
 
-## 🚀 Installation
+## Installation
 
-> Prérequis : **Arch Linux**, une session **Hyprland**, `git` et `curl`. Docker est installé automatiquement.
-
-Une seule commande, avec le profil de ton choix :
+> Requis : **Arch Linux**, une session **Hyprland**, `git` et `curl`. Docker est installé automatiquement.
 
 ```bash
 bash <(curl -sL https://raw.githubusercontent.com/Fud0o0/Syndra/main/install.sh) <profil>
 ```
 
-Exemples :
-
 ```bash
+# exemples
 bash <(curl -sL https://raw.githubusercontent.com/Fud0o0/Syndra/main/install.sh) blue-team
 bash <(curl -sL https://raw.githubusercontent.com/Fud0o0/Syndra/main/install.sh) red-team
 bash <(curl -sL https://raw.githubusercontent.com/Fud0o0/Syndra/main/install.sh) purple
 bash <(curl -sL https://raw.githubusercontent.com/Fud0o0/Syndra/main/install.sh) root-me
 bash <(curl -sL https://raw.githubusercontent.com/Fud0o0/Syndra/main/install.sh) custom
+bash <(curl -sL https://raw.githubusercontent.com/Fud0o0/Syndra/main/install.sh) default
 ```
 
-L'installateur (7 étapes, vérifie chaque dépendance) :
+L'installateur vérifie chaque dépendance, installe Hyprland et la stack Wayland, configure le profil, télécharge les images Docker, puis met l'interface en démarrage automatique. À la fin, sélectionne la session **Hyprland** à la connexion.
 
-1. Vérifie le système et l'espace disque
-2. Installe l'AUR helper (`yay`) si absent
-3. Installe Hyprland + les dépendances (`awww`, `kitty`, `docker`, `python-fabric`, …)
-4. Installe les dépendances Python (`setproctitle`, `watchdog`, `Pillow`, …)
-5. Clone Syndra et enregistre ton profil
-6. Configure Hyprland, la police, le fond d'écran du profil
-7. Télécharge les images Docker des outils du profil
+<br/>
 
-> ⚠️ Après l'installation, **déconnecte-toi et choisis la session Hyprland** (ou tape `Hyprland` depuis un TTY). SyndraShell démarre automatiquement.
+## Profils
 
----
+Le profil est choisi à l'installation : il détermine le thème, le fond d'écran et les outils. Pour en changer, réinstalle avec un autre profil.
 
-## 🧩 Profils
+| Profil | Orientation | Espace conseillé |
+| :-- | :-- | :-- |
+| `blue-team` | Défense, détection, analyse réseau | 6 Go |
+| `red-team` | Pentest, exploitation | 7 Go |
+| `purple` | Couverture complète Red + Blue | 10 Go |
+| `root-me` | CTF, reverse, forensics | 7 Go |
+| `custom` | Outils choisis à la carte | 4 Go + |
+| `default` | Base minimale | 4 Go |
 
-| Profil | Couleur | Espace conseillé | Orientation |
-|---|---|---|---|
-| 🔵 `blue-team` | Bleu | **6 Go** | Défense, détection, analyse |
-| 🔴 `red-team` | Rouge | **7 Go** | Pentest, exploitation |
-| 🟣 `purple` | Violet | **10 Go** | Red + Blue complet |
-| ⚫ `root-me` | Acier | **7 Go** | CTF, reverse, forensics |
-| 🟢 `custom` | Vert | **4 Go** + | Outils au choix |
-| ⚪ `default` | Bleu nuit | **4 Go** | Base minimale |
+<div align="center">
+<table>
+  <tr>
+    <td align="center"><img src="assets/wallpapers/blue-team.png" width="240"/><br/><b>Blue Team</b></td>
+    <td align="center"><img src="assets/wallpapers/red-team.png" width="240"/><br/><b>Red Team</b></td>
+    <td align="center"><img src="assets/wallpapers/purple.png" width="240"/><br/><b>Purple</b></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="assets/wallpapers/root-me.png" width="240"/><br/><b>Root-Me</b></td>
+    <td align="center"><img src="assets/wallpapers/custom.png" width="240"/><br/><b>Custom</b></td>
+    <td align="center"><img src="assets/wallpapers/default.png" width="240"/><br/><b>Default</b></td>
+  </tr>
+</table>
+</div>
 
-Le **profil est fixé à l'installation** : il détermine le thème, le fond d'écran et les outils. Pour en changer, réinstalle avec un autre profil.
+<br/>
 
----
+## Outils conteneurisés
 
-## 📦 Outils conteneurisés — `syndra-tools`
-
-Tous les outils tournent dans des conteneurs Docker, accessibles via le lanceur `syndra-tools`. Les fichiers sont partagés via `~/syndra-workspace` ↔ `/workspace`.
+Tous les outils tournent dans Docker, pilotés par le lanceur `syndra-tools`. Les fichiers sont partagés via `~/syndra-workspace` ↔ `/workspace`.
 
 ```bash
-syndra-tools                 # liste les outils du profil actif
-syndra-tools catalog         # liste les 36 outils disponibles
-syndra-tools <outil>         # installe l'outil + ouvre un shell prêt à l'emploi
-syndra-tools <outil> [args]  # exécute l'outil une fois (pour scripter)
-syndra-tools shell           # shell Kali complet avec /workspace monté
-syndra-tools pull            # (re)télécharge toutes les images du profil
-syndra-tools customize       # (profil custom) choisir ses outils
-syndra-tools update          # met à jour Syndra (git pull + lanceur)
+syndra-tools                 # outils du profil actif
+syndra-tools catalog         # catalogue complet (36 outils)
+syndra-tools <outil>         # installe l'outil et ouvre un shell prêt
+syndra-tools <outil> [args]  # exécution unique (scriptable)
+syndra-tools shell           # boîte à outils Kali complète
+syndra-tools pull            # (re)télécharge les images du profil
+syndra-tools customize       # profil custom : choisir ses outils
+syndra-tools update          # mise à jour de Syndra
 ```
-
-Exemples :
 
 ```bash
-syndra-tools nmap -sV 10.0.0.1          # scan one-shot
-syndra-tools john                        # ouvre un shell avec John prêt
-syndra-tools shell                       # boîte à outils Kali complète
+# exemples
+syndra-tools nmap -sV 10.0.0.1
+syndra-tools john
+syndra-tools shell
 ```
 
-### Outils par profil
+**Sélection par profil**
 
-- **🔵 blue-team** — `nmap` · `tshark` · `tcpdump` · `wireshark` · `suricata` · `zeek` · `clamav` · `trivy` · `grype` · `lynis` · `nuclei`
-- **🔴 red-team** — `kali` · `nmap` · `rustscan` · `metasploit` · `nikto` · `sqlmap` · `gobuster` · `ffuf` · `feroxbuster` · `wpscan` · `nuclei` · `whatweb` · `hydra` · `john` · `hashcat`
-- **🟣 purple** — tout blue + red (nmap, metasploit, wireshark, suricata, sqlmap, hashcat, zap…)
-- **⚫ root-me** — `kali` · `nmap` · `radare2` · `gdb` · `ghidra` · `binwalk` · `steghide` · `exiftool` · `foremost` · `volatility3` · `john` · `hashcat` · `sqlmap` · `hydra`
-- **🟢 custom** — au choix parmi les 36 outils du catalogue
+- **blue-team** — nmap, tshark, tcpdump, wireshark, suricata, zeek, clamav, trivy, grype, lynis, nuclei
+- **red-team** — kali, nmap, rustscan, metasploit, nikto, sqlmap, gobuster, ffuf, feroxbuster, wpscan, nuclei, whatweb, hydra, john, hashcat
+- **purple** — Red + Blue réunis (metasploit, wireshark, suricata, sqlmap, hashcat, zap…)
+- **root-me** — kali, nmap, radare2, gdb, ghidra, binwalk, steghide, exiftool, foremost, volatility3, john, hashcat, sqlmap, hydra
+- **custom** — à la carte parmi les 36 outils du catalogue
 
----
+<br/>
 
-## 🎨 Thème & fonds d'écran
+## Thème dynamique
 
-- L'interface **dérive ses couleurs du fond d'écran** courant (`~/.current.wall`) — change de fond, l'interface se recolore automatiquement.
-- Chaque profil installe son **fond d'écran assorti** (hippocampe Syndra dans la couleur du profil).
-- Sélecteur de fonds intégré : ouvre le **dashboard → onglet Wallpapers**.
+L'interface extrait la couleur dominante du fond d'écran courant et en génère toute la palette. Change de fond — l'interface se recolore automatiquement. Chaque profil installe son fond assorti ; un sélecteur est intégré au dashboard (onglet Wallpapers).
 
-Les fonds sont dans `assets/wallpapers/` ; le moteur de couleurs est `config/wallpaper_theme.py`.
+<div align="center">
+<table>
+  <tr>
+    <td align="center"><img src="docs/image4.png" width="400"/><br/><sub>Lanceur d'applications</sub></td>
+    <td align="center"><img src="docs/image6.png" width="400"/><br/><sub>Profil Root-Me</sub></td>
+  </tr>
+</table>
+</div>
 
----
+<br/>
 
-## ⌨️ Raccourcis principaux
+## Raccourcis
 
 | Raccourci | Action |
-|---|---|
+| :-- | :-- |
 | `SUPER` + `R` | Terminal (Kitty) |
 | `SUPER` + `D` | Lanceur d'applications |
 | `SUPER` + `E` | Explorateur de fichiers |
-| `SUPER` + `Space` | Basculer flottant |
+| `SUPER` + `Espace` | Basculer flottant |
 | `SUPER` + `C` | Fermer la fenêtre |
 | `SUPER` + `M` | Quitter Hyprland |
 
-Le dashboard, le launcher et le notch sont aussi accessibles en cliquant sur la barre.
+Le dashboard, le launcher et la dynamic island sont aussi accessibles depuis la barre.
 
----
+<br/>
 
-## 🔄 Mise à jour
+## Maintenance
 
 ```bash
+# Mise à jour
 syndra-tools update
-```
 
-Fait un `git pull` du dépôt et recopie le lanceur. Recharge ton interface :
-
-```bash
-pkill -f "python.*main.py"; bash ~/.config/SyndraShell/syndrashell.sh &
-```
-
----
-
-## 🗑️ Désinstallation
-
-```bash
-# Standard (garde Hyprland, conserve tes wallpapers perso)
+# Désinstallation (conserve Hyprland et les wallpapers perso)
 bash <(curl -sL https://raw.githubusercontent.com/Fud0o0/Syndra/main/uninstall.sh)
 
-# Complète (supprime aussi Hyprland + images Docker Syndra)
+# Désinstallation complète (Hyprland + images Docker Syndra)
 bash <(curl -sL https://raw.githubusercontent.com/Fud0o0/Syndra/main/uninstall.sh) --full
 ```
 
----
+<br/>
 
-## 📁 Structure du projet
+## Structure
 
 ```
 SyndraShell/
-├── main.py                  # point d'entrée de l'interface
-├── syndrashell.sh           # script de démarrage (lancé par Hyprland)
-├── install.sh               # installateur (profil en argument)
-├── uninstall.sh             # désinstallateur
+├── main.py                  point d'entrée de l'interface
+├── syndrashell.sh           script de démarrage (lancé par Hyprland)
+├── install.sh / uninstall.sh
 ├── config/
-│   ├── themes.py            # palettes de couleurs par profil
-│   ├── wallpaper_theme.py   # couleurs dérivées du fond d'écran
-│   ├── hypr/hyprland.conf   # configuration Hyprland
-│   └── ...
-├── modules/                 # widgets (bar, notch, dashboard, dock…)
-├── styles/                  # CSS de l'interface
+│   ├── themes.py            palettes par profil
+│   ├── wallpaper_theme.py   couleurs dérivées du fond d'écran
+│   └── hypr/hyprland.conf
+├── modules/                 widgets (bar, notch, dashboard, dock…)
+├── styles/                  feuilles de style de l'interface
 ├── assets/
-│   ├── wallpapers/          # fonds d'écran par profil
-│   └── fonts/               # police tabler-icons
-├── containers/              # docker-compose par profil
+│   ├── wallpapers/          fonds d'écran par profil
+│   └── fonts/               police tabler-icons
+├── containers/              docker-compose par profil
 └── scripts/
-    ├── syndra-tools.sh      # lanceur d'outils conteneurisés
-    └── install/             # scripts d'installation d'outils par profil
+    ├── syndra-tools.sh      lanceur d'outils conteneurisés
+    └── install/             installation d'outils par profil
 ```
 
----
+<br/>
 
-## 🛠️ Stack technique
+## Stack
 
-- **Hyprland** — compositeur Wayland
-- **Fabric** — framework UI Python/GTK3
-- **awww** — gestion du fond d'écran Wayland
-- **Docker** — isolation des outils de sécurité
-- **PIL/Pillow** — extraction des couleurs du fond d'écran
+Hyprland (Wayland) · Fabric (UI Python/GTK3) · awww (fond d'écran) · Docker (isolation des outils) · Pillow (extraction des couleurs).
 
----
-
-## 🤝 Communauté
-
-- 💬 Discord : [discord.gg/pbrrd5ATK5](https://discord.gg/pbrrd5ATK5)
-- ☕ Support : [ko-fi.com/syndrashell](https://ko-fi.com/syndrashell)
-
----
+<br/>
 
 <div align="center">
-
-Construit avec ❤️ et **Fabric** · Pour usage en environnement autorisé uniquement.
-
+<sub>Construit avec Fabric · Destiné à un usage en environnement autorisé uniquement.</sub>
 </div>

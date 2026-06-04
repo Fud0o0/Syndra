@@ -244,40 +244,62 @@ if __name__ == "__main__":
         if os.path.exists(example_wallpaper):
             os.system(f"cp '{example_wallpaper}' '{wallpapers_dir}/'")
 
-    # Set current wallpaper
+    # Set current wallpaper symlink
     if not os.path.exists(current_wallpaper):
         if os.path.exists(example_wallpaper):
             os.symlink(example_wallpaper, current_wallpaper)
+            print(f"[wallpaper] symlink → {example_wallpaper}")
         elif os.listdir(wallpapers_dir):
-            first_wall = os.path.join(wallpapers_dir, os.listdir(wallpapers_dir)[0])
+            first_wall = os.path.join(wallpapers_dir, sorted(os.listdir(wallpapers_dir))[0])
             os.symlink(first_wall, current_wallpaper)
+            print(f"[wallpaper] symlink → {first_wall}")
 
-    # Apply wallpaper with swww or swaybg
-    if os.path.exists(current_wallpaper):
-        video_extensions = (".mp4", ".webm", ".mkv", ".avi", ".mov")
-        is_video = current_wallpaper.lower().endswith(video_extensions)
+    # Résoudre le lien symbolique pour obtenir le vrai chemin
+    real_wall = os.path.realpath(current_wallpaper) if os.path.exists(current_wallpaper) else None
+    print(f"[wallpaper] current.wall={current_wallpaper} → {real_wall}")
+    print(f"[wallpaper] fichier existe: {real_wall and os.path.isfile(real_wall)}")
 
-        if is_video:
-            import subprocess as _sp
+    # Apply wallpaper
+    import subprocess as _sp, shutil as _sh
+    if real_wall and os.path.isfile(real_wall):
+        video_ext = (".mp4", ".webm", ".mkv", ".avi", ".mov")
+        if real_wall.lower().endswith(video_ext):
             _sp.Popen(["killall", "mpvpaper"], stderr=_sp.DEVNULL)
-            GLib.timeout_add_seconds(1, lambda: _sp.Popen(
-                ["mpvpaper", "-o", "loop", "*", current_wallpaper],
-                stdout=_sp.DEVNULL, stderr=_sp.DEVNULL
-            ) and False)
+            GLib.timeout_add_seconds(1, lambda w=real_wall: (
+                print(f"[wallpaper] mpvpaper {w}") or
+                _sp.Popen(["mpvpaper", "-o", "loop", "*", w]) and False
+            ))
+        elif _sh.which("swww"):
+            # swww-daemon déjà lancé par syndrashell.sh — on attend qu'il réponde
+            def _apply_swww(wall=real_wall):
+                for _ in range(15):
+                    r = _sp.run(["swww", "query"], capture_output=True)
+                    if r.returncode == 0:
+                        print(f"[wallpaper] swww img {wall}")
+                        out = _sp.run(
+                            ["swww", "img", wall,
+                             "--transition-type", "fade",
+                             "--transition-duration", "2"],
+                            capture_output=True, text=True
+                        )
+                        print(f"[wallpaper] swww exit={out.returncode} {out.stderr.strip()}")
+                        return False
+                    import time; time.sleep(0.5)
+                # swww-daemon pas prêt — le démarrer maintenant
+                print("[wallpaper] swww-daemon non prêt, démarrage...")
+                _sp.Popen(["swww-daemon"])
+                import time; time.sleep(2)
+                _sp.run(["swww", "img", wall,
+                         "--transition-type", "fade", "--transition-duration", "2"])
+                return False
+            GLib.timeout_add_seconds(1, _apply_swww)
+        elif _sh.which("swaybg"):
+            print(f"[wallpaper] swaybg {real_wall}")
+            _sp.Popen(["swaybg", "-i", real_wall, "-m", "fill"])
         else:
-            import subprocess as _sp, shutil as _sh
-            if _sh.which("swww"):
-                _sp.Popen(["swww-daemon"], stdout=_sp.DEVNULL, stderr=_sp.DEVNULL)
-                GLib.timeout_add_seconds(2, lambda: _sp.Popen(
-                    ["swww", "img", current_wallpaper,
-                     "--transition-type", "fade", "--transition-duration", "2"],
-                    stdout=_sp.DEVNULL, stderr=_sp.DEVNULL
-                ) and False)
-            elif _sh.which("swaybg"):
-                _sp.Popen(["swaybg", "-i", current_wallpaper, "-m", "fill"],
-                          stdout=_sp.DEVNULL, stderr=_sp.DEVNULL)
-            else:
-                print("[wallpaper] swww et swaybg non trouvés — installe swww: sudo pacman -S swww")
+            print("[wallpaper] ERREUR: ni swww ni swaybg installé")
+    else:
+        print(f"[wallpaper] ERREUR: fichier wallpaper introuvable: {real_wall}")
 
     # Download fonts if not already done
     if not os.path.exists(fonts_updated_file):

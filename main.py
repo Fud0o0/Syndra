@@ -254,52 +254,7 @@ if __name__ == "__main__":
             os.symlink(first_wall, current_wallpaper)
             print(f"[wallpaper] symlink → {first_wall}")
 
-    # Résoudre le lien symbolique pour obtenir le vrai chemin
-    real_wall = os.path.realpath(current_wallpaper) if os.path.exists(current_wallpaper) else None
-    print(f"[wallpaper] current.wall={current_wallpaper} → {real_wall}")
-    print(f"[wallpaper] fichier existe: {real_wall and os.path.isfile(real_wall)}")
-
-    # Apply wallpaper
-    import subprocess as _sp, shutil as _sh
-    if real_wall and os.path.isfile(real_wall):
-        video_ext = (".mp4", ".webm", ".mkv", ".avi", ".mov")
-        if real_wall.lower().endswith(video_ext):
-            _sp.Popen(["killall", "mpvpaper"], stderr=_sp.DEVNULL)
-            GLib.timeout_add_seconds(1, lambda w=real_wall: (
-                print(f"[wallpaper] mpvpaper {w}") or
-                _sp.Popen(["mpvpaper", "-o", "loop", "*", w]) and False
-            ))
-        elif _sh.which("swww"):
-            # swww-daemon déjà lancé par syndrashell.sh — on attend qu'il réponde
-            def _apply_swww(wall=real_wall):
-                for _ in range(15):
-                    r = _sp.run(["swww", "query"], capture_output=True)
-                    if r.returncode == 0:
-                        print(f"[wallpaper] swww img {wall}")
-                        out = _sp.run(
-                            ["swww", "img", wall,
-                             "--transition-type", "fade",
-                             "--transition-duration", "2"],
-                            capture_output=True, text=True
-                        )
-                        print(f"[wallpaper] swww exit={out.returncode} {out.stderr.strip()}")
-                        return False
-                    import time; time.sleep(0.5)
-                # swww-daemon pas prêt — le démarrer maintenant
-                print("[wallpaper] swww-daemon non prêt, démarrage...")
-                _sp.Popen(["swww-daemon"])
-                import time; time.sleep(2)
-                _sp.run(["swww", "img", wall,
-                         "--transition-type", "fade", "--transition-duration", "2"])
-                return False
-            GLib.timeout_add_seconds(1, _apply_swww)
-        elif _sh.which("swaybg"):
-            print(f"[wallpaper] swaybg {real_wall}")
-            _sp.Popen(["swaybg", "-i", real_wall, "-m", "fill"])
-        else:
-            print("[wallpaper] ERREUR: ni swww ni swaybg installé")
-    else:
-        print(f"[wallpaper] ERREUR: fichier wallpaper introuvable: {real_wall}")
+    # Le fond d'écran est appliqué par syndrashell.sh avant ce point.
 
     # Download fonts if not already done
     if not os.path.exists(fonts_updated_file):

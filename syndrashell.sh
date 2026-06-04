@@ -46,13 +46,36 @@ done
 PROFILE=$(python3 -c "import json,os; d=json.load(open(os.path.expanduser('~/.config/SyndraShell/config/config.json'))); print(d.get('syndra_profile','default'))" 2>/dev/null || echo "default")
 echo "[$(date '+%H:%M:%S')] Profil: $PROFILE"
 
-# Attendre que swww-daemon soit prêt
+# ── Fond d'écran via swww ─────────────────────────────────────────
 if command -v swww &>/dev/null; then
-    swww-daemon &
-    for i in $(seq 1 10); do
-        swww query &>/dev/null && break
-        sleep 0.3
+    # Démarrer swww-daemon si pas encore actif
+    swww query &>/dev/null 2>&1 || swww-daemon &
+
+    # Attendre que le daemon soit prêt (max 10s)
+    for i in $(seq 1 20); do
+        swww query &>/dev/null 2>&1 && break
+        sleep 0.5
     done
+
+    # Créer le lien ~/.current.wall si absent
+    WALL="$HOME/.current.wall"
+    EXAMPLE="$INSTALL_DIR/assets/wallpapers_example/example-1.jpg"
+    if [ ! -e "$WALL" ] && [ -f "$EXAMPLE" ]; then
+        ln -sf "$EXAMPLE" "$WALL"
+        echo "[wallpaper] symlink créé → $EXAMPLE"
+    fi
+
+    # Appliquer le fond d'écran
+    if [ -e "$WALL" ]; then
+        REAL_WALL=$(realpath "$WALL" 2>/dev/null || readlink -f "$WALL")
+        echo "[wallpaper] application de: $REAL_WALL"
+        swww img "$REAL_WALL" --transition-type fade --transition-duration 2 && \
+            echo "[wallpaper] OK" || echo "[wallpaper] ERREUR swww img"
+    else
+        echo "[wallpaper] ERREUR: $WALL introuvable"
+    fi
+else
+    echo "[wallpaper] swww non installé — sudo pacman -S swww"
 fi
 
 echo "[$(date '+%H:%M:%S')] Lancement de python main.py..."

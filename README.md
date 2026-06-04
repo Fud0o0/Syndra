@@ -44,6 +44,7 @@ bash <(curl -sL https://raw.githubusercontent.com/Fud0o0/Syndra/main/install.sh)
 bash <(curl -sL https://raw.githubusercontent.com/Fud0o0/Syndra/main/install.sh) purple
 bash <(curl -sL https://raw.githubusercontent.com/Fud0o0/Syndra/main/install.sh) root-me
 bash <(curl -sL https://raw.githubusercontent.com/Fud0o0/Syndra/main/install.sh) custom
+bash <(curl -sL https://raw.githubusercontent.com/Fud0o0/Syndra/main/install.sh) default
 ```
 
 L'installateur vérifie chaque dépendance, installe Hyprland et la stack Wayland, configure le profil, télécharge les images Docker, puis met l'interface en démarrage automatique. À la fin, sélectionne la session **Hyprland** à la connexion.

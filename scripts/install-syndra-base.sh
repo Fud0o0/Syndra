@@ -69,7 +69,7 @@ CORE_PACKAGES=(
   wl-clipboard
   kitty
   wofi
-  swww
+  awww
   swaybg
   mpv
 )

@@ -41,7 +41,7 @@ class VideoWallpaper:
         """Arrête le fond d'écran vidéo actuel"""
         try:
             subprocess.run(["killall", "mpvpaper"], stderr=subprocess.DEVNULL)
-            subprocess.run(["killall", "swww"], stderr=subprocess.DEVNULL)
+            subprocess.run(["killall", "awww"], stderr=subprocess.DEVNULL)
             subprocess.run(["killall", "swaybg"], stderr=subprocess.DEVNULL)
             self.mpvpaper_running = False
         except Exception as e:
@@ -115,7 +115,7 @@ class VideoWallpaper:
     def set_static_wallpaper(self, image_path):
         """
         Définit une image statique comme fond d'écran
-        Utilise swww ou swaybg selon disponibilité
+        Utilise awww ou swaybg selon disponibilité
         """
         if not os.path.exists(image_path):
             print(f"❌ {image_path} n'existe pas")
@@ -126,10 +126,10 @@ class VideoWallpaper:
         
         try:
             # Essayer swww d'abord
-            if subprocess.run(["which", "swww"], capture_output=True).returncode == 0:
+            if subprocess.run(["which", "awww"], capture_output=True).returncode == 0:
                 # Démarrer swww daemon
                 subprocess.Popen(
-                    ["swww-daemon", "--format", "xrgb"],
+                    ["awww init", "--format", "xrgb"],
                     stdout=subprocess.DEVNULL,
                     stderr=subprocess.DEVNULL
                 )
@@ -139,11 +139,11 @@ class VideoWallpaper:
                 time.sleep(1)
                 
                 subprocess.run([
-                    "swww", "img", image_path,
+                    "awww", "img", image_path,
                     "--transition-type", "fade",
                     "--transition-duration", "2"
                 ])
-                print(f"✓ Fond d'écran défini (swww): {os.path.basename(image_path)}")
+                print(f"✓ Fond d'écran défini (awww): {os.path.basename(image_path)}")
                 return True
             
             # Fallback sur swaybg
@@ -158,7 +158,7 @@ class VideoWallpaper:
                 return True
             
             else:
-                print("❌ Aucun gestionnaire de fond d'écran disponible (swww/swaybg)")
+                print("❌ Aucun gestionnaire de fond d'écran disponible (awww/swaybg)")
                 return False
                 
         except Exception as e:

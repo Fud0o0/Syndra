@@ -61,7 +61,7 @@ is_video() {
 stop_wallpapers() {
     print_info "Arrêt des fonds d'écran actuels..."
     killall mpvpaper 2>/dev/null || true
-    killall swww 2>/dev/null || true
+    killall awww 2>/dev/null || true
     killall swaybg 2>/dev/null || true
     sleep 0.5
 }
@@ -128,17 +128,17 @@ set_image_wallpaper() {
     print_info "Définition du fond d'écran image..."
     
     # Essayer swww
-    if command -v swww &> /dev/null; then
-        swww-daemon --format xrgb >/dev/null 2>&1 || true
+    if command -v awww &> /dev/null; then
+        awww init >/dev/null 2>&1 || true
         sleep 1
-        swww img "$image_path" --transition-type fade --transition-duration 2
-        print_success "Fond d'écran défini avec swww"
+        awww img "$image_path" --transition-type fade --transition-duration 2
+        print_success "Fond d'écran défini avec awww"
     # Fallback swaybg
     elif command -v swaybg &> /dev/null; then
         swaybg -i "$image_path" -m fill >/dev/null 2>&1 &
         print_success "Fond d'écran défini avec swaybg"
     else
-        print_error "Aucun gestionnaire de fond d'écran disponible (swww/swaybg)"
+        print_error "Aucun gestionnaire de fond d'écran disponible (awww/swaybg)"
         exit 1
     fi
     

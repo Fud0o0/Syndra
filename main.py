@@ -333,22 +333,100 @@ if __name__ == "__main__":
 
     def set_css():
         from gi.repository import Gdk, Gtk
-        css_path = get_relative_path("main.css")
 
-        # Utilise load_from_path (résout les @imports depuis le dossier du fichier)
-        # et connecte parsing-error pour éviter que PyGObject 3.14+ lève une exception
+        screen = Gdk.Screen.get_default()
+        if not screen:
+            return
+
+        # 1. CSS principal (main.css + tous les @imports)
         provider = Gtk.CssProvider()
         provider.connect("parsing-error", lambda p, s, e: None)
         try:
-            provider.load_from_path(css_path)
+            provider.load_from_path(get_relative_path("main.css"))
         except Exception as e:
             print(f"[CSS] erreur ignorée : {e}")
+        Gtk.StyleContext.add_provider_for_screen(
+            screen, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
+        )
 
-        screen = Gdk.Screen.get_default()
-        if screen:
-            Gtk.StyleContext.add_provider_for_screen(
-                screen, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
-            )
+        # 2. Couleurs de fallback en dur — contourne le problème GTK3 avec var()
+        #    Utilise var(--x, fallback) : si la variable est définie, elle gagne ;
+        #    sinon le fallback garantit un rendu noir/bleu sombre.
+        _DARK = "#0d1117"
+        _SURF = "#131825"
+        _SURF_B = "#1e2a3a"
+        _FG = "#cdd6f4"
+        _PRI = "#89b4fa"
+        _RED = "#f38ba8"
+        _OUT = "#2a3a52"
+
+        fallback = f"""
+* {{ color: var(--foreground, {_FG}); }}
+
+#bar-inner,
+#bar-inner.dense,
+#bar-inner.edge,
+#bar-inner.edge.vertical,
+#bar-inner.edgecenter.vertical {{
+  background-color: var(--shadow, {_DARK});
+  border-color: var(--surface, {_SURF});
+}}
+#date-time {{ background-color: var(--shadow, {_DARK}); }}
+#date-time.invert {{ background-color: var(--surface, {_SURF}); }}
+#weather {{ background-color: var(--shadow, {_DARK}); }}
+#language {{ background-color: var(--shadow, {_DARK}); }}
+#systray {{ background-color: var(--shadow, {_DARK}); }}
+#button-bar {{ background-color: var(--shadow, {_DARK}); }}
+#button-bar-label {{ color: var(--primary, {_PRI}); }}
+#corner {{ background-color: var(--shadow, {_DARK}); }}
+
+#workspaces-container {{ background-color: var(--shadow, {_DARK}); }}
+#workspaces > button {{ background-color: var(--foreground, {_FG}); }}
+#workspaces > button.active {{ background-color: var(--primary, {_PRI}); }}
+#workspaces > button.empty {{ background-color: var(--surface-bright, {_SURF_B}); }}
+#workspaces > button.urgent {{ background-color: var(--error, {_RED}); }}
+
+#notch-content {{ background-color: var(--shadow, {_DARK}); }}
+#notch-content.invert {{ background-color: var(--surface, {_SURF}); }}
+#notch-box.panel {{ background-color: var(--surface, {_SURF}); }}
+
+#app-launcher, #power-menu, #toolbox,
+#dashboard, #tmux-manager, #clip-history,
+#overview, #emoji {{
+  background-color: var(--shadow, {_DARK});
+}}
+
+#box-1, #box-2, #box-3, #box-x {{
+  background-color: var(--surface, {_SURF});
+}}
+
+#applet-stack, #calendar, #header,
+#player, #metrics, #pin-cell-box, #kanban-header {{
+  background-color: alpha(black, 0.5);
+}}
+
+menu {{
+  background-color: var(--shadow, {_DARK});
+  border-color: var(--surface, {_SURF});
+}}
+menu > menuitem:hover {{ background-color: var(--primary, {_PRI}); }}
+tooltip {{
+  background-color: var(--shadow, {_DARK});
+  border-color: var(--surface, {_SURF});
+}}
+
+#dock-box {{ background-color: var(--shadow, {_DARK}); }}
+"""
+        fallback_provider = Gtk.CssProvider()
+        fallback_provider.connect("parsing-error", lambda p, s, e: None)
+        try:
+            fallback_provider.load_from_data(fallback.encode())
+        except Exception:
+            pass
+        # Priorité légèrement inférieure : main.css avec var() gagne si la variable est définie
+        Gtk.StyleContext.add_provider_for_screen(
+            screen, fallback_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION - 1
+        )
 
         _load_tabler_icons_css()
 

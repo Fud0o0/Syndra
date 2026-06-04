@@ -147,9 +147,11 @@ a:hover {
 
 /* --- Header Typography --- */
 .nav-logo {
+    font-family: 'Press Start 2P', monospace;
     font-weight: 800;
-    font-size: 1.25rem;
-    letter-spacing: -0.02em;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
     text-decoration: none;
     background: linear-gradient(135deg, var(--theme-light) 0%, var(--theme-primary) 100%);
     -webkit-background-clip: text;

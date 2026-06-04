@@ -6,10 +6,20 @@
     <title>Documentation Syndra</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700;800&family=Press+Start+2P&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <script src="translations.js" charset="UTF-8"></script>
     <script src="script.js" defer charset="UTF-8"></script>
+    <script>
+        // Apply saved theme BEFORE render to prevent any color flash
+        (function() {
+            var savedTheme = localStorage.getItem('syndrashell-theme') || 'purple';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            document.addEventListener('DOMContentLoaded', function() {
+                document.body.className = savedTheme + '-theme';
+            });
+        })();
+    </script>
     <style>
         .doc-layout {
             display: flex;
@@ -405,10 +415,6 @@
                     <div class="doc-card">
                         <h3><code>syndra menu</code></h3>
                         <p data-i18n="App launcher. Hit SUPER+A. Categories. Search. Clean.">App launcher. Hit SUPER+A. Categories. Search. Clean.</p>
-                    </div>
-                    <div class="doc-card">
-                        <h3><code>syndra provisional</code></h3>
-                        <p data-i18n="GTK interface for tweaking config without Hyprland.">GTK interface for tweaking config without Hyprland.</p>
                     </div>
                 </div>
             </section>

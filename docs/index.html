@@ -8,9 +8,10 @@
     <link rel="icon" type="image/svg+xml" href="logo.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Bytesized&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <script src="translations.js"></script>
+    <script src="translations.js" charset="UTF-8"></script>
+    <script src="script.js" defer charset="UTF-8"></script>
     <script>
         // Apply saved theme BEFORE render to prevent any color flash
         (function() {
@@ -42,19 +43,19 @@
 
         /* SVG outline (stroke) settings */
         .syndra-logo-inline path {
-            stroke-width: 10;
+            stroke-width: 18;
             stroke-linejoin: round;
             stroke-linecap: round;
             paint-order: stroke fill;
-            transition: fill 0.4s ease, stroke 0.4s ease;
+            transition: fill 0.4s ease, stroke 0.4s ease, filter 0.4s ease;
         }
 
         /* Glow filter per theme on the retro avatar */
-        body.red-theme .retro-avatar.syndra-logo-inline    { filter: drop-shadow(0 0 18px rgba(255,0,102,0.8)); }
-        body.blue-theme .retro-avatar.syndra-logo-inline   { filter: drop-shadow(0 0 18px rgba(0,212,255,0.8)); }
-        body.purple-theme .retro-avatar.syndra-logo-inline { filter: drop-shadow(0 0 18px rgba(179,102,255,0.8)); }
-        body.root-theme .retro-avatar.syndra-logo-inline   { filter: drop-shadow(0 0 18px rgba(255,255,255,0.6)); }
-        body.custom-theme .retro-avatar.syndra-logo-inline { filter: drop-shadow(0 0 18px rgba(0,255,136,0.8)); }
+        body.red-theme    .retro-avatar.syndra-logo-inline { filter: drop-shadow(0 0 14px rgba(255,0,102,0.9))   drop-shadow(0 0 28px rgba(255,0,102,0.5)); }
+        body.blue-theme   .retro-avatar.syndra-logo-inline { filter: drop-shadow(0 0 14px rgba(0,212,255,0.9))  drop-shadow(0 0 28px rgba(0,212,255,0.5)); }
+        body.purple-theme .retro-avatar.syndra-logo-inline { filter: drop-shadow(0 0 14px rgba(179,102,255,0.9)) drop-shadow(0 0 28px rgba(179,102,255,0.5)); }
+        body.root-theme   .retro-avatar.syndra-logo-inline { filter: drop-shadow(0 0 14px rgba(255,255,255,0.7)) drop-shadow(0 0 28px rgba(255,255,255,0.3)); }
+        body.custom-theme .retro-avatar.syndra-logo-inline { filter: drop-shadow(0 0 14px rgba(0,255,136,0.9))  drop-shadow(0 0 28px rgba(0,255,136,0.5)); }
 
         .syndra-logo-inline { transition: filter 0.4s ease; }
     </style>
@@ -81,7 +82,7 @@
                     <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
                 </svg>
                 <span class="lang-selected-label" id="lang-selected-label">FR</span>
-                <svg class="lang-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <svg class="lang-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                     <polyline points="6 9 12 15 18 9"/>
                 </svg>
             </button>
@@ -97,349 +98,218 @@
             </ul>
         </div>
     </div>
-    <div class="container">
-        <div class="hero-container">
-            <div class="hero-content">
-                <h1 class="retro-word">
-                    <span class="retro-letter" style="--i:1" data-text="S">S</span>
-                    <span class="retro-letter" style="--i:2" data-text="y">y</span>
-                    <span class="retro-letter" style="--i:3" data-text="n">n</span>
-                    <span class="retro-letter" style="--i:4" data-text="d">d</span>
-                    <span class="retro-letter" style="--i:5" data-text="r">r</span>
-                    <span class="retro-letter" style="--i:6" data-text="a">a</span>
-                </h1>
 
-                <p class="hero-tagline" data-i18n="tagline">For Red, Blue & Purple Teams</p>
+    <!-- Header Navigation (Theme Switcher & Socials) -->
+    <header class="header">
+        <div class="header-content">
+            <a href="#" class="nav-logo">Syndra</a>
+            
+            <nav class="main-nav">
+                <a href="#features" data-i18n="features">Features</a>
+                <a href="#tools" data-i18n="tools">Tools</a>
+                <a href="#commands" data-i18n="commands">Commands</a>
+                <a href="SYNDRA-DOCUMENTATION.html" data-i18n="Documentation">Documentation</a>
+            </nav>
+
+            <div class="social-links">
+                <a href="https://github.com/Fud0o0" target="_blank" rel="noopener noreferrer" title="Fud0o0 GitHub"><img src="https://github.com/Fud0o0.png" alt="Fud0o0"></a>
+                <a href="https://github.com/Ax0-0" target="_blank" rel="noopener noreferrer" title="Ax0-0 GitHub"><img src="https://github.com/Ax0-0.png" alt="Ax0-0"></a>
+                <a href="https://discord.gg/pbrrd5ATK5" target="_blank" rel="noopener noreferrer" title="Discord"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.492c-1.53-.69-3.17-1.2-4.885-1.49a.075.075 0 0 0-.079.036c-.21.369-.444.85-.608 1.23a18.566 18.566 0 0 0-5.487 0 12.36 12.36 0 0 0-.617-1.23A.077.077 0 0 0 8.562 3c-1.714.29-3.354.8-4.885 1.491a.07.07 0 0 0-.032.027C.533 9.093-.32 13.555.099 17.961a.08.08 0 0 0 .031.055 20.03 20.03 0 0 0 5.993 2.98.078.078 0 0 0 .084-.026c.462-.62.874-1.275 1.226-1.963.021-.04.001-.088-.041-.104a13.201 13.201 0 0 1-1.872-.878.075.075 0 0 1-.008-.125c.126-.093.252-.19.372-.287a.075.075 0 0 1 .078-.01c3.927 1.764 8.18 1.764 12.061 0a.075.075 0 0 1 .079.009c.12.098.245.195.372.288a.075.075 0 0 1-.006.125c-.598.344-1.22.635-1.873.877a.075.075 0 0 0-.041.105c.36.687.772 1.341 1.225 1.962a.077.077 0 0 0 .084.028 19.963 19.963 0 0 0 6.002-2.981.076.076 0 0 0 .032-.054c.5-5.094-.838-9.52-3.549-13.442a.06.06 0 0 0-.031-.028zM8.02 15.278c-1.182 0-2.157-1.069-2.157-2.38 0-1.312.956-2.38 2.157-2.38 1.21 0 2.176 1.077 2.157 2.38 0 1.312-.956 2.38-2.157 2.38zm7.975 0c-1.183 0-2.157-1.069-2.157-2.38 0-1.312.955-2.38 2.157-2.38 1.21 0 2.176 1.077 2.157 2.38 0 1.312-.946 2.38-2.157 2.38z"/></svg></a>
+                <a href="https://ko-fi.com/syndrashell" target="_blank" rel="noopener noreferrer" title="Support on Ko-fi"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.881 8.948c-.773-4.085-4.859-4.593-4.859-4.593H.723c-.604 0-.679.798-.679.798s-.082 7.324-.022 11.822c.164 2.424 2.586 2.672 2.586 2.672s8.267-.023 11.966-.049c2.438-.426 2.683-2.566 2.658-3.734 4.352.24 7.422-2.831 6.649-6.916zm-11.062 3.511c-1.246 1.453-4.011 3.976-4.011 3.976s-.121.119-.31.023c-.076-.057-.108-.09-.108-.09-.443-.441-3.368-3.049-4.034-3.954-.709-.965-1.041-2.7-.091-3.71.951-1.01 3.005-1.086 4.363.407 0 0 1.565-1.782 3.468-.963 1.904.82 1.832 3.011.723 4.311zm6.173.478c-.928.116-1.682.028-1.682.028V7.284h1.77s1.971.551 1.971 2.638c0 1.913-.985 2.667-2.059 3.015z"/></svg></a>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <!-- Hero Section -->
+        <section class="hero-split">
+            <div class="hero-left">
+                <div class="theme-switcher pills" style="margin-bottom: 24px; display: inline-flex;">
+                    <button class="pill" data-team="red" data-i18n="redTeam"><span class="pill-dot"></span>Red</button>
+                    <button class="pill" data-team="blue" data-i18n="blueTeam"><span class="pill-dot"></span>Blue</button>
+                    <button class="pill active" data-team="purple" data-i18n="purpleTeam"><span class="pill-dot"></span>Purple</button>
+                    <button class="pill" data-team="root" data-i18n="rootMe"><span class="pill-dot"></span>Root</button>
+                    <button class="pill" data-team="custom" data-i18n="custom"><span class="pill-dot"></span>Custom</button>
+                </div>
+                <div class="hero-badge" id="hero-tagline">For Red, Blue & Purple Teams</div>
+                <h1 class="hero-title">
+                    Syndra
+                </h1>
                 
                 <p class="hero-description">
                     <span data-i18n="description">Made by <mark>Fud0o0</mark> & <mark>Ax0-0</mark> — <mark>Syndra</mark> is a customized Hyprland setup with integrated security tools.</span><br><br>
                     <span data-i18n="description2">Everything you need for penetration testing, defense, or CTF challenges. Fast, minimal dependencies, fully themeable.</span>
                 </p>
 
-                <div class="install-section">
-                    <h3 data-i18n="quickInstall">Quick Install</h3>
-                    <div class="install-command">
-                        <code id="install-cmd">git clone --depth 1 https://github.com/Fud0o0/Syndra.git ~/.config/SyndraShell && bash ~/.config/SyndraShell/scripts/secure-install.sh purple</code>
-                        <button class="copy-btn" id="copy-install-btn">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                            </svg>
-                        </button>
+                <div class="hero-cta">
+                    <a class="github-button" href="https://github.com/Fud0o0/Syndra" target="_blank" rel="noopener noreferrer">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 10px;"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.161 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+                        GitHub
+                    </a>
+                </div>
+            </div>
+
+            <div class="hero-right">
+                <div class="retro-avatar-container">
+                    <svg class="syndra-logo-inline retro-avatar" xmlns="http://www.w3.org/2000/svg"
+                         viewBox="0 0 500 500"
+                         preserveAspectRatio="xMidYMid meet"
+                         aria-label="Syndra logo">
+                        <g transform="translate(0,500) scale(0.1,-0.1)">
+                            <path d="M2394 4050 c-267 -38 -488 -141 -631 -294 -73 -77 -113 -145 -148 -251 -24 -69 -27 -96 -27 -200 -1 -102 3 -130 24 -185 66 -178 214 -320 459 -440 l66 -33 54 35 c30 19 81 57 114 84 33 26 103 77 155 112 52 35 96 65 98 67 2 1 -37 24 -85 50 -254 137 -396 282 -424 430 -48 260 117 446 428 484 182 22 356 -27 443 -126 76 -86 85 -113 84 -240 l0 -112 35 21 c103 61 166 126 207 213 27 56 29 86 13 136 -35 104 -152 180 -354 230 -91 23 -403 35 -511 19z"/>
+                            <path d="M3690 3550 c-68 -54 -155 -118 -193 -142 -38 -24 -116 -76 -175 -117 -59 -41 -152 -106 -207 -144 -55 -38 -134 -99 -175 -136 -108 -97 -191 -158 -253 -185 -62 -28 -201 -121 -267 -178 -25 -22 -57 -59 -72 -83 -19 -30 -81 -83 -220 -187 -106 -80 -220 -164 -253 -186 -33 -23 -101 -74 -151 -114 -51 -40 -153 -121 -229 -180 -75 -60 -135 -108 -132 -108 11 0 359 200 452 260 33 22 103 63 155 93 176 100 364 217 455 283 50 36 152 105 227 154 76 49 166 117 201 152 34 35 108 95 162 134 111 80 233 188 254 226 7 14 120 126 250 250 198 188 315 309 299 308 -1 0 -59 -45 -128 -100z"/>
+                            <path d="M3565 2808 c-139 -94 -243 -156 -306 -184 -111 -48 -165 -81 -327 -201 -65 -47 -134 -94 -154 -104 -20 -10 -39 -23 -43 -28 -3 -6 21 -28 53 -49 138 -94 202 -214 202 -382 0 -267 -184 -503 -465 -597 -71 -24 -95 -27 -220 -27 -122 0 -147 3 -197 23 -123 48 -192 117 -239 239 -30 79 -32 223 -3 305 l21 57 -29 0 c-81 0 -251 -95 -302 -168 -63 -91 -82 -219 -47 -312 39 -105 173 -212 328 -263 231 -76 479 -86 753 -31 246 49 474 168 641 334 97 95 167 206 199 310 75 245 34 476 -114 650 -31 36 -56 68 -56 72 0 4 18 19 39 32 22 14 78 70 126 126 48 55 134 142 193 193 157 137 167 146 162 147 -3 0 -100 -64 -215 -142z"/>
+                        </g>
+                    </svg>
+                </div>
+
+                <!-- Glassmorphism Terminal Card -->
+                <div class="terminal-card">
+                    <div class="terminal-header">
+                        <div class="terminal-dots"><span></span><span></span><span></span></div>
+                        <div class="terminal-title" data-i18n="quickInstall">Quick Install</div>
+                    </div>
+                    <div class="terminal-body">
+                        <div class="install-command">
+                            <span class="prompt">$</span>
+                            <code id="install-cmd">git clone --depth 1 https://github.com/Fud0o0/Syndra.git ~/.config/SyndraShell && bash ~/.config/SyndraShell/scripts/secure-install.sh purple</code>
+                            <button class="copy-btn" id="copy-install-btn" title="Copy to clipboard">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="terminal-footer">
                         <span class="disk-space-info" id="disk-space-info">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 4px;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 6px;">
                                 <circle cx="12" cy="12" r="10"></circle>
                                 <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
                             </svg>
                             <span id="disk-space-text">25 GB requis</span>
                         </span>
+                        <div class="terminal-notes">
+                            <p class="install-note" data-i18n="requiresArch">Requires Arch Linux with Hyprland</p>
+                            <p class="uninstall-note"><span data-i18n="uninstall">Pour déinstaller:</span> <code>bash ~/.config/SyndraShell/uninstall.sh</code></p>
+                        </div>
                     </div>
-                    <p class="install-note" data-i18n="requiresArch">Requires Arch Linux with Hyprland</p>
-                    <p class="install-note" style="margin-top: 8px; color: #7aa2f7;" data-i18n="includesProvisional">Includes provisional interface & app launcher</p>
-                </div>
-
-                <div class="hero-actions">
-                    <a class="doc-button" href="SYNDRA-DOCUMENTATION.html" target="_blank" rel="noopener noreferrer" data-i18n="openDocumentation">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:8px;flex-shrink:0">
-                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                            <polyline points="14 2 14 8 20 8"/>
-                            <line x1="16" y1="13" x2="8" y2="13"/>
-                            <line x1="16" y1="17" x2="8" y2="17"/>
-                            <polyline points="10 9 9 9 8 9"/>
-                        </svg>
-                        <span data-i18n="openDocumentation">Open Documentation</span>
-                        <svg class="doc-btn-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-left:8px;flex-shrink:0">
-                            <line x1="5" y1="12" x2="19" y2="12"/>
-                            <polyline points="12 5 19 12 12 19"/>
-                        </svg>
-                    </a>
-                </div>
-
-                <div class="pills">
-                    <button class="pill" data-team="red" data-i18n="redTeam">
-                        <span class="pill-dot"></span>
-                        Red Team
-                    </button>
-                    <button class="pill" data-team="blue" data-i18n="blueTeam">
-                        <span class="pill-dot"></span>
-                        Blue Team
-                    </button>
-                    <button class="pill active" data-team="purple" data-i18n="purpleTeam">
-                        <span class="pill-dot"></span>
-                        Purple Team
-                    </button>
-                    <button class="pill" data-team="root" data-i18n="rootMe">
-                        <span class="pill-dot"></span>
-                        Root Me
-                    </button>
-                    <button class="pill" data-team="custom" data-i18n="custom">
-                        <span class="pill-dot"></span>
-                        Custom
-                    </button>
-                </div>
-
-                <div class="social-icons">
-                    <a href="https://github.com/Fud0o0" class="social-icon-wrapper profile-avatar" target="_blank" rel="noopener noreferrer" title="Fud0o0 GitHub">
-                        <img src="https://github.com/Fud0o0.png" alt="Fud0o0" class="profile-avatar-img">
-                    </a>
-                    <a href="https://github.com/Ax0-0" class="social-icon-wrapper profile-avatar" target="_blank" rel="noopener noreferrer" title="Ax0-0 GitHub">
-                        <img src="https://github.com/Ax0-0.png" alt="Ax0-0" class="profile-avatar-img">
-                    </a>
-                    <a href="https://github.com/Fud0o0/Syndra" class="social-icon-wrapper profile-avatar syndra-repo-icon" target="_blank" rel="noopener noreferrer" title="Syndra Repository">
-                        <svg class="syndra-logo-inline profile-avatar-svg" xmlns="http://www.w3.org/2000/svg"
-                             width="48" height="48" viewBox="0 0 500 500"
-                             preserveAspectRatio="xMidYMid meet">
-                            <g transform="translate(0,500) scale(0.1,-0.1)">
-                                <path d="M2394 4050 c-267 -38 -488 -141 -631 -294 -73 -77 -113 -145 -148 -251 -24 -69 -27 -96 -27 -200 -1 -102 3 -130 24 -185 66 -178 214 -320 459 -440 l66 -33 54 35 c30 19 81 57 114 84 33 26 103 77 155 112 52 35 96 65 98 67 2 1 -37 24 -85 50 -254 137 -396 282 -424 430 -48 260 117 446 428 484 182 22 356 -27 443 -126 76 -86 85 -113 84 -240 l0 -112 35 21 c103 61 166 126 207 213 27 56 29 86 13 136 -35 104 -152 180 -354 230 -91 23 -403 35 -511 19z"/>
-                                <path d="M3690 3550 c-68 -54 -155 -118 -193 -142 -38 -24 -116 -76 -175 -117 -59 -41 -152 -106 -207 -144 -55 -38 -134 -99 -175 -136 -108 -97 -191 -158 -253 -185 -62 -28 -201 -121 -267 -178 -25 -22 -57 -59 -72 -83 -19 -30 -81 -83 -220 -187 -106 -80 -220 -164 -253 -186 -33 -23 -101 -74 -151 -114 -51 -40 -153 -121 -229 -180 -75 -60 -135 -108 -132 -108 11 0 359 200 452 260 33 22 103 63 155 93 176 100 364 217 455 283 50 36 152 105 227 154 76 49 166 117 201 152 34 35 108 95 162 134 111 80 233 188 254 226 7 14 120 126 250 250 198 188 315 309 299 308 -1 0 -59 -45 -128 -100z"/>
-                                <path d="M3565 2808 c-139 -94 -243 -156 -306 -184 -111 -48 -165 -81 -327 -201 -65 -47 -134 -94 -154 -104 -20 -10 -39 -23 -43 -28 -3 -6 21 -28 53 -49 138 -94 202 -214 202 -382 0 -267 -184 -503 -465 -597 -71 -24 -95 -27 -220 -27 -122 0 -147 3 -197 23 -123 48 -192 117 -239 239 -30 79 -32 223 -3 305 l21 57 -29 0 c-81 0 -251 -95 -302 -168 -63 -91 -82 -219 -47 -312 39 -105 173 -212 328 -263 231 -76 479 -86 753 -31 246 49 474 168 641 334 97 95 167 206 199 310 75 245 34 476 -114 650 -31 36 -56 68 -56 72 0 4 18 19 39 32 22 14 78 70 126 126 48 55 134 142 193 193 157 137 167 146 162 147 -3 0 -100 -64 -215 -142z"/>
-                            </g>
-                        </svg>
-                    </a>
-                    <a href="https://discord.gg/pbrrd5ATK5" class="social-icon-wrapper discord-icon" target="_blank" rel="noopener noreferrer" title="Join Discord Community">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M20.317 4.492c-1.53-.69-3.17-1.2-4.885-1.49a.075.075 0 0 0-.079.036c-.21.369-.444.85-.608 1.23a18.566 18.566 0 0 0-5.487 0 12.36 12.36 0 0 0-.617-1.23A.077.077 0 0 0 8.562 3c-1.714.29-3.354.8-4.885 1.491a.07.07 0 0 0-.032.027C.533 9.093-.32 13.555.099 17.961a.08.08 0 0 0 .031.055 20.03 20.03 0 0 0 5.993 2.98.078.078 0 0 0 .084-.026c.462-.62.874-1.275 1.226-1.963.021-.04.001-.088-.041-.104a13.201 13.201 0 0 1-1.872-.878.075.075 0 0 1-.008-.125c.126-.093.252-.19.372-.287a.075.075 0 0 1 .078-.01c3.927 1.764 8.18 1.764 12.061 0a.075.075 0 0 1 .079.009c.12.098.245.195.372.288a.075.075 0 0 1-.006.125c-.598.344-1.22.635-1.873.877a.075.075 0 0 0-.041.105c.36.687.772 1.341 1.225 1.962a.077.077 0 0 0 .084.028 19.963 19.963 0 0 0 6.002-2.981.076.076 0 0 0 .032-.054c.5-5.094-.838-9.52-3.549-13.442a.06.06 0 0 0-.031-.028zM8.02 15.278c-1.182 0-2.157-1.069-2.157-2.38 0-1.312.956-2.38 2.157-2.38 1.21 0 2.176 1.077 2.157 2.38 0 1.312-.956 2.38-2.157 2.38zm7.975 0c-1.183 0-2.157-1.069-2.157-2.38 0-1.312.955-2.38 2.157-2.38 1.21 0 2.176 1.077 2.157 2.38 0 1.312-.946 2.38-2.157 2.38z"/>
-                        </svg>
-                    </a>
-                    <a href="https://ko-fi.com/syndrashell" class="social-icon-wrapper kofi-icon" target="_blank" rel="noopener noreferrer" title="Support on Ko-fi">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M23.881 8.948c-.773-4.085-4.859-4.593-4.859-4.593H.723c-.604 0-.679.798-.679.798s-.082 7.324-.022 11.822c.164 2.424 2.586 2.672 2.586 2.672s8.267-.023 11.966-.049c2.438-.426 2.683-2.566 2.658-3.734 4.352.24 7.422-2.831 6.649-6.916zm-11.062 3.511c-1.246 1.453-4.011 3.976-4.011 3.976s-.121.119-.31.023c-.076-.057-.108-.09-.108-.09-.443-.441-3.368-3.049-4.034-3.954-.709-.965-1.041-2.7-.091-3.71.951-1.01 3.005-1.086 4.363.407 0 0 1.565-1.782 3.468-.963 1.904.82 1.832 3.011.723 4.311zm6.173.478c-.928.116-1.682.028-1.682.028V7.284h1.77s1.971.551 1.971 2.638c0 1.913-.985 2.667-2.059 3.015z"/>
-                        </svg>
-                    </a>
-                </div>
-                
-                <div style="margin-top: 30px; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);">
-                    <p style="margin: 0; font-size: 14px; color: rgba(255,255,255,0.7);">
-                        <span data-i18n="uninstall">Pour déinstaller:</span> <code style="background: rgba(0,0,0,0.3); padding: 2px 8px; border-radius: 4px; font-size: 13px;">bash ~/.config/SyndraShell/uninstall.sh</code>
-                    </p>
                 </div>
             </div>
+        </section>
 
-            <div class="retro-avatar-container">
-                <svg class="syndra-logo-inline retro-avatar" xmlns="http://www.w3.org/2000/svg"
-                     viewBox="0 0 500 500"
-                     preserveAspectRatio="xMidYMid meet"
-                     aria-label="Syndra logo">
-                    <g transform="translate(0,500) scale(0.1,-0.1)">
-                        <path d="M2394 4050 c-267 -38 -488 -141 -631 -294 -73 -77 -113 -145 -148 -251 -24 -69 -27 -96 -27 -200 -1 -102 3 -130 24 -185 66 -178 214 -320 459 -440 l66 -33 54 35 c30 19 81 57 114 84 33 26 103 77 155 112 52 35 96 65 98 67 2 1 -37 24 -85 50 -254 137 -396 282 -424 430 -48 260 117 446 428 484 182 22 356 -27 443 -126 76 -86 85 -113 84 -240 l0 -112 35 21 c103 61 166 126 207 213 27 56 29 86 13 136 -35 104 -152 180 -354 230 -91 23 -403 35 -511 19z"/>
-                        <path d="M3690 3550 c-68 -54 -155 -118 -193 -142 -38 -24 -116 -76 -175 -117 -59 -41 -152 -106 -207 -144 -55 -38 -134 -99 -175 -136 -108 -97 -191 -158 -253 -185 -62 -28 -201 -121 -267 -178 -25 -22 -57 -59 -72 -83 -19 -30 -81 -83 -220 -187 -106 -80 -220 -164 -253 -186 -33 -23 -101 -74 -151 -114 -51 -40 -153 -121 -229 -180 -75 -60 -135 -108 -132 -108 11 0 359 200 452 260 33 22 103 63 155 93 176 100 364 217 455 283 50 36 152 105 227 154 76 49 166 117 201 152 34 35 108 95 162 134 111 80 233 188 254 226 7 14 120 126 250 250 198 188 315 309 299 308 -1 0 -59 -45 -128 -100z"/>
-                        <path d="M3565 2808 c-139 -94 -243 -156 -306 -184 -111 -48 -165 -81 -327 -201 -65 -47 -134 -94 -154 -104 -20 -10 -39 -23 -43 -28 -3 -6 21 -28 53 -49 138 -94 202 -214 202 -382 0 -267 -184 -503 -465 -597 -71 -24 -95 -27 -220 -27 -122 0 -147 3 -197 23 -123 48 -192 117 -239 239 -30 79 -32 223 -3 305 l21 57 -29 0 c-81 0 -251 -95 -302 -168 -63 -91 -82 -219 -47 -312 39 -105 173 -212 328 -263 231 -76 479 -86 753 -31 246 49 474 168 641 334 97 95 167 206 199 310 75 245 34 476 -114 650 -31 36 -56 68 -56 72 0 4 18 19 39 32 22 14 78 70 126 126 48 55 134 142 193 193 157 137 167 146 162 147 -3 0 -100 -64 -215 -142z"/>
-                    </g>
-                </svg>
+        <!-- Features Grid -->
+        <section id="features" class="modern-section">
+            <div class="section-header">
+                <h2 data-i18n="features">Features</h2>
+                <p>Everything you need, pre-configured.</p>
             </div>
-        </div>
-    </div>
-
-    <!-- Features Section -->
-    <section class="features-section">
-        <div class="container">
-            <h2 class="section-title">
-                <span class="title-bracket">[</span>
-                <span data-i18n="features">Features</span>
-                <span class="title-bracket">]</span>
-            </h2>
             <div class="features-grid">
                 <div class="feature-card">
-                    <div class="feature-icon"></div>
                     <h3 data-i18n="lightweight">Lightweight</h3>
                     <p data-i18n="lightweightDesc">Hyprland is snappy. Everything responds instantly. No bloat.</p>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-icon"></div>
                     <h3 data-i18n="toolsIncluded">Tools Included</h3>
                     <p data-i18n="toolsIncludedDesc">Nmap, Burp, Metasploit, Wireshark, and more. Choose your profile (Red/Blue/Purple/CTF).</p>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-icon"></div>
                     <h3 data-i18n="pickColors">Pick Your Colors</h3>
                     <p data-i18n="pickColorsDesc">Red, Blue, or Purple. Switch themes without restarting. Wallpapers included.</p>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-icon"></div>
-                    <h3>One Command Install</h3>
-                    <p>Clone, run, done. Dependencies handled. Works on Arch with Hyprland.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon"></div>
-                    <h3>Alt Interface</h3>
-                    <p>Provisional GTK UI if you need it. Good for testing config changes without Hyprland.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon"></div>
-                    <h3>Built for Efficiency</h3>
-                    <p>Custom keybinds. Application menu. Dashboard. Everything keyboard-driven.</p>
+                    <h3 data-i18n="oneCommand">One Command Install</h3>
+                    <p data-i18n="oneCommandDesc">Clone, run, done. Dependencies handled. Works on Arch with Hyprland.</p>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Commands Section -->
-    <section class="features-section">
-        <div class="container">
-            <h2 class="section-title">
-                <span class="title-bracket">[</span>
-                Syndra Commands
-                <span class="title-bracket">]</span>
-            </h2>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon"></div>
-                    <h3>syndra update</h3>
-                    <p>Pull latest from GitHub. Updates checked for integrity. Done.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon"></div>
-                    <h3>syndra restart</h3>
-                    <p>Restart the shell. No logout needed.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon"></div>
-                    <h3>syndra menu</h3>
-                    <p>App launcher. Hit SUPER+A. Categories. Search. Clean.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon"></div>
-                    <h3>syndra provisional</h3>
-                    <p>GTK interface for tweaking config without Hyprland.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon"></div>
-                    <h3>syndra autostart</h3>
-                    <p>Enable/disable/toggle autostart on login.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon"></div>
-                    <h3>syndra version</h3>
-                    <p>Check what version you're running. Shows commit hash too.</p>
-                </div>
+        <!-- Tools Grid -->
+        <section id="tools" class="modern-section secondary-bg">
+            <div class="section-header">
+                <h2 data-i18n="tools">Integrated Tools</h2>
+                <p>Categorized toolsets dynamically loaded for the <span id="tools-profile-name">Purple</span> Team profile.</p>
             </div>
-        </div>
-    </section>
-
-    <!-- Tools Section -->
-    <section class="tools-section">
-        <div class="container">
-            <h2 class="section-title">
-                <span class="title-bracket">[</span>
-                Integrated Tools
-                <span class="title-bracket">]</span>
-            </h2>
-            <div class="tools-grid">
-                <div class="tool-category">
-                    <h3 class="category-title">Reconnaissance</h3>
-                    <ul class="tool-list">
-                        <li><span class="tool-bullet">›</span> <a href="https://nmap.org" target="_blank" rel="noopener noreferrer">Nmap</a></li>
-                        <li><span class="tool-bullet">›</span> <a href="https://github.com/robertdavidgraham/masscan" target="_blank" rel="noopener noreferrer">Masscan</a></li>
-                        <li><span class="tool-bullet">›</span> <a href="https://github.com/owasp-amass/amass" target="_blank" rel="noopener noreferrer">Amass</a></li>
-                        <li><span class="tool-bullet">›</span> <a href="https://github.com/projectdiscovery/subfinder" target="_blank" rel="noopener noreferrer">Subfinder</a></li>
+            <div class="split-grid" id="tools-container" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px;">
+                <div class="command-list">
+                    <h3>Reconnaissance</h3>
+                    <ul>
+                        <li><span>Nmap</span></li>
+                        <li><span>Masscan</span></li>
+                        <li><span>Amass</span></li>
+                        <li><span>Subfinder</span></li>
                     </ul>
                 </div>
-                <div class="tool-category">
-                    <h3 class="category-title">Exploitation</h3>
-                    <ul class="tool-list">
-                        <li><span class="tool-bullet">›</span> <a href="https://www.metasploit.com" target="_blank" rel="noopener noreferrer">Metasploit</a></li>
-                        <li><span class="tool-bullet">›</span> <a href="https://sqlmap.org" target="_blank" rel="noopener noreferrer">SQLmap</a></li>
-                        <li><span class="tool-bullet">›</span> <a href="https://portswigger.net/burp" target="_blank" rel="noopener noreferrer">Burp Suite</a></li>
-                        <li><span class="tool-bullet">›</span> Custom Scripts</li>
+                <div class="command-list">
+                    <h3>Exploitation</h3>
+                    <ul>
+                        <li><span>Metasploit</span></li>
+                        <li><span>SQLmap</span></li>
+                        <li><span>Burp Suite</span></li>
+                        <li><span>Custom Scripts</span></li>
                     </ul>
                 </div>
-                <div class="tool-category">
-                    <h3 class="category-title">Post-Exploitation</h3>
-                    <ul class="tool-list">
-                        <li><span class="tool-bullet">›</span> <a href="https://github.com/gentilkiwi/mimikatz" target="_blank" rel="noopener noreferrer">Mimikatz</a></li>
-                        <li><span class="tool-bullet">›</span> <a href="https://github.com/BloodHoundAD/BloodHound" target="_blank" rel="noopener noreferrer">BloodHound</a></li>
-                        <li><span class="tool-bullet">›</span> <a href="https://github.com/BC-SECURITY/Empire" target="_blank" rel="noopener noreferrer">Empire</a></li>
-                        <li><span class="tool-bullet">›</span> <a href="https://github.com/carlospolop/PEASS-ng" target="_blank" rel="noopener noreferrer">LinPEAS</a></li>
+                <div class="command-list">
+                    <h3>Post-Exploitation</h3>
+                    <ul>
+                        <li><span>Mimikatz</span></li>
+                        <li><span>BloodHound</span></li>
+                        <li><span>Empire</span></li>
+                        <li><span>LinPEAS</span></li>
                     </ul>
                 </div>
-                <div class="tool-category">
-                    <h3 class="category-title">Analysis</h3>
-                    <ul class="tool-list">
-                        <li><span class="tool-bullet">›</span> <a href="https://www.wireshark.org" target="_blank" rel="noopener noreferrer">Wireshark</a></li>
-                        <li><span class="tool-bullet">›</span> <a href="https://ghidra-sre.org" target="_blank" rel="noopener noreferrer">Ghidra</a></li>
-                        <li><span class="tool-bullet">›</span> <a href="https://github.com/volatilityfoundation/volatility3" target="_blank" rel="noopener noreferrer">Volatility</a></li>
-                        <li><span class="tool-bullet">›</span> <a href="https://github.com/VirusTotal/yara" target="_blank" rel="noopener noreferrer">YARA</a></li>
+                <div class="command-list">
+                    <h3>Analysis</h3>
+                    <ul>
+                        <li><span>Wireshark</span></li>
+                        <li><span>Ghidra</span></li>
+                        <li><span>Volatility</span></li>
+                        <li><span>YARA</span></li>
                     </ul>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Keybinds Section -->
-    <section class="features-section">
-        <div class="container">
-            <h2 class="section-title">
-                <span class="title-bracket">[</span>
-                Keyboard Shortcuts
-                <span class="title-bracket">]</span>
-            </h2>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon"></div>
-                    <h3>SUPER + A</h3>
-                    <p>Menu. Apps and categories. Search works.</p>
+        <!-- Commands Grid -->
+        <section id="commands" class="modern-section">
+            <div class="section-header">
+                <h2 data-i18n="commands">Commands & Shortcuts</h2>
+                <p data-i18n="Built for Efficiency">Built for Efficiency</p>
+            </div>
+            <div class="split-grid">
+                <div class="command-list">
+                    <h3 data-i18n="Syndra Commands">Syndra Commands</h3>
+                    <ul>
+                        <li><code>syndra update</code> <span>Pull latest from GitHub. Updates checked for integrity. Done.</span></li>
+                        <li><code>syndra restart</code> <span>Restart the shell. No logout needed.</span></li>
+                        <li><code>syndra menu</code> <span>App launcher. Hit SUPER+A. Categories. Search. Clean.</span></li>
+                        <li><code>syndra provisional</code> <span>GTK interface for tweaking config without Hyprland.</span></li>
+                    </ul>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon"></div>
-                    <h3>SUPER + D</h3>
-                    <p>Dashboard. System info and quick stats.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon"></div>
-                    <h3>SUPER + R</h3>
-                    <p>Terminal. Kitty. Ready to go.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon"></div>
-                    <h3>SUPER + L</h3>
-                    <p>Lock. Hyprlock. Secure.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon"></div>
-                    <h3>SUPER + Q</h3>
-                    <p>Close. Current window. Done.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon"></div>
-                    <h3>SUPER + ALT + B</h3>
-                    <p>Reload. Restart Syndra instantly.</p>
+                <div class="command-list">
+                    <h3 data-i18n="Keyboard Shortcuts">Keyboard Shortcuts</h3>
+                    <ul>
+                        <li><kbd>SUPER + A</kbd> <span>Menu. Apps and categories. Search works.</span></li>
+                        <li><kbd>SUPER + D</kbd> <span>Dashboard. System info and quick stats.</span></li>
+                        <li><kbd>SUPER + R</kbd> <span>Terminal. Kitty. Ready to go.</span></li>
+                        <li><kbd>SUPER + L</kbd> <span>Lock. Hyprlock. Secure.</span></li>
+                    </ul>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Team Section -->
-    <section class="team-section">
-        <div class="container">
-            <h2 class="section-title">
-                <span class="title-bracket">[</span>
-                Core Team
-                <span class="title-bracket">]</span>
-            </h2>
-            <div class="team-grid">
-                <div class="team-card">
-                    <img src="https://github.com/Fud0o0.png" alt="Fud0o0" class="team-avatar-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                    <div class="team-avatar" style="display:none;">F</div>
-                    <h3>Fud0o0</h3>
-                    <p class="team-role">Creator</p>
-                    <p class="team-bio">Built this for red teams and made it available for everyone.</p>
-                    <a href="https://github.com/Fud0o0" class="team-link" target="_blank">→ GitHub</a>
-                </div>
-                <div class="team-card">
-                    <img src="https://github.com/Ax0-0.png" alt="Ax0-0" class="team-avatar-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                    <div class="team-avatar" style="display:none;">A</div>
-                    <h3>Ax0-0</h3>
-                    <p class="team-role">Contributor</p>
-                    <p class="team-bio">Works on security tooling and system integration.</p>
-                    <a href="https://github.com/Ax0-0" class="team-link" target="_blank">→ GitHub</a>
-                </div>
+    </main>
+
+    <footer class="modern-footer">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <span class="retro-word">Syndra</span>
+            </div>
+            <div class="footer-links">
+                <p>Built by <mark>Fud0o0</mark> & <mark>Ax0-0</mark></p>
+                <a href="https://github.com/Fud0o0/Syndra" target="_blank" rel="noopener">GitHub Repository</a>
             </div>
         </div>
-    </section>
-
-    <footer class="footer">
-        <p>&copy; 2026 Syndra</p>
-        <p>Built by <mark>Fud0o0</mark> & <mark>Ax0-0</mark></p>
     </footer>
 
     <script src="script.js"></script>

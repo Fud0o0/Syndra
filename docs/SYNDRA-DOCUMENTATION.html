@@ -1,378 +1,473 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Documentation Syndra</title>
-  <script src="translations.js"></script>
-  <style>
-    :root {
-      --bg: #090412;
-      --panel: rgba(20, 10, 34, 0.94);
-      --panel-2: rgba(28, 14, 47, 0.9);
-      --text: #f3ecff;
-      --muted: #d4c2ff;
-      --accent: #b366ff;
-      --accent-2: #d699ff;
-      --border: rgba(179, 102, 255, 0.22);
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation Syndra</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="translations.js" charset="UTF-8"></script>
+    <script src="script.js" defer charset="UTF-8"></script>
+    <style>
+        .doc-layout {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 120px 40px 60px;
+            gap: 60px;
+        }
 
-    * { box-sizing: border-box; }
+        .doc-sidebar {
+            width: 260px;
+            flex-shrink: 0;
+            position: sticky;
+            top: 120px;
+            height: max-content;
+            background: rgba(20, 10, 35, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-light);
+            border-radius: 16px;
+            padding: 24px;
+        }
 
-    body {
-      margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background:
-        radial-gradient(circle at 20% 20%, rgba(179, 102, 255, 0.16) 0%, transparent 34%),
-        radial-gradient(circle at 80% 80%, rgba(214, 153, 255, 0.1) 0%, transparent 38%),
-        radial-gradient(ellipse at center, #14081f 0%, #090412 100%);
-      color: var(--text);
-      line-height: 1.6;
-    }
+        .doc-toc-title {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--theme-light);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
 
-    .page {
-      max-width: 980px;
-      margin: 0 auto;
-      padding: 56px 28px 72px;
-    }
+        .doc-toc-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            border-left: 2px solid rgba(255,255,255,0.05);
+        }
 
-    .hero {
-      background: linear-gradient(135deg, rgba(179, 102, 255, 0.2), rgba(28, 14, 47, 0.96));
-      border: 1px solid var(--border);
-      border-radius: 24px;
-      padding: 32px;
-      margin-bottom: 28px;
-      box-shadow:
-        0 24px 80px rgba(0, 0, 0, 0.32),
-        0 0 0 1px rgba(179, 102, 255, 0.06);
-    }
+        .doc-toc-list a {
+            display: block;
+            padding: 8px 16px;
+            color: var(--text-muted);
+            text-decoration: none;
+            position: relative;
+            transition: all 0.2s;
+            font-size: 0.95rem;
+        }
 
-    h1, h2, h3 {
-      margin: 0 0 12px;
-      line-height: 1.2;
-    }
+        .doc-toc-list a::before {
+            content: '';
+            position: absolute;
+            left: -2px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--theme-light);
+            transform: scaleY(0);
+            transition: transform 0.2s ease;
+            transform-origin: left;
+        }
 
-    h1 {
-      font-size: 2.4rem;
-      letter-spacing: 0.02em;
-    }
+        .doc-toc-list a:hover {
+            color: #fff;
+            background: rgba(255,255,255,0.02);
+        }
 
-    .subtitle {
-      margin: 10px 0 0;
-      color: #cbd5e1;
-      max-width: 72ch;
-    }
+        .doc-toc-list a:hover::before {
+            transform: scaleY(1);
+        }
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 18px;
-      margin: 22px 0;
-    }
+        .doc-main {
+            flex-grow: 1;
+            max-width: 900px;
+        }
 
-    .card {
-      background: linear-gradient(180deg, rgba(25, 12, 40, 0.96), rgba(18, 9, 31, 0.96));
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 22px;
-    }
+        .doc-section {
+            margin-bottom: 60px;
+        }
 
-    .tag {
-      display: inline-block;
-      padding: 6px 12px;
-      border-radius: 999px;
-      background: rgba(179, 102, 255, 0.18);
-      color: #f1ddff;
-      font-size: 0.9rem;
-      margin-bottom: 14px;
-    }
+        .doc-section h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: #fff;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-light);
+        }
 
-    ul, ol { margin: 0; padding-left: 22px; }
-    li { margin: 6px 0; }
+        .doc-section p {
+            color: var(--text-muted);
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+            font-size: 1.05rem;
+        }
 
-    code, pre {
-      font-family: Consolas, Monaco, monospace;
-      font-size: 0.95em;
-    }
+        .doc-section ul {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            padding-left: 1.5rem;
+            line-height: 1.7;
+        }
 
-    pre {
-      margin: 12px 0 0;
-      padding: 16px;
-      border-radius: 16px;
-      background: #08040f;
-      border: 1px solid rgba(179, 102, 255, 0.12);
-      overflow-x: auto;
-      color: #eadcff;
-    }
+        .doc-section li {
+            margin-bottom: 0.5rem;
+        }
 
-    .section {
-      margin-top: 26px;
-      background: linear-gradient(180deg, rgba(21, 11, 35, 0.92), rgba(14, 7, 24, 0.96));
-      border: 1px solid var(--border);
-      border-radius: 22px;
-      padding: 24px;
-    }
+        .doc-card {
+            background: rgba(20, 10, 35, 0.4);
+            border: 1px solid var(--border-light);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            backdrop-filter: blur(8px);
+            transition: border-color 0.3s;
+        }
 
-    .section h2 {
-      font-size: 1.5rem;
-      color: #f8fafc;
-    }
+        .doc-card:hover {
+            border-color: var(--border-accent);
+        }
 
-    .muted { color: #cbd5e1; }
-    .accent { color: #c4b5fd; }
+        .doc-card h3 {
+            color: var(--theme-light);
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+        }
 
-    .toc a {
-      color: #d699ff;
-      text-decoration: none;
-    }
+        .doc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 24px;
+        }
 
-    .toc a:hover { text-decoration: underline; }
-
-    @media print {
-      body { background: white; color: #111827; }
-      .page { max-width: none; padding: 0.5in; }
-      .hero, .card, .section { box-shadow: none; background: white; border-color: #d1d5db; }
-      .tag { background: #ede9fe; color: #5b21b6; }
-      .muted, .subtitle { color: #374151; }
-      .toc a { color: #1d4ed8; }
-      pre { background: #f3f4f6; color: #111827; border-color: #d1d5db; }
-    }
-
-    /* Language Selector */
-    .language-selector-container {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      z-index: 2000;
-      display: flex;
-      gap: 8px;
-      align-items: center;
-    }
-
-    #language-selector {
-      padding: 8px 12px;
-      background: rgba(0, 0, 0, 0.8);
-      border: 2px solid rgba(179, 102, 255, 0.5);
-      border-radius: 8px;
-      color: #f3ecff;
-      font-family: 'JetBrains Mono', Arial, sans-serif;
-      font-size: 14px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      backdrop-filter: blur(10px);
-      appearance: none;
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      padding-right: 28px;
-      background-image: 
-          linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),
-          url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='rgba(243,236,255,0.8)' stroke-width='2'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-      background-repeat: no-repeat, no-repeat;
-      background-position: 0 0, right 8px center;
-      background-size: 100%, 16px;
-    }
-
-    #language-selector option {
-      background: rgba(20, 20, 20, 0.95);
-      color: #f3ecff;
-      padding: 8px;
-      border: none;
-    }
-
-    #language-selector option:checked {
-      background: linear-gradient(135deg, rgba(179, 102, 255, 0.3), rgba(100, 50, 200, 0.3));
-      color: #f3ecff;
-    }
-
-    #language-selector:hover {
-      box-shadow: 0 0 15px rgba(179, 102, 255, 0.8);
-      background-image: 
-          linear-gradient(135deg, rgba(179, 102, 255, 0.15), rgba(100, 50, 200, 0.15)),
-          url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='rgba(255,200,255,1)' stroke-width='2'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-      background-repeat: no-repeat, no-repeat;
-      background-position: 0 0, right 8px center;
-      background-size: 100%, 16px;
-      border-color: #d699ff;
-    }
-  </style>
+        @media (max-width: 1024px) {
+            .doc-layout {
+                flex-direction: column;
+                padding: 100px 20px 40px;
+            }
+            .doc-sidebar {
+                width: 100%;
+                position: static;
+                margin-bottom: 40px;
+            }
+            .doc-toc-list {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+                border: none;
+            }
+            .doc-toc-list a {
+                background: rgba(255,255,255,0.05);
+                border-radius: 8px;
+            }
+            .doc-toc-list a::before {
+                display: none;
+            }
+        }
+    </style>
 </head>
-<body>
-  <div class="language-selector-container">
-    <select id="language-selector">
-      <option value="fr">Français</option>
-      <option value="en">English</option>
-      <option value="es">Español</option>
-      <option value="de">Deutsch</option>
-      <option value="zh">中文</option>
-      <option value="ja">日本語</option>
-      <option value="ko">한국어</option>
-      <option value="it">Italiano</option>
-    </select>
-  </div>
-  <main class="page">
-    <section class="hero">
-      <span class="tag">Documentation officielle</span>
-      <h1>Syndra</h1>
-      <p class="subtitle">Syndra est un environnement Hyprland orienté cybersécurité, pensé pour des usages Red Team, Blue Team, Purple Team et CTF. Cette documentation résume l'installation, les commandes principales, les profils disponibles et les bonnes pratiques de sécurité.</p>
-    </section>
+<body class="purple-theme">
+    
+    <!-- Use same header as index.html -->
+    <header class="header">
+        <div class="header-content">
+            <a href="index.html" class="nav-logo">Syndra</a>
+            
+            <nav class="main-nav">
+                <a href="index.html#features" data-i18n="features">Features</a>
+                <a href="index.html#tools" data-i18n="tools">Tools</a>
+                <a href="index.html#commands" data-i18n="commands">Commands</a>
+                <a href="SYNDRA-DOCUMENTATION.html" style="color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.3);" data-i18n="Documentation">Documentation</a>
+            </nav>
 
-    <section class="section toc">
-      <h2>Sommaire</h2>
-      <ol>
-        <li><a href="#presentation">Présentation</a></li>
-        <li><a href="#installation">Installation</a></li>
-        <li><a href="#verification">Vérification d'intégrité</a></li>
-        <li><a href="#profils">Profils disponibles</a></li>
-        <li><a href="#commandes">Commandes principales</a></li>
-        <li><a href="#raccourcis">Raccourcis clavier</a></li>
-        <li><a href="#outils">Outils intégrés</a></li>
-        <li><a href="#desinstallation">Désinstallation</a></li>
-      </ol>
-    </section>
-
-    <section class="section" id="presentation">
-      <h2>1. Présentation</h2>
-      <p class="muted">Syndra combine une interface Hyprland légère avec une logique d'installation sécurisée et des outils séparés en profils. L'objectif est de fournir un environnement utilisable au quotidien sans mélanger directement le GUI et la boîte à outils offensive/défensive.</p>
-      <div class="grid">
-        <div class="card">
-          <h3>Points clés</h3>
-          <ul>
-            <li>Interface principale sur l'hôte avec Hyprland.</li>
-            <li>Outils de sécurité isolés via Docker ou Podman.</li>
-            <li>Installation sécurisée avec contrôle d'intégrité.</li>
-            <li>Profils Blue, Red, Purple et Root/CTF.</li>
-          </ul>
+            <div class="social-links">
+                <a href="https://github.com/Fud0o0" target="_blank" rel="noopener noreferrer" title="Fud0o0 GitHub"><img src="https://github.com/Fud0o0.png" alt="Fud0o0"></a>
+                <a href="https://github.com/Ax0-0" target="_blank" rel="noopener noreferrer" title="Ax0-0 GitHub"><img src="https://github.com/Ax0-0.png" alt="Ax0-0"></a>
+                <a href="https://discord.gg/pbrrd5ATK5" target="_blank" rel="noopener noreferrer" title="Discord"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.492c-1.53-.69-3.17-1.2-4.885-1.49a.075.075 0 0 0-.079.036c-.21.369-.444.85-.608 1.23a18.566 18.566 0 0 0-5.487 0 12.36 12.36 0 0 0-.617-1.23A.077.077 0 0 0 8.562 3c-1.714.29-3.354.8-4.885 1.491a.07.07 0 0 0-.032.027C.533 9.093-.32 13.555.099 17.961a.08.08 0 0 0 .031.055 20.03 20.03 0 0 0 5.993 2.98.078.078 0 0 0 .084-.026c.462-.62.874-1.275 1.226-1.963.021-.04.001-.088-.041-.104a13.201 13.201 0 0 1-1.872-.878.075.075 0 0 1-.008-.125c.126-.093.252-.19.372-.287a.075.075 0 0 1 .078-.01c3.927 1.764 8.18 1.764 12.061 0a.075.075 0 0 1 .079.009c.12.098.245.195.372.288a.075.075 0 0 1-.006.125c-.598.344-1.22.635-1.873.877a.075.075 0 0 0-.041.105c.36.687.772 1.341 1.225 1.962a.077.077 0 0 0 .084.028 19.963 19.963 0 0 0 6.002-2.981.076.076 0 0 0 .032-.054c.5-5.094-.838-9.52-3.549-13.442a.06.06 0 0 0-.031-.028zM8.02 15.278c-1.182 0-2.157-1.069-2.157-2.38 0-1.312.956-2.38 2.157-2.38 1.21 0 2.176 1.077 2.157 2.38 0 1.312-.956 2.38-2.157 2.38zm7.975 0c-1.183 0-2.157-1.069-2.157-2.38 0-1.312.955-2.38 2.157-2.38 1.21 0 2.176 1.077 2.157 2.38 0 1.312-.946 2.38-2.157 2.38z"/></svg></a>
+                <a href="https://ko-fi.com/syndrashell" target="_blank" rel="noopener noreferrer" title="Support on Ko-fi"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.881 8.948c-.773-4.085-4.859-4.593-4.859-4.593H.723c-.604 0-.679.798-.679.798s-.082 7.324-.022 11.822c.164 2.424 2.586 2.672 2.586 2.672s8.267-.023 11.966-.049c2.438-.426 2.683-2.566 2.658-3.734 4.352.24 7.422-2.831 6.649-6.916zm-11.062 3.511c-1.246 1.453-4.011 3.976-4.011 3.976s-.121.119-.31.023c-.076-.057-.108-.09-.108-.09-.443-.441-3.368-3.049-4.034-3.954-.709-.965-1.041-2.7-.091-3.71.951-1.01 3.005-1.086 4.363.407 0 0 1.565-1.782 3.468-.963 1.904.82 1.832 3.011.723 4.311zm6.173.478c-.928.116-1.682.028-1.682.028V7.284h1.77s1.971.551 1.971 2.638c0 1.913-.985 2.667-2.059 3.015z"/></svg></a>
+            </div>
         </div>
-        <div class="card">
-          <h3>Pré-requis</h3>
-          <ul>
-            <li>Arch Linux pour l'installation complète du GUI.</li>
-            <li><code>git</code>.</li>
-            <li>Hyprland fonctionnel.</li>
-            <li>Docker ou Podman pour les outils conteneurisés.</li>
-          </ul>
+    </header>
+
+    <div class="language-selector-container">
+        <select id="language-selector" style="display:none;">
+            <option value="fr">Français</option>
+            <option value="en">English</option>
+            <option value="es">Español</option>
+            <option value="de">Deutsch</option>
+            <option value="zh">中文</option>
+            <option value="ja">日本語</option>
+            <option value="ko">한국어</option>
+            <option value="it">Italiano</option>
+        </select>
+        <div class="lang-dropdown" id="lang-dropdown">
+            <button class="lang-trigger" id="lang-trigger" aria-haspopup="listbox" aria-expanded="false">
+                <svg class="lang-globe" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                </svg>
+                <span class="lang-selected-label" id="lang-selected-label">FR</span>
+                <svg class="lang-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <polyline points="6 9 12 15 18 9"/>
+                </svg>
+            </button>
+            <ul class="lang-options" id="lang-options" role="listbox">
+                <li class="lang-option" data-value="fr" role="option">🇫🇷 <span>Français</span></li>
+                <li class="lang-option" data-value="en" role="option">🇬🇧 <span>English</span></li>
+                <li class="lang-option" data-value="es" role="option">🇪🇸 <span>Español</span></li>
+                <li class="lang-option" data-value="de" role="option">🇩🇪 <span>Deutsch</span></li>
+                <li class="lang-option" data-value="zh" role="option">🇨🇳 <span>中文</span></li>
+                <li class="lang-option" data-value="ja" role="option">🇯🇵 <span>日本語</span></li>
+                <li class="lang-option" data-value="ko" role="option">🇰🇷 <span>한국어</span></li>
+                <li class="lang-option" data-value="it" role="option">🇮🇹 <span>Italiano</span></li>
+            </ul>
         </div>
-      </div>
-    </section>
+    </div>
 
-    <section class="section" id="installation">
-      <h2>2. Installation</h2>
-      <p class="muted">La méthode recommandée consiste à cloner le dépôt puis lancer l'installateur sécurisé.</p>
-      <div class="card">
-        <h3>Installation recommandée</h3>
-        <pre>git clone --depth 1 https://github.com/Fud0o0/Syndra.git ~/.config/SyndraShell
-bash ~/.config/SyndraShell/scripts/secure-install.sh interactive</pre>
-      </div>
-      <div class="card" style="margin-top: 18px;">
-        <h3>Installation directe par profil</h3>
-        <pre>bash ~/.config/SyndraShell/scripts/secure-install.sh blue
-bash ~/.config/SyndraShell/scripts/secure-install.sh red
-bash ~/.config/SyndraShell/scripts/secure-install.sh purple
-bash ~/.config/SyndraShell/scripts/secure-install.sh root</pre>
-      </div>
-    </section>
+    <div class="doc-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="doc-sidebar">
+            <div class="doc-toc-title" data-i18n="Sommaire">Sommaire</div>
+            <ul class="doc-toc-list">
+                <li><a href="#presentation" data-i18n="1. Présentation">1. Présentation</a></li>
+                <li><a href="#installation" data-i18n="2. Installation">2. Installation</a></li>
+                <li><a href="#verification" data-i18n="3. Vérification d'intégrité">3. Vérification d'intégrité</a></li>
+                <li><a href="#profils" data-i18n="4. Profils disponibles">4. Profils disponibles</a></li>
+                <li><a href="#commandes" data-i18n="5. Commandes principales">5. Commandes principales</a></li>
+                <li><a href="#raccourcis" data-i18n="6. Raccourcis clavier">6. Raccourcis clavier</a></li>
+                <li><a href="#outils" data-i18n="7. Outils intégrés">7. Outils intégrés</a></li>
+                <li><a href="#desinstallation">Désinstallation</a></li>
+            </ul>
+        </aside>
 
-    <section class="section" id="verification">
-      <h2>3. Vérification d'intégrité</h2>
-      <p class="muted">Les artefacts peuvent être vérifiés avant installation. Le mode strict impose aussi une signature valide.</p>
-      <div class="grid">
-        <div class="card">
-          <h3>Contrôle SHA256</h3>
-          <pre>bash ~/.config/SyndraShell/scripts/verify-artifacts.sh</pre>
-        </div>
-        <div class="card">
-          <h3>Mode strict</h3>
-          <pre>SYNDRA_REQUIRE_SIGNATURE=1 bash ~/.config/SyndraShell/scripts/verify-artifacts.sh</pre>
-        </div>
-      </div>
-      <p class="muted">La politique de signature mainteneur est décrite dans <span class="accent">checksums/SIGNING.md</span>.</p>
-    </section>
+        <!-- Main Content -->
+        <main class="doc-main">
+            <div class="doc-section">
+                <div id="doc-hero-badge" style="background: rgba(179, 102, 255, 0.1); border: 1px solid rgba(179, 102, 255, 0.3); color: var(--theme-light); padding: 8px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; font-family: 'JetBrains Mono', monospace; margin-bottom: 24px; display: inline-block; box-shadow: 0 0 20px rgba(179, 102, 255, 0.1);" data-i18n="Documentation officielle">Documentation officielle</div>
+                <h1 class="hero-title" style="text-align: left; margin-bottom: 24px;">Syndra</h1>
+                <p data-i18n="doc_intro">Syndra est un environnement Hyprland orienté cybersécurité, pensé pour des usages Red Team, Blue Team, Purple Team et CTF. Cette documentation résume l'installation, les commandes principales, les profils disponibles et les bonnes pratiques de sécurité.</p>
+            </div>
 
-    <section class="section" id="profils">
-      <h2>4. Profils disponibles</h2>
-      <div class="grid">
-        <div class="card"><h3>Blue</h3><p class="muted">Défense, monitoring, détection, analyse d'incidents.</p></div>
-        <div class="card"><h3>Red</h3><p class="muted">Pentest, exploitation, reconnaissance, post-exploitation.</p></div>
-        <div class="card"><h3>Purple</h3><p class="muted">Couverture complète Red + Blue pour les opérations mixtes.</p></div>
-        <div class="card"><h3>Root</h3><p class="muted">CTF, pwn, forensics, crypto et laboratoire technique.</p></div>
-      </div>
-    </section>
+            <section id="presentation" class="doc-section">
+                <h2 data-i18n="1. Présentation">1. Présentation</h2>
+                <p data-i18n="doc_presentation_paragraph">Syndra combine une interface Hyprland légère avec une logique d'installation sécurisée et des outils séparés en profils. L'objectif est de fournir un environnement utilisable au quotidien sans mélanger directement le GUI et la boîte à outils offensive/défensive.</p>
+                
+                <div class="doc-grid">
+                    <div class="doc-card">
+                        <h3 data-i18n="Points clés">Points clés</h3>
+                        <ul>
+                            <li data-i18n="Interface principale sur l'hôte avec Hyprland.">Interface principale sur l'hôte avec Hyprland.</li>
+                            <li data-i18n="Outils de sécurité isolés via Docker ou Podman.">Outils de sécurité isolés via Docker ou Podman.</li>
+                            <li data-i18n="Installation sécurisée avec contrôle d'intégrité.">Installation sécurisée avec contrôle d'intégrité.</li>
+                            <li data-i18n="Profils Blue, Red, Purple et Root/CTF.">Profils Blue, Red, Purple et Root/CTF.</li>
+                        </ul>
+                    </div>
+                    <div class="doc-card">
+                        <h3 data-i18n="Pré-requis">Pré-requis</h3>
+                        <ul>
+                            <li data-i18n="Arch Linux pour l'installation complète du GUI.">Arch Linux pour l'installation complète du GUI.</li>
+                            <li><code>git</code></li>
+                            <li data-i18n="Hyprland fonctionnel.">Hyprland fonctionnel.</li>
+                            <li data-i18n="Docker ou Podman pour les outils conteneurisés.">Docker ou Podman pour les outils conteneurisés.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
 
-    <section class="section" id="commandes">
-      <h2>5. Commandes principales</h2>
-      <div class="grid">
-        <div class="card"><h3>syndra update</h3><p class="muted">Met à jour Syndra depuis GitHub avec vérification d'intégrité.</p></div>
-        <div class="card"><h3>syndra restart</h3><p class="muted">Redémarre le shell sans déconnexion.</p></div>
-        <div class="card"><h3>syndra menu</h3><p class="muted">Ouvre le menu d'applications.</p></div>
-        <div class="card"><h3>syndra provisional</h3><p class="muted">Lance l'interface GTK provisoire.</p></div>
-        <div class="card"><h3>syndra autostart</h3><p class="muted">Gère le démarrage automatique.</p></div>
-        <div class="card"><h3>syndra version</h3><p class="muted">Affiche la version et le hash du commit.</p></div>
-      </div>
-    </section>
+            <section id="installation" class="doc-section">
+                <h2 data-i18n="2. Installation">2. Installation</h2>
+                <p data-i18n="doc_install_method">La méthode recommandée consiste à cloner le dépôt puis lancer l'installateur sécurisé.</p>
+                
+                <div class="terminal-card" style="margin-bottom: 24px;">
+                    <div class="terminal-header">
+                        <div class="terminal-dots"><span></span><span></span><span></span></div>
+                        <div class="terminal-title" data-i18n="Installation recommandée">Installation recommandée</div>
+                    </div>
+                    <div class="terminal-body">
+                        <div class="install-command">
+                            <span class="prompt">$</span>
+                            <code>git clone --depth 1 https://github.com/Fud0o0/Syndra.git ~/.config/SyndraShell<br><span class="prompt">$</span> bash ~/.config/SyndraShell/scripts/secure-install.sh interactive</code>
+                        </div>
+                    </div>
+                </div>
 
-    <section class="section" id="raccourcis">
-      <h2>6. Raccourcis clavier</h2>
-      <div class="grid">
-        <div class="card"><h3>SUPER + A</h3><p class="muted">Menu Syndra.</p></div>
-        <div class="card"><h3>SUPER + D</h3><p class="muted">Dashboard.</p></div>
-        <div class="card"><h3>SUPER + R</h3><p class="muted">Terminal Kitty.</p></div>
-        <div class="card"><h3>SUPER + L</h3><p class="muted">Verrouillage de session.</p></div>
-        <div class="card"><h3>SUPER + Q</h3><p class="muted">Ferme la fenêtre courante.</p></div>
-        <div class="card"><h3>SUPER + ALT + B</h3><p class="muted">Recharge immédiatement Syndra.</p></div>
-      </div>
-    </section>
+                <div class="terminal-card">
+                    <div class="terminal-header">
+                        <div class="terminal-dots"><span></span><span></span><span></span></div>
+                        <div class="terminal-title" data-i18n="Installation directe par profil">Installation directe par profil</div>
+                    </div>
+                    <div class="terminal-body">
+                        <div class="install-command">
+                            <span class="prompt">$</span>
+                            <code>bash ~/.config/SyndraShell/scripts/secure-install.sh blue<br><span class="prompt">$</span> bash ~/.config/SyndraShell/scripts/secure-install.sh red<br><span class="prompt">$</span> bash ~/.config/SyndraShell/scripts/secure-install.sh purple<br><span class="prompt">$</span> bash ~/.config/SyndraShell/scripts/secure-install.sh root</code>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-    <section class="section" id="outils">
-      <h2>7. Outils intégrés</h2>
-      <div class="grid">
-        <div class="card">
-          <h3>Reconnaissance</h3>
-          <ul>
-            <li>Nmap</li>
-            <li>Masscan</li>
-            <li>Amass</li>
-            <li>Subfinder</li>
-          </ul>
-        </div>
-        <div class="card">
-          <h3>Exploitation</h3>
-          <ul>
-            <li>Metasploit</li>
-            <li>SQLmap</li>
-            <li>Burp Suite</li>
-            <li>Scripts personnalisés</li>
-          </ul>
-        </div>
-        <div class="card">
-          <h3>Post-exploitation</h3>
-          <ul>
-            <li>Mimikatz</li>
-            <li>BloodHound</li>
-            <li>Empire</li>
-            <li>LinPEAS</li>
-          </ul>
-        </div>
-        <div class="card">
-          <h3>Analyse</h3>
-          <ul>
-            <li>Wireshark</li>
-            <li>Ghidra</li>
-            <li>Volatility</li>
-            <li>YARA</li>
-          </ul>
-        </div>
-      </div>
-    </section>
+            <section id="verification" class="doc-section">
+                <h2 data-i18n="3. Vérification d'intégrité">3. Vérification d'intégrité</h2>
+                <p data-i18n="Les artefacts peuvent être vérifiés avant installation. Le mode strict impose aussi une signature valide.">Les artefacts peuvent être vérifiés avant installation. Le mode strict impose aussi une signature valide.</p>
+                
+                <div class="doc-grid">
+                    <div class="terminal-card">
+                        <div class="terminal-header">
+                            <div class="terminal-dots"><span></span><span></span><span></span></div>
+                            <div class="terminal-title" data-i18n="Contrôle SHA256">Contrôle SHA256</div>
+                        </div>
+                        <div class="terminal-body">
+                            <div class="install-command">
+                                <span class="prompt">$</span>
+                                <code>bash ~/.config/SyndraShell/scripts/verify-artifacts.sh</code>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="terminal-card">
+                        <div class="terminal-header">
+                            <div class="terminal-dots"><span></span><span></span><span></span></div>
+                            <div class="terminal-title" data-i18n="Mode strict">Mode strict</div>
+                        </div>
+                        <div class="terminal-body">
+                            <div class="install-command">
+                                <span class="prompt">$</span>
+                                <code>SYNDRA_REQUIRE_SIGNATURE=1 bash ~/.config/SyndraShell/scripts/verify-artifacts.sh</code>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p data-i18n="La politique de signature mainteneur est décrite dans checksums/SIGNING.md.">La politique de signature mainteneur est décrite dans checksums/SIGNING.md.</p>
+            </section>
 
-    <section class="section" id="desinstallation">
-      <h2>8. Désinstallation</h2>
-      <p class="muted">Pour supprimer Syndra de la machine :</p>
-      <div class="card">
-        <pre>cd ~/.config/SyndraShell
-bash uninstall.sh</pre>
-      </div>
-    </section>
+            <section id="profils" class="doc-section">
+                <h2 data-i18n="4. Profils disponibles">4. Profils disponibles</h2>
+                
+                <div class="doc-grid">
+                    <div class="doc-card">
+                        <h3>🛡️ Blue</h3>
+                        <p data-i18n="Défense, monitoring, détection, analyse d'incidents.">Défense, monitoring, détection, analyse d'incidents.</p>
+                    </div>
+                    <div class="doc-card">
+                        <h3>⚔️ Red</h3>
+                        <p data-i18n="Pentest, exploitation, reconnaissance, post-exploitation.">Pentest, exploitation, reconnaissance, post-exploitation.</p>
+                    </div>
+                    <div class="doc-card">
+                        <h3>🔮 Purple</h3>
+                        <p data-i18n="Couverture complète Red + Blue pour les opérations mixtes.">Couverture complète Red + Blue pour les opérations mixtes.</p>
+                    </div>
+                    <div class="doc-card">
+                        <h3>💀 Root</h3>
+                        <p data-i18n="CTF, pwn, forensics, crypto et laboratoire technique.">CTF, pwn, forensics, crypto et laboratoire technique.</p>
+                    </div>
+                </div>
+            </section>
 
-  </main>
+            <section id="commandes" class="doc-section">
+                <h2 data-i18n="5. Commandes principales">5. Commandes principales</h2>
+                
+                <div class="doc-grid">
+                    <div class="doc-card">
+                        <h3><code>syndra update</code></h3>
+                        <p data-i18n="Pull latest from GitHub. Updates checked for integrity. Done.">Pull latest from GitHub. Updates checked for integrity. Done.</p>
+                    </div>
+                    <div class="doc-card">
+                        <h3><code>syndra restart</code></h3>
+                        <p data-i18n="Restart the shell. No logout needed.">Restart the shell. No logout needed.</p>
+                    </div>
+                    <div class="doc-card">
+                        <h3><code>syndra menu</code></h3>
+                        <p data-i18n="App launcher. Hit SUPER+A. Categories. Search. Clean.">App launcher. Hit SUPER+A. Categories. Search. Clean.</p>
+                    </div>
+                    <div class="doc-card">
+                        <h3><code>syndra provisional</code></h3>
+                        <p data-i18n="GTK interface for tweaking config without Hyprland.">GTK interface for tweaking config without Hyprland.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="raccourcis" class="doc-section">
+                <h2 data-i18n="6. Raccourcis clavier">6. Raccourcis clavier</h2>
+                
+                <div class="doc-grid">
+                    <div class="doc-card">
+                        <h3><kbd>SUPER + A</kbd></h3>
+                        <p data-i18n="Menu. Apps and categories. Search works.">Menu. Apps and categories. Search works.</p>
+                    </div>
+                    <div class="doc-card">
+                        <h3><kbd>SUPER + D</kbd></h3>
+                        <p data-i18n="Dashboard. System info and quick stats.">Dashboard. System info and quick stats.</p>
+                    </div>
+                    <div class="doc-card">
+                        <h3><kbd>SUPER + R</kbd></h3>
+                        <p data-i18n="Terminal. Kitty. Ready to go.">Terminal. Kitty. Ready to go.</p>
+                    </div>
+                    <div class="doc-card">
+                        <h3><kbd>SUPER + L</kbd></h3>
+                        <p data-i18n="Lock. Hyprlock. Secure.">Lock. Hyprlock. Secure.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="outils" class="doc-section">
+                <h2 data-i18n="7. Outils intégrés">7. Outils intégrés</h2>
+                
+                <div class="doc-grid">
+                    <div class="doc-card">
+                        <h3 data-i18n="Reconnaissance">Reconnaissance</h3>
+                        <ul>
+                            <li>Nmap</li>
+                            <li>Masscan</li>
+                            <li>Amass</li>
+                            <li>Subfinder</li>
+                        </ul>
+                    </div>
+                    <div class="doc-card">
+                        <h3 data-i18n="Exploitation">Exploitation</h3>
+                        <ul>
+                            <li>Metasploit Framework</li>
+                            <li>SQLmap</li>
+                            <li>Burp Suite</li>
+                        </ul>
+                    </div>
+                    <div class="doc-card">
+                        <h3 data-i18n="Post-exploitation">Post-exploitation</h3>
+                        <ul>
+                            <li>Mimikatz</li>
+                            <li>BloodHound</li>
+                            <li>Empire</li>
+                            <li>LinPEAS / WinPEAS</li>
+                        </ul>
+                    </div>
+                    <div class="doc-card">
+                        <h3 data-i18n="Analyse & Reverse">Analyse & Reverse</h3>
+                        <ul>
+                            <li>Wireshark</li>
+                            <li>Ghidra</li>
+                            <li>Volatility</li>
+                            <li>Règles YARA</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section id="desinstallation" class="doc-section">
+                <h2>Désinstallation</h2>
+                <p data-i18n="Pour supprimer Syndra de la machine :">Pour supprimer Syndra de la machine :</p>
+                
+                <div class="terminal-card">
+                    <div class="terminal-header">
+                        <div class="terminal-dots"><span></span><span></span><span></span></div>
+                    </div>
+                    <div class="terminal-body">
+                        <div class="install-command">
+                            <span class="prompt">$</span>
+                            <code>cd ~/.config/SyndraShell<br><span class="prompt">$</span> bash uninstall.sh</code>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
 </body>
 </html>

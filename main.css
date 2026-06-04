@@ -143,12 +143,15 @@
   opacity: 0;
 }
 
-/* Pastille flottante entièrement arrondie.
-   Pas de margin-top : les spacers transparents du notch (hover-eventbox +
-   hover-detection ≈ 8px) donnent déjà le décalage qui aligne l'île sur la
-   barre (qui flotte aussi à ~8px). Sans ombre (rend mal en GTK). */
+/* Léger flottement pour aligner l'île avec la barre (qui flotte à ~8px) */
+#notch-box {
+  margin-top: 4px;
+}
+
+/* Pastille flottante : hauteur 34px (= widgets barre), pleinement arrondie */
 #notch-content {
-  border-radius: 22px;
+  border-radius: 17px;
+  min-height: 34px;
 }
 #notch-content.open {
   border-radius: 28px;

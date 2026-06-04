@@ -172,10 +172,19 @@ run_tool() {
 
     echo -e "${C}▶ ${name} (${desc})${R}"
     if [ "$image" = "kali" ]; then
-        # Outil Kali : installe le paquet au besoin puis lance le binaire
-        $DOCKER run "${args[@]}" "$KALI" bash -c \
-            'b="$1"; p="$2"; shift 2; command -v "$b" >/dev/null 2>&1 || { apt-get update -qq >/dev/null 2>&1; apt-get install -y -qq "$p" >/dev/null 2>&1; }; exec "$b" "$@"' \
-            _ "$bin" "$pkg" "$@"
+        if [ "$#" -eq 0 ] && [ "$bin" != "/bin/bash" ]; then
+            # Sans argument : installe l'outil puis ouvre un SHELL interactif
+            # → l'outil reste dispo, tu l'utilises autant que tu veux ('exit' pour sortir)
+            echo -e "${Y}Installation de ${bin}… puis shell interactif (tape 'exit' pour quitter)${R}"
+            $DOCKER run "${args[@]}" "$KALI" bash -c \
+                'b="$1"; p="$2"; command -v "$b" >/dev/null 2>&1 || { apt-get update -qq >/dev/null 2>&1; apt-get install -y -qq "$p" >/dev/null 2>&1; }; echo -e "\033[0;32m✓ $b prêt.\033[0m Exemple: $b --help"; exec bash' \
+                _ "$bin" "$pkg"
+        else
+            # Avec arguments : exécution unique (pratique pour scripter)
+            $DOCKER run "${args[@]}" "$KALI" bash -c \
+                'b="$1"; p="$2"; shift 2; command -v "$b" >/dev/null 2>&1 || { apt-get update -qq >/dev/null 2>&1; apt-get install -y -qq "$p" >/dev/null 2>&1; }; exec "$b" "$@"' \
+                _ "$bin" "$pkg" "$@"
+        fi
     elif [ -n "$bin" ]; then
         # shellcheck disable=SC2086
         $DOCKER run "${args[@]}" "$image" $bin "$@"

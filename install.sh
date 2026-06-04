@@ -287,18 +287,49 @@ if command -v docker &>/dev/null; then
     _ok "Docker configuré"
 fi
 
-# ── Conteneurs du profil ────────────────────────────────────────────
-_step "7/7" "Conteneurs ($PROFILE)"
+# ── Outils conteneurisés du profil ──────────────────────────────────
+_step "7/7" "Outils conteneurisés ($PROFILE)"
 
-COMPOSE="$INSTALL_DIR/containers/${PROFILE}/docker-compose.yml"
-if [ -f "$COMPOSE" ] && command -v docker &>/dev/null; then
-    _info "Téléchargement des images Docker (peut prendre du temps)..."
-    docker compose -f "$COMPOSE" pull --quiet 2>/dev/null || \
-    docker-compose -f "$COMPOSE" pull 2>/dev/null || \
-    { _warn "Pull Docker reporté au premier lancement"; ((WARNINGS++)); }
-    _ok "Images Docker prêtes"
+# Installer le lanceur syndra-tools dans ~/.local/bin
+mkdir -p "$HOME/.local/bin"
+cp "$INSTALL_DIR/scripts/syndra-tools.sh" "$HOME/.local/bin/syndra-tools"
+chmod +x "$HOME/.local/bin/syndra-tools"
+_ok "Lanceur 'syndra-tools' installé dans ~/.local/bin"
+
+# S'assurer que ~/.local/bin est dans le PATH (bashrc + zshrc)
+for RC in "$HOME/.bashrc" "$HOME/.zshrc"; do
+    [ -f "$RC" ] || continue
+    if ! grep -q 'HOME/.local/bin' "$RC"; then
+        echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$RC"
+    fi
+done
+export PATH="$HOME/.local/bin:$PATH"
+
+# Télécharger les images Docker du profil (sudo car groupe docker pas encore actif)
+if command -v docker &>/dev/null; then
+    _info "Téléchargement des images Docker du profil (peut être long)..."
+    DOCKER_CMD="docker"
+    docker info &>/dev/null 2>&1 || DOCKER_CMD="sudo docker"
+    sudo systemctl start docker 2>/dev/null || true
+
+    # Extraire les images uniques du manifeste et les pull
+    PULLED=0; FAILED=0; SEEN_IMAGES=""
+    while IFS='|' read -r _name image _flags _cmd; do
+        [ -z "$image" ] && continue
+        echo "$SEEN_IMAGES" | grep -qF "$image" && continue
+        SEEN_IMAGES="$SEEN_IMAGES $image"
+        _info "pull $image ..."
+        if $DOCKER_CMD pull "$image" >/dev/null 2>&1; then
+            _ok "$image"
+            PULLED=$((PULLED+1))
+        else
+            _warn "$image (sera retenté au 1er usage)"
+            FAILED=$((FAILED+1)); ((WARNINGS++))
+        fi
+    done < <(bash "$INSTALL_DIR/scripts/syndra-tools.sh" __manifest "$PROFILE" 2>/dev/null)
+    _ok "Images: $PULLED téléchargées, $FAILED reportées"
 else
-    _warn "Conteneurs non disponibles pour le profil '$PROFILE'"
+    _warn "Docker absent — outils conteneurisés indisponibles"
     ((WARNINGS++))
 fi
 
@@ -319,5 +350,10 @@ echo "  ╠═══════════════════════
 echo "  ║   Pour démarrer Syndra :                                 ║"
 echo "  ║     • Déconnectez-vous et sélectionnez Hyprland          ║"
 echo "  ║     • OU tapez : Hyprland  (depuis un TTY)               ║"
+echo "  ╠══════════════════════════════════════════════════════════╣"
+echo "  ║   Outils conteneurisés :                                 ║"
+echo "  ║     • syndra-tools          (liste les outils)           ║"
+echo "  ║     • syndra-tools <outil>  (lance un outil)             ║"
+echo "  ║     • syndra-tools shell    (shell Kali + workspace)     ║"
 echo "  ╚══════════════════════════════════════════════════════════╝"
 echo -e "${R}"

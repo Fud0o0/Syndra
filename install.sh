@@ -1,160 +1,278 @@
 #!/bin/bash
-# ╔══════════════════════════════════════════════════════════════╗
-# ║              SYNDRA SHELL — INSTALLER                        ║
-# ║   bash install.sh [blue-team|red-team|purple|green|mono]     ║
-# ║   curl -sL https://raw.githubusercontent.com/               ║
-# ║        Fud0o0/Syndra/main/install.sh | bash -s -- blue-team  ║
-# ╚══════════════════════════════════════════════════════════════╝
+# ╔══════════════════════════════════════════════════════════════════╗
+# ║              SYNDRA SHELL — INSTALLATEUR                         ║
+# ║   bash install.sh [blue-team|red-team|purple|green|mono]         ║
+# ╚══════════════════════════════════════════════════════════════════╝
+#
+# Usage depuis le web :
+#   bash <(curl -sL https://raw.githubusercontent.com/Fud0o0/Syndra/main/install.sh) blue-team
 
+set -euo pipefail
+
+# ── Profil ──────────────────────────────────────────────────────────
 PROFILE="${1:-default}"
 REPO_URL="https://github.com/Fud0o0/Syndra.git"
 INSTALL_DIR="$HOME/.config/SyndraShell"
 CONFIG_JSON="$INSTALL_DIR/config/config.json"
 
-# ── Validation du profil ──────────────────────────────────────────
 VALID_PROFILES=("blue-team" "red-team" "purple" "green" "mono" "default")
 VALID=false
-for p in "${VALID_PROFILES[@]}"; do [[ "$p" == "$PROFILE" ]] && VALID=true; done
+for p in "${VALID_PROFILES[@]}"; do [[ "$p" == "$PROFILE" ]] && VALID=true && break; done
 if ! $VALID; then
-    echo "❌  Profil inconnu: $PROFILE"
-    echo "    Profils valides: ${VALID_PROFILES[*]}"
+    echo "❌  Profil inconnu: '$PROFILE'"
+    echo "    Valides: ${VALID_PROFILES[*]}"
     exit 1
 fi
 
-# ── Couleurs terminal ──────────────────────────────────────────────
+# ── Couleurs ────────────────────────────────────────────────────────
 case "$PROFILE" in
-    blue-team) C="\033[0;34m" ;;   # bleu
-    red-team)  C="\033[0;31m" ;;   # rouge
-    purple)    C="\033[0;35m" ;;   # violet
-    green)     C="\033[0;32m" ;;   # vert
-    mono)      C="\033[0;37m" ;;   # gris
-    *)         C="\033[0;36m" ;;   # cyan (default)
+    blue-team) PC="\033[0;34m" ;;
+    red-team)  PC="\033[0;31m" ;;
+    purple)    PC="\033[0;35m" ;;
+    green)     PC="\033[0;32m" ;;
+    mono)      PC="\033[0;37m" ;;
+    *)         PC="\033[0;36m" ;;
 esac
-NC="\033[0m"
-BOLD="\033[1m"
+R="\033[0m"; B="\033[1m"; G="\033[0;32m"; Y="\033[0;33m"; E="\033[0;31m"
 
-echo -e "${C}${BOLD}"
-echo "╔══════════════════════════════════════════════════════════════╗"
-echo "║              SYNDRA SHELL — $(printf '%-34s' "${PROFILE^^}")║"
-echo "╚══════════════════════════════════════════════════════════════╝"
-echo -e "${NC}"
+_ok()   { echo -e "  ${G}✓${R}  $1"; }
+_warn() { echo -e "  ${Y}⚠${R}  $1"; }
+_err()  { echo -e "  ${E}✗${R}  $1"; }
+_info() { echo -e "  ${PC}→${R}  $1"; }
+_step() { echo -e "\n${PC}${B}[$1]${R} $2"; }
 
-# ── Pré-requis ─────────────────────────────────────────────────────
+ERRORS=0
+WARNINGS=0
+
+# ── Bannière ────────────────────────────────────────────────────────
+clear
+echo -e "${PC}${B}"
+echo "  ╔══════════════════════════════════════════════════════════╗"
+echo "  ║           SYNDRA SHELL  ·  INSTALLATEUR                  ║"
+echo "  ║                                                           ║"
+printf "  ║   Profil  :  %-44s║\n" "${PROFILE^^}"
+printf "  ║   Cible   :  %-44s║\n" "$INSTALL_DIR"
+echo "  ╚══════════════════════════════════════════════════════════╝"
+echo -e "${R}"
+
+# ── Vérifications système ───────────────────────────────────────────
+_step "1/7" "Vérifications système"
+
 if [ ! -f /etc/arch-release ]; then
-    echo "❌  Ce script nécessite Arch Linux."
+    _err "Arch Linux requis."
     exit 1
 fi
+_ok "Arch Linux détecté"
 
-echo -e "${C}[1/6] Vérification de l'espace disque...${NC}"
-AVAIL=$(df -BG / | awk 'NR==2{print $4}' | tr -d G)
+AVAIL=$(df -BG / | awk 'NR==2{gsub("G",""); print $4}')
 if [ "$AVAIL" -lt 5 ]; then
-    echo "⚠️   Espace insuffisant (${AVAIL}G disponible, 5G requis)"
-    read -rp "Continuer quand même? [y/N] " yn
-    [[ "$yn" =~ ^[Yy]$ ]] || exit 1
-fi
-
-# ── AUR helper ─────────────────────────────────────────────────────
-echo -e "${C}[2/6] Vérification de l'AUR helper...${NC}"
-if ! command -v yay &>/dev/null && ! command -v paru &>/dev/null; then
-    echo "  → Installation de yay..."
-    sudo pacman -S --needed --noconfirm git base-devel
-    git clone https://aur.archlinux.org/yay.git /tmp/yay-install
-    (cd /tmp/yay-install && makepkg -si --noconfirm)
-    rm -rf /tmp/yay-install
-fi
-AUR=$(command -v yay 2>/dev/null || command -v paru 2>/dev/null)
-
-# ── Dépendances base ───────────────────────────────────────────────
-echo -e "${C}[3/6] Installation des dépendances Syndra...${NC}"
-$AUR -S --needed --noconfirm \
-    python python-gobject python-pywayland python-fabric-git \
-    hyprland swww dunst kitty wofi wl-clipboard \
-    xdg-desktop-portal-hyprland qt6-wayland \
-    docker docker-compose \
-    playerctl brightnessctl \
-    imagemagick ffmpeg \
-    2>&1 | grep -E "error:|warning:|installed|skipping" || true
-
-# Activer Docker
-sudo systemctl enable --now docker 2>/dev/null || true
-sudo usermod -aG docker "$USER" 2>/dev/null || true
-
-# Python deps
-pip install --break-system-packages \
-    requests pillow setproctitle watchdog ijson 2>/dev/null || \
-pip install --user \
-    requests pillow setproctitle watchdog ijson 2>/dev/null || true
-
-# ── Cloner / mettre à jour Syndra ─────────────────────────────────
-echo -e "${C}[4/6] Installation de Syndra Shell...${NC}"
-if [ ! -d "$INSTALL_DIR/.git" ]; then
-    git clone "$REPO_URL" "$INSTALL_DIR"
+    _warn "Espace disque faible: ${AVAIL}G (5G recommandé)"
+    ((WARNINGS++))
 else
-    cd "$INSTALL_DIR" && git pull --ff-only 2>/dev/null || true
+    _ok "Espace disque: ${AVAIL}G disponible"
 fi
-cd "$INSTALL_DIR"
 
-# Écrire le profil dans config.json (crée le fichier si absent)
+if [ "$EUID" -eq 0 ]; then
+    _err "Ne pas lancer en root."
+    exit 1
+fi
+_ok "Utilisateur: $USER"
+
+# ── AUR Helper ─────────────────────────────────────────────────────
+_step "2/7" "AUR Helper"
+
+if command -v yay &>/dev/null; then
+    AUR="yay"; _ok "yay trouvé ($(yay --version 2>/dev/null | head -1))"
+elif command -v paru &>/dev/null; then
+    AUR="paru"; _ok "paru trouvé"
+else
+    _info "Installation de yay..."
+    sudo pacman -S --needed --noconfirm git base-devel 2>/dev/null
+    git clone https://aur.archlinux.org/yay.git /tmp/_yay_install
+    (cd /tmp/_yay_install && makepkg -si --noconfirm 2>/dev/null)
+    rm -rf /tmp/_yay_install
+    AUR="yay"
+    _ok "yay installé"
+fi
+
+# ── Paquets système ─────────────────────────────────────────────────
+_step "3/7" "Paquets système"
+
+declare -A PKG_DESC=(
+    [hyprland]="Compositeur Wayland"
+    [swww]="Fond d'écran Wayland"
+    [dunst]="Notifications"
+    [kitty]="Terminal"
+    [wofi]="Lanceur d'applications"
+    [wl-clipboard]="Presse-papier Wayland"
+    [xdg-desktop-portal-hyprland]="Portail XDG"
+    [qt6-wayland]="Qt6 Wayland"
+    [docker]="Conteneurs Docker"
+    [docker-compose]="Docker Compose"
+    [playerctl]="Contrôle médias"
+    [brightnessctl]="Contrôle luminosité"
+    [imagemagick]="Traitement images"
+    [ffmpeg]="Encodage vidéo"
+    [python]="Python 3"
+    [python-gobject]="Bindings GTK Python"
+    [python-pywayland]="Bindings Wayland Python"
+    [python-pip]="Gestionnaire paquets Python"
+    [git]="Contrôle de version"
+    [curl]="Transferts HTTP"
+)
+
+MISSING_PKGS=()
+for pkg in "${!PKG_DESC[@]}"; do
+    if pacman -Q "$pkg" &>/dev/null; then
+        _ok "${PKG_DESC[$pkg]} ($pkg)"
+    else
+        _warn "${PKG_DESC[$pkg]} ($pkg) — à installer"
+        MISSING_PKGS+=("$pkg")
+    fi
+done
+
+if [ ${#MISSING_PKGS[@]} -gt 0 ]; then
+    _info "Installation de ${#MISSING_PKGS[@]} paquet(s)..."
+    $AUR -S --needed --noconfirm "${MISSING_PKGS[@]}" 2>&1 | \
+        grep -E "^(erreur|error|warning)" | while read -r l; do _warn "$l"; done || true
+    _ok "Paquets système installés"
+fi
+
+# AUR spécifiques
+AUR_PKGS=(python-fabric-git)
+for pkg in "${AUR_PKGS[@]}"; do
+    if ! pacman -Q "$pkg" &>/dev/null; then
+        _info "Installation AUR: $pkg..."
+        $AUR -S --needed --noconfirm "$pkg" 2>/dev/null && _ok "$pkg installé" || { _warn "$pkg échoué (non critique)"; ((WARNINGS++)); }
+    else
+        _ok "$pkg (AUR)"
+    fi
+done
+
+# ── Dépendances Python ──────────────────────────────────────────────
+_step "4/7" "Dépendances Python"
+
+declare -A PY_DESC=(
+    [setproctitle]="Titre de processus"
+    [watchdog]="Surveillance fichiers"
+    [Pillow]="Traitement images (PIL)"
+    [requests]="Requêtes HTTP"
+    [ijson]="Parsing JSON streamé"
+)
+
+PY_FLAGS="--break-system-packages --quiet"
+MISSING_PY=()
+
+for pkg in "${!PY_DESC[@]}"; do
+    import_name="${pkg,,}"
+    [[ "$pkg" == "Pillow" ]] && import_name="PIL"
+    if python -c "import $import_name" 2>/dev/null; then
+        _ok "${PY_DESC[$pkg]} ($pkg)"
+    else
+        _warn "${PY_DESC[$pkg]} ($pkg) — à installer"
+        MISSING_PY+=("$pkg")
+    fi
+done
+
+if [ ${#MISSING_PY[@]} -gt 0 ]; then
+    _info "pip install ${MISSING_PY[*]}..."
+    pip install $PY_FLAGS "${MISSING_PY[@]}" 2>&1 | grep -v "^$" | tail -3 || \
+    pip install --user "${MISSING_PY[@]}" 2>/dev/null || { _warn "Certains paquets Python échoués"; ((WARNINGS++)); }
+    _ok "Dépendances Python installées"
+fi
+
+# ── Syndra Shell ────────────────────────────────────────────────────
+_step "5/7" "Syndra Shell"
+
+if [ ! -d "$INSTALL_DIR/.git" ]; then
+    _info "Clonage du dépôt..."
+    git clone "$REPO_URL" "$INSTALL_DIR" --quiet
+    _ok "Dépôt cloné"
+else
+    _info "Mise à jour du dépôt..."
+    cd "$INSTALL_DIR" && git pull --ff-only --quiet 2>/dev/null || git fetch --quiet
+    _ok "Dépôt à jour ($(git -C "$INSTALL_DIR" log -1 --format='%h %s' 2>/dev/null))"
+fi
+
+# Écrire le profil dans config.json
 mkdir -p "$(dirname "$CONFIG_JSON")"
 if [ -f "$CONFIG_JSON" ]; then
-    python3 -c "
+    python - <<PYEOF
 import json
-with open('$CONFIG_JSON') as f:
+with open("$CONFIG_JSON") as f:
     d = json.load(f)
-d['syndra_profile'] = '$PROFILE'
-with open('$CONFIG_JSON', 'w') as f:
+d["syndra_profile"] = "$PROFILE"
+with open("$CONFIG_JSON", "w") as f:
     json.dump(d, f, indent=2)
-print('  → Profil $PROFILE enregistré dans config.json')
-"
+PYEOF
 else
     echo "{\"syndra_profile\": \"$PROFILE\"}" > "$CONFIG_JSON"
-    echo "  → config.json créé avec profil $PROFILE"
 fi
+_ok "Profil '$PROFILE' enregistré dans config.json"
 
-# ── Conteneurs Docker par profil ──────────────────────────────────
-echo -e "${C}[5/6] Préparation des conteneurs $PROFILE...${NC}"
-COMPOSE_FILE="$INSTALL_DIR/containers/${PROFILE}/docker-compose.yml"
-if [ -f "$COMPOSE_FILE" ]; then
-    echo "  → Téléchargement des images Docker..."
-    docker compose -f "$COMPOSE_FILE" pull 2>/dev/null || \
-    docker-compose -f "$COMPOSE_FILE" pull 2>/dev/null || \
-    echo "  ⚠️  Pull des images échoué (continuons, elles seront téléchargées au 1er lancement)"
-else
-    echo "  ⚠️  Pas de docker-compose.yml pour le profil $PROFILE (normal pour 'default')"
-fi
+# ── Configuration ───────────────────────────────────────────────────
+_step "6/7" "Configuration"
 
-# ── Configuration Hyprland ────────────────────────────────────────
-echo -e "${C}[6/6] Configuration de l'environnement...${NC}"
 HYPR_DIR="$HOME/.config/hypr"
 mkdir -p "$HYPR_DIR" ~/Pictures/Wallpapers ~/Pictures/Screenshots
+_ok "Répertoires créés"
 
-# Lier la config Hyprland si pas déjà fait
-if [ ! -f "$HYPR_DIR/hyprland.conf" ]; then
+# Lier hyprland.conf
+if [ ! -e "$HYPR_DIR/hyprland.conf" ]; then
     ln -sf "$INSTALL_DIR/config/hypr/hyprland.conf" "$HYPR_DIR/hyprland.conf"
-    echo "  → hyprland.conf lié"
+    _ok "hyprland.conf lié"
+else
+    _ok "hyprland.conf déjà présent"
 fi
 
 # Police tabler-icons
 FONT_SRC="$INSTALL_DIR/assets/fonts/tabler-icons/tabler-icons.ttf"
 if [ -f "$FONT_SRC" ]; then
-    mkdir -p "$HOME/.local/share/fonts/tabler-icons"
+    mkdir -p "$HOME/.local/share/fonts/tabler-icons" "$HOME/.fonts/tabler-icons"
     cp "$FONT_SRC" "$HOME/.local/share/fonts/tabler-icons/"
-    fc-cache -f 2>/dev/null || true
-    echo "  → Police tabler-icons installée"
+    cp "$FONT_SRC" "$HOME/.fonts/tabler-icons/"
+    fc-cache -f 2>/dev/null
+    _ok "Police tabler-icons installée"
 fi
 
-# ── Résumé ────────────────────────────────────────────────────────
+# Docker
+if command -v docker &>/dev/null; then
+    sudo systemctl enable --now docker 2>/dev/null || true
+    sudo usermod -aG docker "$USER" 2>/dev/null || true
+    _ok "Docker configuré"
+fi
+
+# ── Conteneurs du profil ────────────────────────────────────────────
+_step "7/7" "Conteneurs ($PROFILE)"
+
+COMPOSE="$INSTALL_DIR/containers/${PROFILE}/docker-compose.yml"
+if [ -f "$COMPOSE" ] && command -v docker &>/dev/null; then
+    _info "Téléchargement des images Docker (peut prendre du temps)..."
+    docker compose -f "$COMPOSE" pull --quiet 2>/dev/null || \
+    docker-compose -f "$COMPOSE" pull 2>/dev/null || \
+    { _warn "Pull Docker reporté au premier lancement"; ((WARNINGS++)); }
+    _ok "Images Docker prêtes"
+else
+    _warn "Conteneurs non disponibles pour le profil '$PROFILE'"
+    ((WARNINGS++))
+fi
+
+# ── Résumé ───────────────────────────────────────────────────────────
 echo ""
-echo -e "${C}${BOLD}╔══════════════════════════════════════════════════════════════╗"
-echo "║           ✅  SYNDRA SHELL INSTALLÉ — ${PROFILE^^}$(printf '%*s' $((27-${#PROFILE})) '')║"
-echo "╠══════════════════════════════════════════════════════════════╣"
-echo "║  Profil        : $PROFILE$(printf '%*s' $((44-${#PROFILE})) '')║"
-echo "║  Répertoire    : $INSTALL_DIR$(printf '%*s' $((62-${#INSTALL_DIR}-18)) '')║"
-echo "╠══════════════════════════════════════════════════════════════╣"
-echo "║  Pour lancer maintenant :                                    ║"
-echo "║    cd $INSTALL_DIR                                            ║"
-echo "║    python main.py                                             ║"
-echo "║                                                               ║"
-echo "║  Hyprland démarre Syndra automatiquement via exec-once.       ║"
-echo "╚══════════════════════════════════════════════════════════════╝"
-echo -e "${NC}"
+echo -e "${PC}${B}"
+echo "  ╔══════════════════════════════════════════════════════════╗"
+if [ "$ERRORS" -eq 0 ]; then
+echo "  ║      ✅  INSTALLATION RÉUSSIE                            ║"
+else
+echo "  ║      ⚠   INSTALLATION AVEC ERREURS                       ║"
+fi
+echo "  ╠══════════════════════════════════════════════════════════╣"
+printf "  ║   Profil     : %-43s║\n" "$PROFILE"
+printf "  ║   Erreurs    : %-43s║\n" "$ERRORS"
+printf "  ║   Avertiss.  : %-43s║\n" "$WARNINGS"
+echo "  ╠══════════════════════════════════════════════════════════╣"
+echo "  ║   Pour démarrer Syndra :                                 ║"
+echo "  ║     • Déconnectez-vous et sélectionnez Hyprland          ║"
+echo "  ║     • OU tapez : Hyprland  (depuis un TTY)               ║"
+echo "  ╚══════════════════════════════════════════════════════════╝"
+echo -e "${R}"

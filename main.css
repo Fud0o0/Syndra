@@ -143,11 +143,14 @@
   opacity: 0;
 }
 
-/* Pastille flottante entièrement arrondie + détachée du bord + ombre */
+/* Détacher l'île du bord haut (c'est notch-box qui est ancré en haut) */
+#notch-box {
+  margin-top: 8px;
+}
+
+/* Pastille flottante entièrement arrondie (sans ombre — rend mal en GTK) */
 #notch-content {
   border-radius: 22px;
-  margin-top: 6px;
-  box-shadow: 0 4px 18px 0 var(--shadow);
 }
 #notch-content.open {
   border-radius: 28px;

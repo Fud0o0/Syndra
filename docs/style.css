@@ -756,6 +756,11 @@ a:hover {
 /* ==========================================================================
    Responsive
    ========================================================================== */
+.tools-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 30px;
+}
+
 @media (max-width: 1024px) {
     .main-nav {
         display: none; /* Hide standard nav on tablet/mobile */
@@ -771,10 +776,11 @@ a:hover {
     .social-links {
         display: none; /* Hide on small screens to save space */
     }
-    .split-grid {
+    .split-grid, .tools-grid {
         grid-template-columns: 1fr;
     }
     .language-selector-container {
+        top: 20px;
         right: 20px;
     }
 }
@@ -788,7 +794,7 @@ a:hover {
     .pills { overflow-x: auto; white-space: nowrap; max-width: 100%; padding: 4px; }
     .pill { padding: 5px 12px; font-size: 0.8rem; }
     
-    .language-selector-container { top: 90px; right: 15px; } /* Move below header on mobile */
+    .language-selector-container { top: 20px; right: 15px; } 
     
     .hero-cta { flex-direction: column; width: 100%; }
     .doc-button, .github-button { width: 100%; height: 48px; }
@@ -801,4 +807,14 @@ a:hover {
     
     .footer-content { flex-direction: column; text-align: center; gap: 20px; }
     .footer-links { text-align: center; }
+    
+    .features-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 480px) {
+    .hero-title { font-size: 2.2rem; }
+    .retro-avatar { width: 140px; height: 140px; }
+    .section-header h2 { font-size: 2rem; }
+    .terminal-title { font-size: 0.75rem; margin-right: 20px; }
+    .disk-space-info { font-size: 0.75rem; }
+    .install-command .prompt { display: none; }
 }

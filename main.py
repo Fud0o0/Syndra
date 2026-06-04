@@ -58,6 +58,86 @@ def _ensure_tabler_icons_font():
 
 _ensure_tabler_icons_font()
 
+# ── Préprocesseur CSS ────────────────────────────────────────────────────────
+# GTK 3.24 sur Arch ne supporte PAS les CSS custom properties (--var / var()).
+# On inline tous les @imports et on remplace var(--x) par les vraies valeurs.
+import re as _re
+
+_THEME: dict = {
+    "--foreground":      "#cdd6f4",
+    "--background":      "#0a0e14",
+    "--cursor":          "#cdd6f4",
+    "--primary":         "#89b4fa",
+    "--on-primary":      "#0a0e14",
+    "--secondary":       "#89dceb",
+    "--on-secondary":    "#0a0e14",
+    "--tertiary":        "#cba6f7",
+    "--on-tertiary":     "#0a0e14",
+    "--surface":         "#131825",
+    "--surface-bright":  "#1e2a3a",
+    "--surface_bright":  "#1e2a3a",
+    "--error":           "#f38ba8",
+    "--error-dim":       "#d4708a",
+    "--on-error":        "#0a0e14",
+    "--error-container": "#6b1a2a",
+    "--outline":         "#2a3a52",
+    "--shadow":          "#0d1117",
+    "--red":             "#f38ba8",  "--red-dim":     "#d4708a",
+    "--green":           "#a6e3a1",  "--green-dim":   "#88c584",
+    "--yellow":          "#f9e2af",  "--yellow-dim":  "#dbc492",
+    "--blue":            "#89b4fa",  "--blue-dim":    "#6b96dc",
+    "--magenta":         "#cba6f7",  "--magenta-dim": "#ad88d9",
+    "--cyan":            "#89dceb",  "--cyan-dim":    "#6bbece",
+    "--white":           "#cdd6f4",
+}
+
+def _load_colors_from_css(css_path: str) -> None:
+    """Lit les --var: value dans colors.css (généré par matugen) et met à jour _THEME."""
+    try:
+        with open(css_path, "r", encoding="utf-8") as f:
+            txt = f.read()
+        for m in _re.finditer(r"(--[\w-]+)\s*:\s*([^;}\n]+)", txt):
+            name, val = m.group(1).strip(), m.group(2).strip()
+            if name in _THEME:
+                _THEME[name] = val
+    except Exception:
+        pass
+
+def _inline_css(path: str) -> str:
+    """Lit un fichier CSS et remplace chaque @import par le contenu du fichier cible."""
+    base = os.path.dirname(path)
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            src = f.read()
+    except Exception:
+        return ""
+    out = []
+    for line in src.splitlines():
+        m = _re.match(r'\s*@import\s+url\(["\']?([^"\')\s]+)["\']?\)', line)
+        if m:
+            out.append(_inline_css(os.path.join(base, m.group(1))))
+        else:
+            out.append(line)
+    return "\n".join(out)
+
+def _preprocess_css(css: str) -> str:
+    """Supprime --var:val (parse error GTK) et remplace var(--x) par hex."""
+    # Supprimer les déclarations --variable: value;
+    css = _re.sub(r'[ \t]*--[\w-]+[ \t]*:[^;{}\n]+;[ \t]*\n?', '', css)
+    # Supprimer les blocs * {} vides qui restent
+    css = _re.sub(r'\*\s*\{[ \t\n]*\}', '', css)
+    # Remplacer var(--name) et var(--name, fallback)
+    def _repl(m):
+        name = m.group(1).strip()
+        val = _THEME.get(name) or _THEME.get(name.replace("_", "-"))
+        if val:
+            return val
+        fb = m.group(2)
+        return fb.strip() if fb else "transparent"
+    return _re.sub(r'var\(\s*(--[\w_-]+)\s*(?:,\s*([^)]+))?\)', _repl, css)
+
+# ─────────────────────────────────────────────────────────────────────────────
+
 def _load_tabler_icons_css():
     """
     Charge la police tabler-icons via un CssProvider GTK avec chemin absolu.
@@ -338,94 +418,24 @@ if __name__ == "__main__":
         if not screen:
             return
 
-        # 1. CSS principal (main.css + tous les @imports)
+        # Charger les couleurs matugen si disponibles (override _THEME)
+        colors_file = get_relative_path("styles/colors.css")
+        _load_colors_from_css(colors_file)
+
+        # Inline tous les @imports + préprocesser (remplace var() par hex)
+        main_css_path = get_relative_path("main.css")
+        raw = _inline_css(main_css_path)
+        processed = _preprocess_css(raw)
+
         provider = Gtk.CssProvider()
         provider.connect("parsing-error", lambda p, s, e: None)
         try:
-            provider.load_from_path(get_relative_path("main.css"))
+            provider.load_from_data(processed.encode())
         except Exception as e:
-            print(f"[CSS] erreur ignorée : {e}")
+            print(f"[CSS] partial load: {e}")
+
         Gtk.StyleContext.add_provider_for_screen(
             screen, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
-        )
-
-        # 2. Couleurs de fallback en dur — contourne le problème GTK3 avec var()
-        #    Utilise var(--x, fallback) : si la variable est définie, elle gagne ;
-        #    sinon le fallback garantit un rendu noir/bleu sombre.
-        _DARK = "#0d1117"
-        _SURF = "#131825"
-        _SURF_B = "#1e2a3a"
-        _FG = "#cdd6f4"
-        _PRI = "#89b4fa"
-        _RED = "#f38ba8"
-        _OUT = "#2a3a52"
-
-        fallback = f"""
-* {{ color: var(--foreground, {_FG}); }}
-
-#bar-inner,
-#bar-inner.dense,
-#bar-inner.edge,
-#bar-inner.edge.vertical,
-#bar-inner.edgecenter.vertical {{
-  background-color: var(--shadow, {_DARK});
-  border-color: var(--surface, {_SURF});
-}}
-#date-time {{ background-color: var(--shadow, {_DARK}); }}
-#date-time.invert {{ background-color: var(--surface, {_SURF}); }}
-#weather {{ background-color: var(--shadow, {_DARK}); }}
-#language {{ background-color: var(--shadow, {_DARK}); }}
-#systray {{ background-color: var(--shadow, {_DARK}); }}
-#button-bar {{ background-color: var(--shadow, {_DARK}); }}
-#button-bar-label {{ color: var(--primary, {_PRI}); }}
-#corner {{ background-color: var(--shadow, {_DARK}); }}
-
-#workspaces-container {{ background-color: var(--shadow, {_DARK}); }}
-#workspaces > button {{ background-color: var(--foreground, {_FG}); }}
-#workspaces > button.active {{ background-color: var(--primary, {_PRI}); }}
-#workspaces > button.empty {{ background-color: var(--surface-bright, {_SURF_B}); }}
-#workspaces > button.urgent {{ background-color: var(--error, {_RED}); }}
-
-#notch-content {{ background-color: var(--shadow, {_DARK}); }}
-#notch-content.invert {{ background-color: var(--surface, {_SURF}); }}
-#notch-box.panel {{ background-color: var(--surface, {_SURF}); }}
-
-#app-launcher, #power-menu, #toolbox,
-#dashboard, #tmux-manager, #clip-history,
-#overview, #emoji {{
-  background-color: var(--shadow, {_DARK});
-}}
-
-#box-1, #box-2, #box-3, #box-x {{
-  background-color: var(--surface, {_SURF});
-}}
-
-#applet-stack, #calendar, #header,
-#player, #metrics, #pin-cell-box, #kanban-header {{
-  background-color: alpha(black, 0.5);
-}}
-
-menu {{
-  background-color: var(--shadow, {_DARK});
-  border-color: var(--surface, {_SURF});
-}}
-menu > menuitem:hover {{ background-color: var(--primary, {_PRI}); }}
-tooltip {{
-  background-color: var(--shadow, {_DARK});
-  border-color: var(--surface, {_SURF});
-}}
-
-#dock-box {{ background-color: var(--shadow, {_DARK}); }}
-"""
-        fallback_provider = Gtk.CssProvider()
-        fallback_provider.connect("parsing-error", lambda p, s, e: None)
-        try:
-            fallback_provider.load_from_data(fallback.encode())
-        except Exception:
-            pass
-        # Priorité légèrement inférieure : main.css avec var() gagne si la variable est définie
-        Gtk.StyleContext.add_provider_for_screen(
-            screen, fallback_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION - 1
         )
 
         _load_tabler_icons_css()

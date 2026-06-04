@@ -870,5 +870,51 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+// ===== Mobile Navigation Drawer Toggle =====
+document.addEventListener('DOMContentLoaded', () => {
+    const menuToggle = document.getElementById('menu-toggle');
+    const mainNav = document.getElementById('main-nav');
+    const mainNavLinks = document.querySelectorAll('.main-nav a');
+
+    if (!menuToggle || !mainNav) return;
+
+    function toggleMenu(forceClose = false) {
+        const isOpen = forceClose ? false : !mainNav.classList.contains('open');
+        
+        menuToggle.classList.toggle('open', isOpen);
+        mainNav.classList.toggle('open', isOpen);
+        document.body.classList.toggle('nav-open', isOpen);
+        menuToggle.setAttribute('aria-expanded', isOpen);
+    }
+
+    // Toggle menu click handler
+    menuToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleMenu();
+    });
+
+    // Close menu when clicking any link
+    mainNavLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            toggleMenu(true);
+        });
+    });
+
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+        if (mainNav.classList.contains('open') && !mainNav.contains(e.target) && !menuToggle.contains(e.target)) {
+            toggleMenu(true);
+        }
+    });
+
+    // Close menu on Escape key press
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && mainNav.classList.contains('open')) {
+            toggleMenu(true);
+        }
+    });
+});
+
+
 
 

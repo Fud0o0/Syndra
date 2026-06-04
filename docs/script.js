@@ -1020,12 +1020,12 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('syndraThemeChanged', (e) => {
         const team = e.detail.team;
         const teamToIndex = {
-            'red': 0,
-            'blue': 1,
-            'purple': 2,
-            'root': 3,
-            'custom': 4,
-            'default': 5
+            'red': 7,       // image 8
+            'blue': 5,      // image 6
+            'purple': 2,    // image 3
+            'root': 6,      // image 7
+            'custom': 4,    // image 5
+            'default': 0    // image 1
         };
         const idx = teamToIndex[team];
         if (idx !== undefined && currentIndex !== idx) {

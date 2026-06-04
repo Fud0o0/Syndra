@@ -2,7 +2,6 @@
 """
 SyndraShell - Main Application
 Powered by Fabric Framework
-Inspired by Ax-Shell by Axenide
 """
 
 import ctypes
@@ -21,15 +20,14 @@ if _script_dir not in sys.path:
 
 def _ensure_tabler_icons_font():
     """
-    Copie tabler-icons dans ~/.fonts/ (exactement comme ax-shell install.sh)
-    et reconstruit le cache fontconfig.
+    Copie tabler-icons dans ~/.fonts/ et reconstruit le cache fontconfig.
     """
     import shutil, subprocess
     font_src = os.path.join(_script_dir, "assets", "fonts", "tabler-icons", "tabler-icons.ttf")
     if not os.path.isfile(font_src):
         return
 
-    # Copie vers ~/.fonts/tabler-icons/ — emplacement utilisé par ax-shell
+    # Copie vers les répertoires de polices utilisateur
     for dest_dir in [
         os.path.expanduser("~/.fonts/tabler-icons"),
         os.path.expanduser("~/.local/share/fonts/tabler-icons"),

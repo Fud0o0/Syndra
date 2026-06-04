@@ -1,10 +1,14 @@
 #!/bin/bash
-# Gamemode toggle script for SyndraShell
-
 GAMEMODE_FILE="/tmp/syndrashell_gamemode"
 
+# Mode check : juste retourner le statut sans toggler ni notifier
+if [ "$1" = "check" ]; then
+    [ -f "$GAMEMODE_FILE" ] && echo "t" || echo "f"
+    exit 0
+fi
+
+# Mode toggle
 if [ -f "$GAMEMODE_FILE" ]; then
-    # Disable gamemode
     rm "$GAMEMODE_FILE"
     hyprctl --batch "\
         keyword animations:enabled true;\
@@ -12,7 +16,6 @@ if [ -f "$GAMEMODE_FILE" ]; then
         keyword decoration:drop_shadow true"
     notify-send -a "SyndraShell" "Game Mode Disabled" "Effects restored"
 else
-    # Enable gamemode
     touch "$GAMEMODE_FILE"
     hyprctl --batch "\
         keyword animations:enabled false;\

@@ -295,8 +295,9 @@ class WallpaperSelector(Box):
                 f'matugen image "{full_path}" -t {selected_scheme}'
             )
         else:
+            exec_shell_command_async("swww-daemon --format xrgb >/dev/null 2>&1 || true")
             exec_shell_command_async(
-                f'awww img "{full_path}" -t outer --transition-duration 1.5 --transition-step 255 --transition-fps 60 -f Nearest'
+                f'swww img "{full_path}" --transition-type fade --transition-duration 1.5'
             )
 
         print(f"Set random wallpaper: {file_name}")
@@ -386,9 +387,9 @@ class WallpaperSelector(Box):
                 f'matugen image "{full_path}" -t {selected_scheme}'
             )
         else:
-            # Matugen is disabled: run the alternative awww command.
+            exec_shell_command_async("swww-daemon --format xrgb >/dev/null 2>&1 || true")
             exec_shell_command_async(
-                f'awww img "{full_path}" -t outer --transition-duration 1.5 --transition-step 255 --transition-fps 60 -f Nearest'
+                f'swww img "{full_path}" --transition-type fade --transition-duration 1.5'
             )
 
     def on_scheme_changed(self, combo):

@@ -8,10 +8,10 @@ INSTALL_DIR="${SYNDRA_INSTALL_DIR:-$HOME/.config/SyndraShell}"
 REPO_URL="https://github.com/Fud0o0/Syndra.git"
 
 case "$PROFILE" in
-    interactive|blue|red|purple|root|base)
+    interactive|blue|red|purple|root|default)
         ;;
     *)
-        echo "Usage: $0 [interactive|base|blue|red|purple|root]"
+        echo "Usage: $0 [interactive|default|blue|red|purple|root]"
         exit 1
         ;;
 esac
@@ -34,7 +34,7 @@ case "$PROFILE" in
     interactive)
         exec bash "$INSTALL_DIR/install.sh"
         ;;
-    base)
+    default)
         exec bash "$INSTALL_DIR/scripts/install-syndra-base.sh"
         ;;
     blue)

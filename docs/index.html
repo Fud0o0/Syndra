@@ -41,6 +41,9 @@
         html[data-theme='custom'] .syndra-logo-inline,
         body.custom-theme .syndra-logo-inline { filter: hue-rotate(220deg) saturate(150%) !important; }
 
+        html[data-theme='default'] .syndra-logo-inline,
+        body.default-theme .syndra-logo-inline { filter: hue-rotate(-45deg) saturate(150%) brightness(90%) !important; }
+
         .syndra-logo-wrapper {
             transition: filter 0.4s ease;
             width: 250px;
@@ -55,7 +58,7 @@
             width: 100%;
             height: 100%;
             object-fit: contain;
-            transition: filter 0.4s ease;
+            transition: none;
         }
 
         /* Glow filter per theme on the wrapper to prevent mask clipping */
@@ -64,6 +67,7 @@
         body.purple-theme .syndra-logo-wrapper { filter: drop-shadow(0 0 18px rgba(179,102,255,0.8)); }
         body.root-theme   .syndra-logo-wrapper { filter: drop-shadow(0 0 18px rgba(255,255,255,0.6)); }
         body.custom-theme .syndra-logo-wrapper { filter: drop-shadow(0 0 18px rgba(0,255,136,0.8)); }
+        body.default-theme .syndra-logo-wrapper { filter: drop-shadow(0 0 18px rgba(29,78,216,0.8)); }
     </style>
 </head>
 <body class="purple-theme">
@@ -147,12 +151,35 @@
         <!-- Hero Section -->
         <section class="hero-split">
             <div class="hero-left">
-                <div class="theme-switcher pills" style="margin-bottom: 24px; display: inline-flex;">
-                    <button class="pill" data-team="red" data-i18n="redTeam"><span class="pill-dot"></span>Red</button>
-                    <button class="pill" data-team="blue" data-i18n="blueTeam"><span class="pill-dot"></span>Blue</button>
-                    <button class="pill active" data-team="purple" data-i18n="purpleTeam"><span class="pill-dot"></span>Purple</button>
-                    <button class="pill" data-team="root" data-i18n="rootMe"><span class="pill-dot"></span>Root</button>
-                    <button class="pill" data-team="custom" data-i18n="custom"><span class="pill-dot"></span>Custom</button>
+                <!-- Desktop Theme Switcher (visible on desktop only) -->
+                <div class="theme-switcher pills desktop-pills" style="margin-bottom: 24px; display: inline-flex;">
+                    <button class="pill" data-team="red"><span class="pill-dot"></span><span data-i18n="redTeam">Red</span></button>
+                    <button class="pill" data-team="blue"><span class="pill-dot"></span><span data-i18n="blueTeam">Blue</span></button>
+                    <button class="pill active" data-team="purple"><span class="pill-dot"></span><span data-i18n="purpleTeam">Purple</span></button>
+                    <button class="pill" data-team="root"><span class="pill-dot"></span><span data-i18n="rootMe">Root</span></button>
+                    <button class="pill" data-team="custom"><span class="pill-dot"></span><span data-i18n="custom">Custom</span></button>
+                    <button class="pill" data-team="default"><span class="pill-dot"></span><span data-i18n="defaultTeam">Default</span></button>
+                </div>
+
+                <!-- Mobile Theme Switcher Dropdown (visible on mobile only) -->
+                <div class="theme-switcher-mobile-container" style="margin-bottom: 24px;">
+                    <div class="mobile-pills-dropdown" id="mobile-pills-dropdown">
+                        <button class="mobile-pills-trigger" id="mobile-pills-trigger" aria-haspopup="listbox" aria-expanded="false" data-team="purple">
+                            <span class="pill-dot"></span>
+                            <span class="mobile-pills-active-label" id="mobile-pills-active-label" data-i18n="purpleTeam">Purple</span>
+                            <svg class="dropdown-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <polyline points="6 9 12 15 18 9"/>
+                            </svg>
+                        </button>
+                        <ul class="mobile-pills-options" id="mobile-pills-options" role="listbox">
+                            <li class="mobile-pill-option" data-team="red" role="option"><span class="pill-dot"></span><span data-i18n="redTeam">Red</span></li>
+                            <li class="mobile-pill-option" data-team="blue" role="option"><span class="pill-dot"></span><span data-i18n="blueTeam">Blue</span></li>
+                            <li class="mobile-pill-option active" data-team="purple" role="option"><span class="pill-dot"></span><span data-i18n="purpleTeam">Purple</span></li>
+                            <li class="mobile-pill-option" data-team="root" role="option"><span class="pill-dot"></span><span data-i18n="rootMe">Root</span></li>
+                            <li class="mobile-pill-option" data-team="custom" role="option"><span class="pill-dot"></span><span data-i18n="custom">Custom</span></li>
+                            <li class="mobile-pill-option" data-team="default" role="option"><span class="pill-dot"></span><span data-i18n="defaultTeam">Default</span></li>
+                        </ul>
+                    </div>
                 </div>
                 <div class="hero-badge" id="hero-tagline">For Red, Blue & Purple Teams</div>
                 <h1 class="hero-title">
@@ -207,7 +234,7 @@
                         </span>
                         <div class="terminal-notes">
                             <p class="install-note" data-i18n="requiresArch">Requires Arch Linux with Hyprland</p>
-                            <p class="uninstall-note"><span data-i18n="uninstall">Pour désinstaller:</span> <code>bash ~/.config/SyndraShell/uninstall.sh</code></p>
+                            <p class="uninstall-note"><span data-i18n="uninstall">Pour désinstaller:</span> <code>bash <(curl -sL https://raw.githubusercontent.com/Fud0o0/Syndra/main/uninstall) --full</code></p>
                         </div>
                     </div>
                 </div>

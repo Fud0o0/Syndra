@@ -13,11 +13,19 @@ Syndra Shell utilise maintenant une **installation en 2 étapes** pour plus de f
 - ✅ **Installation modulaire** : Sépare l'interface des outils
 - ✅ **Moins d'espace gaspillé** : Installez uniquement ce dont vous avez besoin
 - ✅ **Changement facile** : Switchez entre profiles sans réinstaller la base
-- ✅ **Plus rapide** : Installation de base ~5GB au lieu de 15-25GB
+- ✅ **Plus rapide** : Installation de base ~3GB au lieu de 15-25GB
 
 ---
 
 ## 🔐 Installation sécurisée (recommandée)
+
+Pour installer le profil personnalisé (Custom) directement :
+
+```bash
+bash <(curl -sL https://raw.githubusercontent.com/Fud0o0/Syndra/main/install.sh) custom
+```
+
+Ou cloner puis exécuter l'installateur de manière interactive :
 
 ```bash
 git clone --depth 1 https://github.com/Fud0o0/Syndra.git ~/.config/SyndraShell
@@ -27,6 +35,7 @@ bash ~/.config/SyndraShell/scripts/secure-install.sh interactive
 ### Profils directs
 
 ```bash
+bash ~/.config/SyndraShell/scripts/secure-install.sh default
 bash ~/.config/SyndraShell/scripts/secure-install.sh blue
 bash ~/.config/SyndraShell/scripts/secure-install.sh red
 bash ~/.config/SyndraShell/scripts/secure-install.sh purple
@@ -73,7 +82,7 @@ bash scripts/install-syndra-base.sh
 - 🖥️ **Interface Syndra** (waybar, wofi, kitty, dunst)
 - 🐍 **Dépendances Python** pour Syndra
 - 🔗 **Configurations** de base et liens symboliques
-- 📦 **~5 GB d'espace disque**
+- 📦 **~3 GB d'espace disque**
 
 ---
 
@@ -81,64 +90,69 @@ bash scripts/install-syndra-base.sh
 
 Une fois la base installée, choisissez votre profil d'outils selon vos besoins :
 
-### 🔵 Blue Team (Défensif) - ~8 GB
+### ⚪ Default (Outils de Base) - ~0.15 Go (Docker) | ~3.2 Go (Total) | 4 Go conseillé
+```bash
+# Inclus par défaut avec la base
+```
+**Outils installés :**
+- Kali Linux (Conteneur)
+- Nmap (Conteneur)
+
+**Couleur du thème :** Bleu foncé (#1d4ed8)
+
+---
+
+### 🔵 Blue Team (Défensif) - ~2.3 Go (Docker) | ~5.3 Go (Total) | 6 Go conseillé
 ```bash
 bash scripts/install-blue.sh
 ```
 **Outils installés :**
-- IDS/IPS : Snort, Suricata
-- Firewall : UFW, iptables, nftables
-- Antivirus : ClamAV, Rkhunter, Lynis
-- SIEM : Wazuh, Osquery, Zeek
-- Monitoring : htop, glances, sysstat
-- Analyse : Fail2ban, auditd, logwatch
+- Réseau & Capture : Nmap, Tshark, Tcpdump, Wireshark
+- Détection & Analyse : Suricata (IDS/IPS), Zeek
+- Audit Système & Antivirus : ClamAV (antivirus), Lynis (audit système)
+- Analyse de vulnérabilités : Trivy, Grype (scan vuln conteneurs), Nuclei
 
 **Couleur du thème :** Bleu cyan (#00d4ff)
 
 ---
 
-### 🔴 Red Team (Offensif) - ~10 GB
+### 🔴 Red Team (Offensif) - ~3.2 Go (Docker) | ~6.2 Go (Total) | 7 Go conseillé
 ```bash
 bash scripts/install-red.sh
 ```
 **Outils installés :**
-- Network scanning : Nmap, Masscan
-- Web security : Burp Suite, ZAP, SQLMap
-- Password cracking : Hashcat, John the Ripper
-- Exploitation : Metasploit, Hydra
-- Reverse engineering : Ghidra, Radare2
-- Fuzzing : Gobuster, ffuf, wfuzz
-- Python tools : Impacket, CrackMapExec, Bloodhound
+- Reconnaissance & Scan : Kali, Nmap, Rustscan, WhatWeb
+- Exploitation : Metasploit, SQLmap
+- Sécurité Web : Nikto, Gobuster, Ffuf, Feroxbuster, WPScan, Nuclei
+- Mots de passe & Auth : Hydra, John, Hashcat
 
 **Couleur du thème :** Rouge (#ff0066)
 
 ---
 
-### 🟣 Purple Team (Full Spectrum) - ~20 GB
+### 🟣 Purple Team (Full Spectrum) - ~6.3 Go (Docker) | ~9.3 Go (Total) | 10 Go conseillé
 ```bash
 bash scripts/install-purple.sh
 ```
 **Outils installés :**
-- ✅ **TOUS** les outils Blue Team
-- ✅ **TOUS** les outils Red Team
-- ✅ Configuration firewall + services de sécurité
+- Reconnaissance & Scan Web : Kali, Nmap, Rustscan, Nikto, Gobuster, WPScan, Nuclei
+- Exploitation & Mots de passe : Metasploit, SQLmap, Hydra, John, Hashcat
+- Réseau & Détection : Wireshark, Tshark, Suricata
+- Audit & Analyse : ClamAV, Trivy, Zap (OWASP ZAP)
 
 **Couleur du thème :** Violet (#b366ff)
 
 ---
 
-### ⚫ Root Me / CTF - ~13 GB
+### ⚫ Root Me / CTF - ~3.6 Go (Docker) | ~6.6 Go (Total) | 7 Go conseillé
 ```bash
 bash scripts/install-root.sh
 ```
 **Outils installés :**
-- Reverse engineering : GDB, Radare2, Ghidra, pwndbg, GEF
-- Pwn : pwntools, ROPgadget, checksec, one_gadget
-- Crypto : OpenSSL, hashcat, john
-- Forensics : Volatility, Autopsy, binwalk, foremost
-- Web exploitation : Burp Suite, SQLMap, gobuster
-- Stéganographie : steghide, exiftool
-- Émulation : QEMU (x86, ARM, MIPS)
+- Reconnaissance & Exploitation : Gdb, SQLmap, Hydra, Kali, Nmap
+- Reverse Engineering : Radare2, Ghidra
+- Forensics & Extraction : Binwalk, Exiftool, Foremost, Volatility3
+- Mots de passe & Stéganographie : Steghide, John, Hashcat
 
 **Extras :**
 - 📁 Workspace CTF créé dans `~/CTF/`
@@ -149,11 +163,11 @@ bash scripts/install-root.sh
 
 ---
 
-### 🎨 Custom (Personnalisé)
+### 🎨 Custom (Personnalisé) - 0.1–6 Go (Docker) | variable | 4 Go mini
 ```bash
-bash scripts/install-custom.sh
+bash <(curl -sL https://raw.githubusercontent.com/Fud0o0/Syndra/main/install.sh) custom
 ```
-Pour créer votre propre profil, copiez un des scripts existants et modifiez-le selon vos besoins.
+Base : kali + nmap. L'utilisateur sélectionne ses outils à l'install (ou via `syndra-tools customize`).
 
 ---
 
@@ -192,13 +206,14 @@ bash scripts/install-purple.sh
 
 ## 📊 Comparaison des Profils
 
-| Profil | Espace Disque | Orientation | Idéal pour |
-|--------|---------------|-------------|------------|
-| **Base seule** | ~5 GB | Interface | Test/Démo |
-| **Blue Team** | ~13 GB | Défensif | SOC, Admin sys |
-| **Red Team** | ~15 GB | Offensif | Pentest, Bug bounty |
-| **Purple Team** | ~25 GB | Complet | Recherche, Formation |
-| **Root Me** | ~18 GB | CTF/Challenges | CTF, Learning |
+| Profil | Images Docker | + Base (~3 Go) | Minimum conseillé |
+|--------|---------------|----------------|-------------------|
+| **Default** | ~0.15 Go | ~3.2 Go | 4 Go |
+| **Blue Team** | ~2.3 Go | ~5.3 Go | 6 Go |
+| **Red Team** | ~3.2 Go | ~6.2 Go | 7 Go |
+| **Purple Team** | ~6.3 Go | ~9.3 Go | 10 Go |
+| **Root Me** | ~3.6 Go | ~6.6 Go | 7 Go |
+| **Custom** | 0.1–6 Go | variable | 4 Go mini |
 
 ---
 
@@ -206,6 +221,7 @@ bash scripts/install-purple.sh
 
 Chaque profil applique automatiquement un thème de couleur dans Waybar :
 
+- ⚪ **Default** : Bleu foncé (#1d4ed8)
 - 🔵 **Blue Team** : Cyan (#00d4ff)
 - 🔴 **Red Team** : Rouge (#ff0066)  
 - 🟣 **Purple Team** : Violet (#b366ff)

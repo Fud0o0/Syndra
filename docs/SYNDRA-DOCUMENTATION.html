@@ -312,7 +312,7 @@
                     <div class="terminal-body">
                         <div class="install-command">
                             <span class="prompt">$</span>
-                            <code>git clone --depth 1 https://github.com/Fud0o0/Syndra.git ~/.config/SyndraShell<br><span class="prompt">$</span> bash ~/.config/SyndraShell/scripts/secure-install.sh interactive</code>
+                            <code>bash <(curl -sL https://raw.githubusercontent.com/Fud0o0/Syndra/main/install.sh) custom<br><br><span class="prompt"># Ou cloner et lancer de manière interactive :</span><br><span class="prompt">$</span> git clone --depth 1 https://github.com/Fud0o0/Syndra.git ~/.config/SyndraShell<br><span class="prompt">$</span> bash ~/.config/SyndraShell/scripts/secure-install.sh interactive</code>
                         </div>
                     </div>
                 </div>
@@ -325,7 +325,7 @@
                     <div class="terminal-body">
                         <div class="install-command">
                             <span class="prompt">$</span>
-                            <code>bash ~/.config/SyndraShell/scripts/secure-install.sh blue<br><span class="prompt">$</span> bash ~/.config/SyndraShell/scripts/secure-install.sh red<br><span class="prompt">$</span> bash ~/.config/SyndraShell/scripts/secure-install.sh purple<br><span class="prompt">$</span> bash ~/.config/SyndraShell/scripts/secure-install.sh root</code>
+                            <code>bash ~/.config/SyndraShell/scripts/secure-install.sh default<br><span class="prompt">$</span> bash ~/.config/SyndraShell/scripts/secure-install.sh blue<br><span class="prompt">$</span> bash ~/.config/SyndraShell/scripts/secure-install.sh red<br><span class="prompt">$</span> bash ~/.config/SyndraShell/scripts/secure-install.sh purple<br><span class="prompt">$</span> bash ~/.config/SyndraShell/scripts/secure-install.sh root</code>
                         </div>
                     </div>
                 </div>
@@ -368,6 +368,10 @@
                 <h2 data-i18n="4. Profils disponibles">4. Profils disponibles</h2>
                 
                 <div class="doc-grid">
+                    <div class="doc-card">
+                        <h3 data-i18n="defaultTeam">⚪ Par défaut</h3>
+                        <p data-i18n="Environnement minimal avec Kali et Nmap uniquement.">Environnement minimal avec Kali et Nmap uniquement.</p>
+                    </div>
                     <div class="doc-card">
                         <h3>🛡️ Blue</h3>
                         <p data-i18n="Défense, monitoring, détection, analyse d'incidents.">Défense, monitoring, détection, analyse d'incidents.</p>
@@ -486,7 +490,7 @@
                     <div class="terminal-body">
                         <div class="install-command">
                             <span class="prompt">$</span>
-                            <code>cd ~/.config/SyndraShell<br><span class="prompt">$</span> bash uninstall.sh</code>
+                            <code>bash <(curl -sL https://raw.githubusercontent.com/Fud0o0/Syndra/main/uninstall) --full</code>
                         </div>
                     </div>
                 </div>

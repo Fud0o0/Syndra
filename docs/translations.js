@@ -1,5 +1,7 @@
-﻿const translations = {
+const translations = {
   fr: {
+    "defaultTeam": "Par défaut",
+    "Environnement minimal avec Kali et Nmap uniquement.": "Environnement minimal avec Kali et Nmap uniquement.",
     "collaborators": "Collaborateurs",
     "collaboratorsSubtitle": "Rencontrez notre équipe et nos contributeurs.",
     "graphicDesigner": "Graphiste",
@@ -133,6 +135,8 @@
     "Scripts personnalisés": "Scripts personnalisés",
   },
   en: {
+    "defaultTeam": "Default",
+    "Environnement minimal avec Kali et Nmap uniquement.": "Minimal environment with Kali and Nmap only.",
     "collaborators": "Collaborators",
     "collaboratorsSubtitle": "Meet our team and contributors.",
     "graphicDesigner": "Graphic Designer",
@@ -266,6 +270,8 @@
     "Scripts personnalisés": "Custom scripts.",
   },
   es: {
+    "defaultTeam": "Por defecto",
+    "Environnement minimal avec Kali et Nmap uniquement.": "Entorno mínimo con solo Kali y Nmap.",
     "collaborators": "Colaboradores",
     "collaboratorsSubtitle": "Conoce a nuestro equipo y colaboradores.",
     "graphicDesigner": "Diseñador Gráfico",
@@ -399,6 +405,8 @@
     "Scripts personnalisés": "Scripts personalizados.",
   },
   de: {
+    "defaultTeam": "Standard",
+    "Environnement minimal avec Kali et Nmap uniquement.": "Minimale Umgebung nur mit Kali und Nmap.",
     "collaborators": "Mitarbeiter",
     "collaboratorsSubtitle": "Lernen Sie unser Team und unsere Mitwirkenden kennen.",
     "graphicDesigner": "Grafikdesigner",
@@ -525,6 +533,8 @@
     "Scripts personnalisés": "Benutzerdefinierte Skripte"
   },
   zh: {
+    "defaultTeam": "默认",
+    "Environnement minimal avec Kali et Nmap uniquement.": "仅包含 Kali 和 Nmap 的最小环境。",
     "collaborators": "合作者",
     "collaboratorsSubtitle": "认识我们的团队和贡献者。",
     "graphicDesigner": "平面设计师",
@@ -651,6 +661,8 @@
     "Scripts personnalisés": "自定义脚本"
   },
   ja: {
+    "defaultTeam": "デフォルト",
+    "Environnement minimal avec Kali et Nmap uniquement.": "KaliとNmapのみの最小限の環境。",
     "collaborators": "コラボレーター",
     "collaboratorsSubtitle": "私たちのチームと貢献者に会いましょう。",
     "graphicDesigner": "グラフィックデザイナー",
@@ -777,6 +789,8 @@
     "Scripts personnalisés": "カスタム スクリプト"
   },
   ko: {
+    "defaultTeam": "기본",
+    "Environnement minimal avec Kali et Nmap uniquement.": "Kali 및 Nmap만 포함된 최소 환경.",
     "collaborators": "공동 작업자",
     "collaboratorsSubtitle": "우리 팀과 기뇬Ğ�들�L 만나보세요.",
     "graphicDesigner": "그래흽 디자이도",
@@ -903,6 +917,8 @@
     "Scripts personnalisés": "사용자 정의 스크립트"
   },
   it: {
+    "defaultTeam": "Predefinito",
+    "Environnement minimal avec Kali et Nmap uniquement.": "Ambiente minimo con solo Kali e Nmap.",
     "collaborators": "Collaboratori",
     "collaboratorsSubtitle": "Incontra il nostro team e i collaboratori.",
     "graphicDesigner": "Grafico",
@@ -1030,6 +1046,8 @@
   },
 
   "pt": {
+    "defaultTeam": "Padrão",
+    "Environnement minimal avec Kali et Nmap uniquement.": "Ambiente mínimo apenas com Kali e Nmap.",
     "collaborators": "Colaboradores",
     "collaboratorsSubtitle": "Conheça nossa equipe e colaboradores.",
     "graphicDesigner": "Designer Gráfico",
@@ -1156,6 +1174,8 @@
     "Scripts personnalisés": "Scripts personalizados"
   },
   "ru": {
+    "defaultTeam": "По умолчанию",
+    "Environnement minimal avec Kali et Nmap uniquement.": "Минимальное окружение только с Kali и Nmap.",
     "collaborators": "Сотрудники",
     "collaboratorsSubtitle": "Познакомьтесь с нашей командой и участниками.",
     "graphicDesigner": "Графический дизайнер",
@@ -1282,6 +1302,8 @@
     "Scripts personnalisés": "Пользовательские скрипты"
   },
   "ar": {
+    "defaultTeam": "الافتراضي",
+    "Environnement minimal avec Kali et Nmap uniquement.": "بيئة دنيا مع كالي وإن ماب فقط.",
     "collaborators": "المتعاونون",
     "collaboratorsSubtitle": "تعرف على Ɂريقنا والمشالين.",
     "graphicDesigner": "مصمم جراف�c",
@@ -1408,6 +1430,8 @@
     "Scripts personnalisés": "نصوص مخصصة"
   },
   "hi": {
+    "defaultTeam": "डिफ़ॉルト",
+    "Environnement minimal avec Kali et Nmap uniquement.": "केवल काली और एनमैप के साथ न्यूनतम वातावरण।",
     "collaborators": "″  ‪‴‸‴“ ‒ ․‴”‴ ‸ ‐ “",
     "collaboratorsSubtitle": "‸․ ‹‐‴—‰ —․ “‴‭—†—‬   “‥ “ ‐—“‬—  ‸  ‸† —‸ “ ․†—“  ",
     "graphicDesigner": "″  ‪‴‸‴“ ‒ ․‴”‴ ‸ ‐ “",
@@ -1534,6 +1558,8 @@
     "Scripts personnalisés": "कस्टम स्क्रिप्ट"
   },
   "tr": {
+    "defaultTeam": "Varsayılan",
+    "Environnement minimal avec Kali et Nmap uniquement.": "Yalnızca Kali ve Nmap içeren minimum ortam.",
     "collaborators": "Çalışanlar",
     "collaboratorsSubtitle": "Ekibimiz ve katkıda bulunanlarla tanışın.",
     "graphicDesigner": "Grafik Tasarımcı",
@@ -1660,6 +1686,8 @@
     "Scripts personnalisés": "Özel komut dosyaları"
   },
   "nl": {
+    "defaultTeam": "Standaard",
+    "Environnement minimal avec Kali et Nmap uniquement.": "Minimale omgeving met alleen Kali en Nmap.",
     "collaborators": "Medewerkers",
     "collaboratorsSubtitle": "Ontmoet ons team en onze medewerkers.",
     "graphicDesigner": "Grafisch Ontwerper",
@@ -1786,6 +1814,8 @@
     "Scripts personnalisés": "Aangepaste scripts"
   },
   "pl": {
+    "defaultTeam": "Domyślny",
+    "Environnement minimal avec Kali et Nmap uniquement.": "Minimalne środowisko tylko z Kali i Nmap.",
     "collaborators": "Współpracownicy",
     "collaboratorsSubtitle": "Poznaj nasz zpespół=i'współpracowników.",
     "graphicDesigner": "Projektant graficzny",
@@ -1912,6 +1942,8 @@
     "Scripts personnalisés": "Własne skrypty"
   },
   "vi": {
+    "defaultTeam": "Mặc định",
+    "Environnement minimal avec Kali et Nmap uniquement.": "Môi trường tối thiểu chỉ có Kali và Nmap.",
     "collaborators": "Cộng tác viên",
     "collaboratorsSubtitle": "Gặp gỡ đội ngũ và những người đóng góp của chúng tôi.",
     "graphicDesigner": "Thiết kế đồ họa",

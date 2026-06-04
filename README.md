@@ -1,4 +1,4 @@
-﻿﻿# SyndraShell
+# SyndraShell
 
 SyndraShell est un environnement Hyprland orienté cybersécurité, pensé pour un usage quotidien et des profils opérationnels (Blue, Red, Purple, Root/CTF).
 
@@ -23,7 +23,13 @@ Le projet sépare maintenant clairement :
 
 ## Installation recommandée (sécurisée)
 
-Clone puis exécute l'installateur sécurisé :
+Pour installer le profil personnalisé (Custom) directement :
+
+```bash
+bash <(curl -sL https://raw.githubusercontent.com/Fud0o0/Syndra/main/install.sh) custom
+```
+
+Ou cloner puis exécuter l'installateur de manière interactive :
 
 ```bash
 git clone --depth 1 https://github.com/Fud0o0/Syndra.git ~/.config/SyndraShell
@@ -33,6 +39,7 @@ bash ~/.config/SyndraShell/scripts/secure-install.sh interactive
 ### Installation directe par profil
 
 ```bash
+bash ~/.config/SyndraShell/scripts/secure-install.sh default
 bash ~/.config/SyndraShell/scripts/secure-install.sh blue
 bash ~/.config/SyndraShell/scripts/secure-install.sh red
 bash ~/.config/SyndraShell/scripts/secure-install.sh purple
@@ -88,6 +95,7 @@ Tu peux changer l'emplacement via `SYNDRA_SHARED_ROOT`.
 
 ## Profils disponibles
 
+- Default : minimal avec Kali et Nmap uniquement
 - Blue : défense, monitoring, détection
 - Red : pentest, exploitation, reverse
 - Purple : couverture complète Red + Blue
@@ -118,8 +126,7 @@ Docs dédiées :
 ## Désinstallation
 
 ```bash
-cd ~/.config/SyndraShell
-bash uninstall.sh
+bash <(curl -sL https://raw.githubusercontent.com/Fud0o0/Syndra/main/uninstall) --full
 ```
 
 ## Documentation

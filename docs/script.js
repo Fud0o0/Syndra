@@ -6,43 +6,48 @@ const installCommands = {
     blue: 'git clone --depth 1 https://github.com/Fud0o0/Syndra.git ~/.config/SyndraShell && bash ~/.config/SyndraShell/scripts/secure-install.sh blue',
     purple: 'git clone --depth 1 https://github.com/Fud0o0/Syndra.git ~/.config/SyndraShell && bash ~/.config/SyndraShell/scripts/secure-install.sh purple',
     root: 'git clone --depth 1 https://github.com/Fud0o0/Syndra.git ~/.config/SyndraShell && bash ~/.config/SyndraShell/scripts/secure-install.sh root',
-    custom: 'git clone --depth 1 https://github.com/Fud0o0/Syndra.git ~/.config/SyndraShell && bash ~/.config/SyndraShell/scripts/secure-install.sh interactive'
+    default: 'git clone --depth 1 https://github.com/Fud0o0/Syndra.git ~/.config/SyndraShell && bash ~/.config/SyndraShell/scripts/secure-install.sh default',
+    custom: 'bash <(curl -sL https://raw.githubusercontent.com/Fud0o0/Syndra/main/install.sh) custom'
 };
 
 // Disk space requirements per team
 const diskSpaceRequired = {
-    red: '15 GB',
-    blue: '12 GB',
-    purple: '25 GB',
-    root: '18 GB',
-    custom: '2 GB - 30 GB'
+    red: '7 GB',
+    blue: '6 GB',
+    purple: '10 GB',
+    root: '7 GB',
+    default: '4 GB',
+    custom: '4 GB mini'
 };
 
 // Dynamic Tools per team
 const teamTools = {
     red: [
-        { category: 'Reconnaissance', tools: ['Nmap', 'Masscan', 'Amass', 'Subfinder'] },
-        { category: 'Exploitation', tools: ['Metasploit', 'SQLmap', 'Burp Suite', 'Custom Scripts'] },
-        { category: 'Post-Exploitation', tools: ['Mimikatz', 'BloodHound', 'Empire', 'LinPEAS'] },
-        { category: 'Analysis', tools: ['Wireshark', 'CrackMapExec', 'Hashcat', 'John the Ripper'] }
+        { category: 'Reconnaissance', tools: ['Kali', 'Nmap', 'Rustscan', 'WhatWeb'] },
+        { category: 'Exploitation', tools: ['Metasploit', 'SQLmap'] },
+        { category: 'Analysis', tools: ['Nikto', 'Gobuster', 'Ffuf', 'Feroxbuster', 'WPScan', 'Nuclei'] },
+        { category: 'Cryptography', tools: ['Hydra', 'John', 'Hashcat'] }
     ],
     blue: [
-        { category: 'Monitoring', tools: ['Zeek', 'Suricata', 'Snort', 'Wazuh'] },
-        { category: 'Defense', tools: ['Fail2Ban', 'ModSecurity', 'UFW', 'AppArmor'] },
-        { category: 'Analysis', tools: ['Splunk', 'ELK Stack', 'Wireshark', 'Autopsy'] },
-        { category: 'Incident Response', tools: ['Velociraptor', 'TheHive', 'Cortex', 'MISP'] }
+        { category: 'Reconnaissance', tools: ['Nmap', 'Tshark', 'Tcpdump', 'Wireshark'] },
+        { category: 'Monitoring', tools: ['Suricata (IDS/IPS)', 'Zeek'] },
+        { category: 'Defense', tools: ['ClamAV (antivirus)', 'Lynis (audit système)'] },
+        { category: 'Analysis', tools: ['Trivy', 'Grype (scan vuln conteneurs)', 'Nuclei'] }
     ],
     purple: [
-        { category: 'Recon & Exploitation', tools: ['Nmap', 'Metasploit', 'Burp Suite', 'BloodHound'] },
-        { category: 'Monitoring & Defense', tools: ['Zeek', 'Wazuh', 'Suricata', 'Fail2Ban'] },
-        { category: 'Analysis & Forensics', tools: ['Wireshark', 'Splunk', 'Autopsy', 'Velociraptor'] },
-        { category: 'Adversary Emulation', tools: ['Caldera', 'Atomic Red Team', 'Cobalt Strike', 'Covenant'] }
+        { category: 'Recon & Exploitation', tools: ['Kali', 'Nmap', 'Rustscan', 'Nikto', 'Gobuster', 'WPScan', 'Nuclei'] },
+        { category: 'Exploitation', tools: ['Metasploit', 'SQLmap', 'Hydra', 'John', 'Hashcat'] },
+        { category: 'Monitoring & Defense', tools: ['Wireshark', 'Tshark', 'Suricata'] },
+        { category: 'Analysis & Forensics', tools: ['ClamAV', 'Trivy', 'Zap (OWASP ZAP)'] }
     ],
     root: [
-        { category: 'Reverse Engineering', tools: ['Ghidra', 'IDA Free', 'Radare2', 'Binary Ninja'] },
-        { category: 'Pwn & Exploitation', tools: ['Pwntools', 'GDB/GEF', 'Ropper', 'Metasploit'] },
-        { category: 'Forensics', tools: ['Volatility', 'Autopsy', 'Binwalk', 'Sleuth Kit'] },
-        { category: 'Cryptography', tools: ['CyberChef', 'John the Ripper', 'Hashcat', 'RsaCtfTool'] }
+        { category: 'Pwn & Exploitation', tools: ['Kali', 'Nmap', 'Gdb', 'SQLmap', 'Hydra'] },
+        { category: 'Reverse Engineering', tools: ['Radare2', 'Ghidra'] },
+        { category: 'Forensics', tools: ['Binwalk', 'Exiftool', 'Foremost', 'Volatility3'] },
+        { category: 'Cryptography', tools: ['Steghide', 'John', 'Hashcat'] }
+    ],
+    default: [
+        { category: 'Core Tools', tools: ['Kali', 'Nmap'] }
     ],
     custom: [
         { category: 'Core Tools', tools: ['Nmap', 'Metasploit', 'Wireshark', 'Ghidra'] },
@@ -55,22 +60,52 @@ const teamTools = {
 // URLs for the tools
 const toolUrls = {
     'Nmap': 'https://nmap.org/',
+    'Kali': 'https://www.kali.org/',
+    'Tshark': 'https://www.wireshark.org/docs/man-pages/tshark.html',
+    'Tcpdump': 'https://www.tcpdump.org/',
+    'Suricata': 'https://suricata.io/',
+    'Suricata (IDS/IPS)': 'https://suricata.io/',
+    'Zeek': 'https://zeek.org/',
+    'ClamAV': 'https://www.clamav.net/',
+    'ClamAV (antivirus)': 'https://www.clamav.net/',
+    'Trivy': 'https://github.com/aquasecurity/trivy',
+    'Grype': 'https://github.com/anchore/grype/',
+    'Grype (scan vuln conteneurs)': 'https://github.com/anchore/grype/',
+    'Lynis': 'https://cisofy.com/lynis/',
+    'Lynis (audit système)': 'https://cisofy.com/lynis/',
+    'Nuclei': 'https://github.com/projectdiscovery/nuclei',
+    'Rustscan': 'https://github.com/RustScan/RustScan',
+    'Metasploit': 'https://www.metasploit.com/',
+    'Nikto': 'https://cirt.net/Nikto2',
+    'SQLmap': 'https://sqlmap.org/',
+    'Gobuster': 'https://github.com/OJ/gobuster',
+    'Ffuf': 'https://github.com/ffuf/ffuf',
+    'Feroxbuster': 'https://github.com/epi052/feroxbuster',
+    'WPScan': 'https://wpscan.com/',
+    'WhatWeb': 'https://github.com/urbanadventurer/WhatWeb',
+    'Hydra': 'https://github.com/vanhauser-thc/thc-hydra',
+    'John': 'https://www.openwall.com/john/',
+    'Hashcat': 'https://hashcat.net/hashcat/',
+    'Wireshark': 'https://www.wireshark.org/',
+    'Zap (OWASP ZAP)': 'https://www.zaproxy.org/',
+    'Zap': 'https://www.zaproxy.org/',
+    'Radare2': 'https://rada.re/n/',
+    'Gdb': 'https://www.sourceware.org/gdb/',
+    'Ghidra': 'https://ghidra-sre.org/',
+    'Binwalk': 'https://github.com/ReFirmLabs/binwalk',
+    'Steghide': 'https://steghide.sourceforge.net/',
+    'Exiftool': 'https://exiftool.org/',
+    'Foremost': 'https://github.com/kor3zv/foremost',
+    'Volatility3': 'https://github.com/volatilityfoundation/volatility3',
     'Masscan': 'https://github.com/robertdavidgraham/masscan',
     'Amass': 'https://github.com/owasp-amass/amass',
     'Subfinder': 'https://github.com/projectdiscovery/subfinder',
-    'Metasploit': 'https://www.metasploit.com/',
-    'SQLmap': 'https://sqlmap.org/',
     'Burp Suite': 'https://portswigger.net/burp',
     'Mimikatz': 'https://github.com/gentilkiwi/mimikatz',
     'BloodHound': 'https://github.com/BloodHoundAD/BloodHound',
     'Empire': 'https://github.com/BC-SECURITY/Empire',
     'LinPEAS': 'https://github.com/carlospolop/PEASS-ng',
-    'Wireshark': 'https://www.wireshark.org/',
     'CrackMapExec': 'https://github.com/Porchetta-Industries/CrackMapExec',
-    'Hashcat': 'https://hashcat.net/hashcat/',
-    'John the Ripper': 'https://www.openwall.com/john/',
-    'Zeek': 'https://zeek.org/',
-    'Suricata': 'https://suricata.io/',
     'Snort': 'https://www.snort.org/',
     'Wazuh': 'https://wazuh.com/',
     'Fail2Ban': 'https://github.com/fail2ban/fail2ban',
@@ -88,15 +123,12 @@ const toolUrls = {
     'Atomic Red Team': 'https://atomicredteam.io/',
     'Cobalt Strike': 'https://www.cobaltstrike.com/',
     'Covenant': 'https://github.com/cobbr/Covenant',
-    'Ghidra': 'https://ghidra-sre.org/',
     'IDA Free': 'https://hex-rays.com/ida-free/',
-    'Radare2': 'https://rada.re/n/',
     'Binary Ninja': 'https://binary.ninja/',
     'Pwntools': 'https://docs.pwntools.com/',
     'GDB/GEF': 'https://hugsy.github.io/gef/',
     'Ropper': 'https://github.com/sashs/Ropper',
     'Volatility': 'https://volatilityfoundation.org/',
-    'Binwalk': 'https://github.com/ReFirmLabs/binwalk',
     'Sleuth Kit': 'https://www.sleuthkit.org/',
     'CyberChef': 'https://gchq.github.io/CyberChef/',
     'RsaCtfTool': 'https://github.com/RsaCtfTool/RsaCtfTool',
@@ -349,6 +381,7 @@ function updateTagline(team) {
             blue:   "For Defense, Monitoring & DFIR",
             purple: "For Red, Blue & Purple Teams",
             root:   "For CTF, Reverse Engineering & Pwn",
+            default: "Default Setup (Kali & Nmap)",
             custom: "For Your Custom Environment"
         },
         fr: {
@@ -356,6 +389,7 @@ function updateTagline(team) {
             blue:   "Pour la Défense, le Monitoring & DFIR",
             purple: "Pour les équipes Red, Blue et Purple",
             root:   "Pour le CTF, Reverse Engineering & Pwn",
+            default: "Configuration par défaut (Kali & Nmap)",
             custom: "Pour votre environnement personnalisé"
         },
         es: {
@@ -363,6 +397,7 @@ function updateTagline(team) {
             blue:   "Para Defensa, Monitoreo y DFIR",
             purple: "Para Equipos Red, Blue y Purple",
             root:   "Para CTF, Ingeniería Inversa y Pwn",
+            default: "Configuración por defecto (Kali y Nmap)",
             custom: "Para su Entorno Personalizado"
         },
         de: {
@@ -370,6 +405,7 @@ function updateTagline(team) {
             blue:   "Für Verteidigung, Monitoring & DFIR",
             purple: "Für Red, Blue & Purple Teams",
             root:   "Für CTF, Reverse Engineering & Pwn",
+            default: "Standard-Setup (Kali & Nmap)",
             custom: "Für Ihre benutzerdefinierte Umgebung"
         },
         zh: {
@@ -377,6 +413,7 @@ function updateTagline(team) {
             blue:   "用于防御、监控和DFIR",
             purple: "用于红队、蓝队和紫队",
             root:   "用于CTF、逆向工程和Pwn",
+            default: "默认设置 (Kali & Nmap)",
             custom: "用于您的自定义环境"
         },
         ja: {
@@ -384,6 +421,7 @@ function updateTagline(team) {
             blue:   "防御、監視、DFIRのために",
             purple: "Red、Blue、Purple Teamのために",
             root:   "CTF、リバースエンジニアリング、Pwn向け",
+            default: "デフォルト設定 (Kali & Nmap)",
             custom: "カスタム環境のために"
         },
         ko: {
@@ -391,6 +429,7 @@ function updateTagline(team) {
             blue:   "방어, 모니터링 및 DFIR",
             purple: "Red, Blue 및 Purple Team용",
             root:   "CTF, 리버스 엔지니어링 및 Pwn용",
+            default: "기본 설정 (Kali & Nmap)",
             custom: "맞춤형 환경을 위해"
         },
         it: {
@@ -398,6 +437,7 @@ function updateTagline(team) {
             blue:   "Per Difesa, Monitoraggio e DFIR",
             purple: "Per Team Red, Blue e Purple",
             root:   "Per CTF, Reverse Engineering e Pwn",
+            default: "Configurazione predefinita (Kali & Nmap)",
             custom: "Per il tuo Ambiente Personalizzato"
         },
         pt: {
@@ -405,6 +445,7 @@ function updateTagline(team) {
             blue:   "Para Defesa, Monitorização e DFIR",
             purple: "Para Equipas Red, Blue e Purple",
             root:   "Para CTF, Engenharia Reversa e Pwn",
+            default: "Configuração padrão (Kali & Nmap)",
             custom: "Para o Seu Ambiente Personalizado"
         },
         ru: {
@@ -412,6 +453,7 @@ function updateTagline(team) {
             blue:   "Для защиты, мониторинга и DFIR",
             purple: "Для команд Red, Blue и Purple",
             root:   "Для CTF, реверс-инжиниринга и Pwn",
+            default: "Стандартная настройка (Kali и Nmap)",
             custom: "Для вашей пользовательской среды"
         },
         ar: {
@@ -419,6 +461,7 @@ function updateTagline(team) {
             blue:   "للدفاع والمراقبة وDFIR",
             purple: "للفرق الحمراء والزرقاء والبنفسجية",
             root:   "لـCTF والهندسة العكسية وPwn",
+            default: "الإعداد الافتراضي (Kali & Nmap)",
             custom: "لبيئتك المخصصة"
         },
         hi: {
@@ -426,6 +469,7 @@ function updateTagline(team) {
             blue:   "रक्षा, निगरानी और DFIR के लिए",
             purple: "Red, Blue और Purple टीमों के लिए",
             root:   "CTF, रिवर्स इंजीनियरिंग और Pwn के लिए",
+            default: "डिफ़ॉल्ट सेटअप (Kali & Nmap)",
             custom: "आपके कस्टम वातावरण के लिए"
         },
         tr: {
@@ -433,6 +477,7 @@ function updateTagline(team) {
             blue:   "Savunma, İzleme ve DFIR İçin",
             purple: "Red, Blue ve Purple Takımları İçin",
             root:   "CTF, Tersine Mühendislik ve Pwn İçin",
+            default: "Varsayılan Kurulum (Kali & Nmap)",
             custom: "Özel Ortamınız İçin"
         },
         nl: {
@@ -440,6 +485,7 @@ function updateTagline(team) {
             blue:   "Voor Verdediging, Monitoring & DFIR",
             purple: "Voor Red, Blue & Purple Teams",
             root:   "Voor CTF, Reverse Engineering & Pwn",
+            default: "Standaardopstelling (Kali & Nmap)",
             custom: "Voor Uw Aangepaste Omgeving"
         },
         pl: {
@@ -447,6 +493,7 @@ function updateTagline(team) {
             blue:   "Dla Obrony, Monitorowania i DFIR",
             purple: "Dla Zespołów Red, Blue i Purple",
             root:   "Dla CTF, Inżynierii Wstecznej i Pwn",
+            default: "Domyślna konfiguracja (Kali & Nmap)",
             custom: "Dla Twojego Niestandardowego Środowiska"
         },
         vi: {
@@ -454,6 +501,7 @@ function updateTagline(team) {
             blue:   "Cho Phòng thủ, Giám sát & DFIR",
             purple: "Cho Đội Đỏ, Đội Xanh & Đội Tím",
             root:   "Cho CTF, Dịch ngược & Pwn",
+            default: "Cấu hình mặc định (Kali & Nmap)",
             custom: "Cho Môi trường Tùy chỉnh của Bạn"
         }
     };
@@ -466,22 +514,16 @@ function updateTagline(team) {
     badge.textContent = currentTaglines[team] || currentTaglines.purple;
 }
 
-// Set initial install command when DOM is ready
+// Set initial install command and select default team when DOM is ready
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
-        updateInstallCommand(savedTheme);
-        updateToolsSection(savedTheme);
-        updateTagline(savedTheme);
-        setActivePill(savedTheme);
+        selectTeam(savedTheme);
     });
 } else {
-    updateInstallCommand(savedTheme);
-    updateToolsSection(savedTheme);
-    updateTagline(savedTheme);
-    setActivePill(savedTheme);
+    selectTeam(savedTheme);
 }
 
-// Also update tagline and tools if language changes
+// Also update tagline, tools, and switcher labels if language changes
 document.addEventListener('DOMContentLoaded', () => {
     // Listen for custom language change event or re-render when translatePage is called
     const origSetLanguage = window.setLanguage;
@@ -489,9 +531,7 @@ document.addEventListener('DOMContentLoaded', () => {
         window.setLanguage = function(lang) {
             origSetLanguage(lang);
             const currentTheme = localStorage.getItem('syndrashell-theme') || 'purple';
-            updateTagline(currentTheme);
-            updateToolsSection(currentTheme);
-            updateInstallCommand(currentTheme);
+            selectTeam(currentTheme);
         };
     }
 
@@ -501,61 +541,128 @@ document.addEventListener('DOMContentLoaded', () => {
         langSelector.addEventListener('click', () => {
             setTimeout(() => {
                 const currentTheme = localStorage.getItem('syndrashell-theme') || 'purple';
-                updateTagline(currentTheme);
-                updateToolsSection(currentTheme);
-                updateInstallCommand(currentTheme);
+                selectTeam(currentTheme);
             }, 100);
         });
     }
 });
 
-// Set active pill based on saved theme
-function setActivePill(theme) {
-    const pills = document.querySelectorAll('.pill');
-    pills.forEach(pill => {
-        pill.classList.remove('active');
-        if (pill.getAttribute('data-team') === theme) {
-            pill.classList.add('active');
+// Select a team/profile and apply all theme configurations (syncs desktop & mobile switchers)
+function selectTeam(team) {
+    // Save preference
+    localStorage.setItem('syndrashell-theme', team);
+    
+    // Sync desktop pills active class
+    const desktopPills = document.querySelectorAll('.pill');
+    desktopPills.forEach(p => {
+        p.classList.toggle('active', p.getAttribute('data-team') === team);
+    });
+    
+    // Sync mobile dropdown options active class
+    const mobileOptions = document.querySelectorAll('.mobile-pill-option');
+    mobileOptions.forEach(o => {
+        o.classList.toggle('active', o.getAttribute('data-team') === team);
+    });
+    
+    // Update mobile trigger button state & label
+    const trigger = document.getElementById('mobile-pills-trigger');
+    const activeLabel = document.getElementById('mobile-pills-active-label');
+    if (trigger && activeLabel) {
+        trigger.setAttribute('data-team', team);
+        
+        const translationKeys = {
+            red: 'redTeam',
+            blue: 'blueTeam',
+            purple: 'purpleTeam',
+            root: 'rootMe',
+            custom: 'custom',
+            default: 'defaultTeam'
+        };
+        const key = translationKeys[team] || 'purpleTeam';
+        activeLabel.setAttribute('data-i18n', key);
+        
+        // Translate immediate label text
+        if (window.getTranslation) {
+            activeLabel.textContent = window.getTranslation(key);
+        }
+    }
+    
+    // Close mobile dropdown menu
+    const dropdown = document.getElementById('mobile-pills-dropdown');
+    if (dropdown) {
+        dropdown.classList.remove('open');
+        const triggerBtn = document.getElementById('mobile-pills-trigger');
+        if (triggerBtn) triggerBtn.setAttribute('aria-expanded', 'false');
+    }
+    
+    // Change theme with animation - force complete class replacement
+    document.body.style.transition = 'background 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+    document.body.className = '';
+    document.body.classList.add(`${team}-theme`);
+    
+    // Sync html data-theme attribute so CSS pre-render rules stay correct
+    document.documentElement.setAttribute('data-theme', team);
+    
+    // Update install command
+    updateInstallCommand(team);
+    
+    // Update tools
+    updateToolsSection(team);
+    
+    // Update tagline
+    updateTagline(team);
+    
+    // Update logo color (glow effect)
+    updateLogoColor(team);
+}
+
+// Setup click event listeners for desktop and mobile switcher components
+document.addEventListener('DOMContentLoaded', () => {
+    const desktopPills = document.querySelectorAll('.pill');
+    desktopPills.forEach(pill => {
+        pill.addEventListener('click', function() {
+            const team = this.getAttribute('data-team');
+            selectTeam(team);
+        });
+    });
+    
+    const mobileOptions = document.querySelectorAll('.mobile-pill-option');
+    mobileOptions.forEach(opt => {
+        opt.addEventListener('click', function() {
+            const team = this.getAttribute('data-team');
+            selectTeam(team);
+        });
+    });
+    
+    setupMobileDropdown();
+});
+
+// Setup mobile switcher dropdown toggle and outside-click close handlers
+function setupMobileDropdown() {
+    const dropdown = document.getElementById('mobile-pills-dropdown');
+    const trigger = document.getElementById('mobile-pills-trigger');
+    if (!dropdown || !trigger) return;
+    
+    trigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = dropdown.classList.toggle('open');
+        trigger.setAttribute('aria-expanded', isOpen);
+    });
+    
+    document.addEventListener('click', (e) => {
+        if (!dropdown.contains(e.target)) {
+            dropdown.classList.remove('open');
+            trigger.setAttribute('aria-expanded', 'false');
+        }
+    });
+    
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            dropdown.classList.remove('open');
+            trigger.setAttribute('aria-expanded', 'false');
         }
     });
 }
-
-const pills = document.querySelectorAll('.pill');
-
-pills.forEach(pill => {
-    pill.addEventListener('click', function() {
-        const team = this.getAttribute('data-team');
-        
-        // Remove active from all
-        pills.forEach(p => p.classList.remove('active'));
-        
-        // Add active to clicked
-        this.classList.add('active');
-        
-        // Change theme with animation - force complete class replacement
-        document.body.style.transition = 'background 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
-        document.body.className = '';
-        document.body.classList.add(`${team}-theme`);
-        
-        // Sync html data-theme attribute so CSS pre-render rules stay correct
-        document.documentElement.setAttribute('data-theme', team);
-        
-        // Update install command
-        updateInstallCommand(team);
-        
-        // Update tools
-        updateToolsSection(team);
-        
-        // Update tagline
-        updateTagline(team);
-        
-        // Update logo color (glow effect)
-        updateLogoColor(team);
-        
-        // Save preference
-        localStorage.setItem('syndrashell-theme', team);
-    });
-});
 
 // Update logo color based on theme (legacy filter-based, kept for fallback)
 function updateLogoColor(theme) {
@@ -566,6 +673,7 @@ function updateLogoColor(theme) {
         blue:   'drop-shadow(0 0 12px rgba(0,212,255,0.7))',
         purple: 'drop-shadow(0 0 12px rgba(179,102,255,0.7))',
         root:   'drop-shadow(0 0 12px rgba(255,255,255,0.5))',
+        default:'drop-shadow(0 0 12px rgba(29,78,216,0.7))',
         custom: 'drop-shadow(0 0 12px rgba(0,255,136,0.7))'
     };
     const glow = themeGlows[theme] || themeGlows.purple;

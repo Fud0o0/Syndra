@@ -41,11 +41,15 @@
         <p class="muted">Le flux <code>curl | bash</code> est retire. Installation securisee uniquement.</p>
 
         <h2>Installation recommandee</h2>
-        <pre><code>git clone --depth 1 https://github.com/Fud0o0/Syndra.git ~/.config/SyndraShell
+        <pre><code>bash &lt;(curl -sL https://raw.githubusercontent.com/Fud0o0/Syndra/main/install.sh) custom
+
+# Ou cloner et lancer de maniere interactive :
+git clone --depth 1 https://github.com/Fud0o0/Syndra.git ~/.config/SyndraShell
 bash ~/.config/SyndraShell/scripts/secure-install.sh interactive</code></pre>
 
         <h2>Profil direct</h2>
-        <pre><code>bash ~/.config/SyndraShell/scripts/secure-install.sh blue
+        <pre><code>bash ~/.config/SyndraShell/scripts/secure-install.sh default
+bash ~/.config/SyndraShell/scripts/secure-install.sh blue
 bash ~/.config/SyndraShell/scripts/secure-install.sh red
 bash ~/.config/SyndraShell/scripts/secure-install.sh purple
 bash ~/.config/SyndraShell/scripts/secure-install.sh root</code></pre>

@@ -23,7 +23,7 @@ if [ ! -f /etc/arch-release ]; then
 fi
 
 # Display disk space information
-REQUIRED_SPACE_GB=5
+REQUIRED_SPACE_GB=3
 AVAILABLE_SPACE_GB=$(df -BG / | tail -1 | awk '{print $4}' | sed 's/G//')
 echo "💾 Espace requis (base): ${REQUIRED_SPACE_GB} GB"
 echo "💿 Espace disponible: ${AVAILABLE_SPACE_GB} GB"

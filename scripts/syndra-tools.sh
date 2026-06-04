@@ -100,6 +100,7 @@ profile_tool_names() {
                 echo "kali nmap"
             fi
             ;;
+        default)   echo "kali nmap" ;;
         *)         echo "kali nmap" ;;
     esac
 }

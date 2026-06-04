@@ -101,10 +101,13 @@ _step "3/7" "Paquets système"
 
 declare -A PKG_DESC=(
     [hyprland]="Compositeur Wayland"
+    [hyprlock]="Verrouillage de session"
+    [hyprshot]="Captures d'écran"
     [awww]="Fond d'écran Wayland (requis)"
     [dunst]="Notifications"
     [kitty]="Terminal"
     [wofi]="Lanceur d'applications"
+    [wireplumber]="Contrôle audio (wpctl)"
     [wl-clipboard]="Presse-papier Wayland"
     [xdg-desktop-portal-hyprland]="Portail XDG"
     [qt6-wayland]="Qt6 Wayland"
@@ -252,6 +255,12 @@ rm -f "$HYPR_DIR/hyprland.conf"
 ln -sf "$INSTALL_DIR/config/hypr/hyprland.conf" "$HYPR_DIR/hyprland.conf"
 _ok "hyprland.conf → lien symbolique forcé vers Syndra"
 
+# Lier hyprlock.conf (verrouillage SUPER+L)
+if [ -f "$INSTALL_DIR/config/hypr/hyprlock.conf" ]; then
+    ln -sf "$INSTALL_DIR/config/hypr/hyprlock.conf" "$HYPR_DIR/hyprlock.conf"
+    _ok "hyprlock.conf lié (verrouillage)"
+fi
+
 # Vérifier que exec-once syndrashell est bien dans la config
 if ! grep -q "syndrashell" "$INSTALL_DIR/config/hypr/hyprland.conf" 2>/dev/null; then
     _warn "exec-once syndrashell absent du hyprland.conf !"
@@ -290,11 +299,12 @@ fi
 # ── Outils conteneurisés du profil ──────────────────────────────────
 _step "7/7" "Outils conteneurisés ($PROFILE)"
 
-# Installer le lanceur syndra-tools dans ~/.local/bin
+# Installer les lanceurs syndra + syndra-tools dans ~/.local/bin
 mkdir -p "$HOME/.local/bin"
+cp "$INSTALL_DIR/scripts/syndra.sh" "$HOME/.local/bin/syndra"
 cp "$INSTALL_DIR/scripts/syndra-tools.sh" "$HOME/.local/bin/syndra-tools"
-chmod +x "$HOME/.local/bin/syndra-tools"
-_ok "Lanceur 'syndra-tools' installé dans ~/.local/bin"
+chmod +x "$HOME/.local/bin/syndra" "$HOME/.local/bin/syndra-tools"
+_ok "Lanceurs 'syndra' et 'syndra-tools' installés dans ~/.local/bin"
 
 # S'assurer que ~/.local/bin est dans le PATH (bashrc + zshrc)
 for RC in "$HOME/.bashrc" "$HOME/.zshrc"; do

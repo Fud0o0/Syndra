@@ -132,14 +132,40 @@ L'interface extrait la couleur dominante du fond d'écran courant et en génère
 
 | Raccourci | Action |
 | :-- | :-- |
-| `SUPER` + `R` | Terminal (Kitty) |
+| `SUPER` + `Entrée` / `R` | Terminal (Kitty) |
 | `SUPER` + `D` | Lanceur d'applications |
+| `SUPER` + `B` | Navigateur |
 | `SUPER` + `E` | Explorateur de fichiers |
+| `SUPER` + `L` | Verrouiller la session |
+| `SUPER` + `F` | Plein écran |
 | `SUPER` + `Espace` | Basculer flottant |
-| `SUPER` + `C` | Fermer la fenêtre |
-| `SUPER` + `M` | Quitter Hyprland |
+| `SUPER` + `Q` / `C` | Fermer la fenêtre |
+| `SUPER` + `Shift` + `M` | Quitter Hyprland |
+| `SUPER` + `Shift` + `R` | Redémarrer l'interface |
+| `SUPER` + `Ctrl` + `R` | Recharger Hyprland |
+| `SUPER` + `1`–`0` | Aller au workspace |
+| `SUPER` + `Shift` + `1`–`0` | Envoyer la fenêtre au workspace |
+| `Print` / `SUPER` + `Shift` + `S` | Capture d'écran |
+| Touches `XF86` | Volume · Luminosité · Média |
 
 Le dashboard, le launcher et la dynamic island sont aussi accessibles depuis la barre.
+
+<br/>
+
+## Commande `syndra`
+
+Une commande unique pour piloter le shell :
+
+```bash
+syndra              # bannière + aide
+syndra update       # met à jour Syndra (git + lanceurs)
+syndra restart      # redémarre l'interface
+syndra reload       # recharge la configuration Hyprland
+syndra lock         # verrouille la session
+syndra status       # état (profil, interface, docker, fond d'écran)
+syndra tools [...]  # raccourci vers syndra-tools
+syndra version      # commit installé
+```
 
 <br/>
 
@@ -147,7 +173,7 @@ Le dashboard, le launcher et la dynamic island sont aussi accessibles depuis la 
 
 ```bash
 # Mise à jour
-syndra-tools update
+syndra update
 
 # Désinstallation (conserve Hyprland et les wallpapers perso)
 bash <(curl -sL https://raw.githubusercontent.com/Fud0o0/Syndra/main/uninstall.sh)

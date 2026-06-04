@@ -132,58 +132,45 @@
 }
 
 /* ════════════════════════════════════════════════════════════════════
-   ◍ SYNDRA — STYLE "ÎLOTS" (end-4 / Material You)
-   La barre devient 2 îlots arrondis (gauche/droite). Les widgets sont
-   transparents À L'INTÉRIEUR des îlots → un seul bloc cohérent par côté.
-   On ne touche AUCUNE marge de widget (pas de casse de layout).
+   ◍ SYNDRA — BARRE FINE PLATE (inspiration end-4)
+   Une seule barre sombre translucide, fine, sur laquelle les widgets
+   se posent proprement (transparents). Accents discrets. Pas de gros
+   blocs, pas de marges ajoutées aux widgets → pas de casse de layout.
    Chargée en dernier → prioritaire. (Réversible.)
    ════════════════════════════════════════════════════════════════════ */
 
-/* La barre n'est qu'un conteneur transparent */
+/* Barre = un seul bandeau sombre translucide, légèrement arrondi */
 #bar-inner,
-#bar-inner.pills,
-#bar-inner.dense,
-#bar-inner.edge,
-#bar-inner.edgecenter.vertical {
-  background-color: transparent;
-  border: none;
+#bar-inner.pills {
+  background-color: alpha(var(--shadow), 0.8);
+  border: 1px solid alpha(var(--outline), 0.4);
+  border-radius: 18px;
 }
 
-/* Les 2 îlots : pastilles arrondies pleines */
-#start-container,
-#end-container {
-  background-color: var(--surface);
-  border-radius: 22px;
-  padding: 3px 8px;
-}
-
-/* Widgets DANS les îlots : transparents (fusionnent avec l'îlot) */
+/* Widgets posés sur la barre : transparents, ils ne forment pas de
+   double-pastille. Le survol fait apparaître une pastille douce. */
 #date-time,
 #weather,
 #language,
 #systray,
 #battery,
-#button-bar,
-#boxed-revealer,
-#workspaces-container {
+#button-bar {
   background-color: transparent;
 }
-
-/* Survol d'un widget : pastille douce qui ressort */
 #date-time:hover,
 #weather:hover,
 #language:hover,
 #button-bar:hover {
-  background-color: var(--surface-bright);
+  background-color: alpha(var(--surface-bright), 0.8);
 }
 
-/* Horloge accentuée, en gras */
+/* Horloge accentuée */
 #date-time > label {
   color: var(--primary);
   font-weight: bold;
 }
 
-/* Lanceur (logo) : pastille pleine accent, ronde */
+/* Lanceur (logo) : pastille pleine accent */
 #button-apps {
   background-color: var(--primary);
 }
@@ -192,19 +179,15 @@
   color: var(--on-primary);
 }
 
-/* Workspaces : points ronds, actif en accent */
-#workspaces > button {
-  border-radius: 16px;
-  background-color: var(--surface-bright);
-}
+/* Workspaces : actif en accent, vides discrets */
 #workspaces > button.active {
   background-color: var(--primary);
 }
 #workspaces > button.empty {
-  background-color: var(--outline);
+  background-color: var(--surface-bright);
 }
 
-/* Panneaux : grandes cartes douces + ombre profonde (effet flottant) */
+/* Panneaux : grandes cartes arrondies + ombre profonde (flottant) */
 #notch-content,
 #app-launcher,
 #power-menu,
@@ -223,6 +206,13 @@
 #box-2,
 #box-3,
 #box-x {
+  border-radius: 22px;
+}
+
+/* Dock (bas) : pastille translucide arrondie façon end-4 */
+#dock,
+#dock-box {
+  background-color: alpha(var(--shadow), 0.8);
   border-radius: 22px;
 }
 

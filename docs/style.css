@@ -762,9 +762,15 @@ a:hover {
 }
 
 @media (max-width: 1024px) {
+    .header { height: auto; padding: 15px 0; }
+    .header-content { flex-direction: column; align-items: flex-start; gap: 10px; }
     .main-nav {
-        display: none; /* Hide standard nav on tablet/mobile */
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-top: 5px;
     }
+    .main-nav a { font-size: 0.85rem; }
     .hero-split {
         flex-direction: column;
         text-align: center;
@@ -791,8 +797,8 @@ a:hover {
     .hero-title { font-size: 3rem; }
     .hero-description { font-size: 1rem; }
     
-    .pills { overflow-x: auto; white-space: nowrap; max-width: 100%; padding: 4px; }
-    .pill { padding: 5px 12px; font-size: 0.8rem; }
+    .pills { flex-wrap: wrap; justify-content: center; max-width: 100%; padding: 4px; }
+    .pill { padding: 6px 12px; font-size: 0.85rem; }
     
     .language-selector-container { top: 20px; right: 15px; } 
     
@@ -800,8 +806,17 @@ a:hover {
     .doc-button, .github-button { width: 100%; height: 48px; }
     
     .install-command { flex-direction: column; align-items: stretch; }
-    .install-command code { overflow-x: auto; max-width: 100%; margin-bottom: 10px; }
+    .install-command code { overflow-x: auto; max-width: 100%; margin-bottom: 10px; white-space: pre-wrap; overflow-wrap: anywhere; word-break: break-all; }
     .copy-btn { align-self: flex-end; }
+    
+    .command-list li {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    .command-list span {
+        text-align: left;
+    }
     
     .secondary-bg { margin: 40px -15px; padding: 60px 20px; }
     

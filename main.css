@@ -160,3 +160,31 @@
 #notch-content.invert {
   border-radius: 22px;
 }
+
+/* Panneaux ouverts : TOUS les coins arrondis.
+   (l'original ne rondit que le bas → top carré = rectangle moche
+   maintenant que les connecteurs sont masqués) */
+#app-launcher,
+#power-menu,
+#toolbox,
+#dashboard,
+#overview,
+#emoji,
+#clip-history,
+#tmux-manager {
+  border-radius: 28px;
+}
+
+/* Variante panel (si activée) : idem, tous coins ronds */
+#notch-content.panel,
+#notch-content.open.panel {
+  border-radius: 28px;
+}
+#notch-content.panel #app-launcher,
+#notch-content.panel #dashboard,
+#notch-content.panel #toolbox,
+#notch-content.panel #power-menu,
+#notch-content.panel #overview,
+#notch-content.panel #emoji {
+  border-radius: 28px;
+}

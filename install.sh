@@ -7,7 +7,8 @@
 # Usage depuis le web :
 #   bash <(curl -sL https://raw.githubusercontent.com/Fud0o0/Syndra/main/install.sh) blue-team
 
-set -euo pipefail
+set -eo pipefail  # pas -u ni pipefail strict sur les pipes pip
+cd "$HOME"        # répertoire stable — évite "folder no longer found" avec pip
 
 # ── Profil ──────────────────────────────────────────────────────────
 PROFILE="${1:-default}"
@@ -176,9 +177,25 @@ done
 
 if [ ${#MISSING_PY[@]} -gt 0 ]; then
     _info "pip install ${MISSING_PY[*]}..."
-    pip install $PY_FLAGS "${MISSING_PY[@]}" 2>&1 | grep -v "^$" | tail -3 || \
-    pip install --user "${MISSING_PY[@]}" 2>/dev/null || { _warn "Certains paquets Python échoués"; ((WARNINGS++)); }
-    _ok "Dépendances Python installées"
+    # set +e pour ne pas quitter si pip échoue
+    set +e
+    pip install --break-system-packages "${MISSING_PY[@]}" > /tmp/pip_out.txt 2>&1
+    PIP_EXIT=$?
+    set -e
+    if [ $PIP_EXIT -ne 0 ]; then
+        # fallback sans --break-system-packages
+        set +e
+        pip install --user "${MISSING_PY[@]}" > /tmp/pip_out.txt 2>&1
+        PIP_EXIT=$?
+        set -e
+    fi
+    if [ $PIP_EXIT -eq 0 ]; then
+        _ok "Dépendances Python installées"
+    else
+        _warn "Certains paquets Python échoués (non critique)"
+        cat /tmp/pip_out.txt | tail -3 | while read -r l; do _warn "$l"; done
+        ((WARNINGS++))
+    fi
 fi
 
 # ── Syndra Shell ────────────────────────────────────────────────────

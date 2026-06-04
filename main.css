@@ -143,12 +143,10 @@
   opacity: 0;
 }
 
-/* Détacher l'île du bord haut (c'est notch-box qui est ancré en haut) */
-#notch-box {
-  margin-top: 8px;
-}
-
-/* Pastille flottante entièrement arrondie (sans ombre — rend mal en GTK) */
+/* Pastille flottante entièrement arrondie.
+   Pas de margin-top : les spacers transparents du notch (hover-eventbox +
+   hover-detection ≈ 8px) donnent déjà le décalage qui aligne l'île sur la
+   barre (qui flotte aussi à ~8px). Sans ombre (rend mal en GTK). */
 #notch-content {
   border-radius: 22px;
 }

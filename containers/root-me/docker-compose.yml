@@ -1,0 +1,48 @@
+name: syndra-root-me
+
+# Root-Me / CTF — environnements de challenges conteneurisés
+
+services:
+  # Kali Linux — boîte à outils CTF complète
+  kali:
+    image: kalilinux/kali-rolling:latest
+    container_name: syndra-kali
+    stdin_open: true
+    tty: true
+    network_mode: host
+    volumes:
+      - ${HOME}/syndra-workspace:/workspace
+    profiles: ["shell"]
+
+  # Outils reverse engineering / pwn
+  pwn:
+    image: pwntools/pwntools:stable
+    container_name: syndra-pwn
+    stdin_open: true
+    tty: true
+    volumes:
+      - ${HOME}/syndra-workspace:/workspace
+    profiles: ["shell"]
+
+  # Web exploitation — Burp-like (ZAP)
+  zap:
+    image: zaproxy/zap-stable:latest
+    container_name: syndra-zap
+    network_mode: host
+    volumes:
+      - ${HOME}/syndra-workspace:/zap/wrk
+    profiles: ["daemon"]
+
+  # Crypto / stéganographie / forensics
+  ctf-tools:
+    image: kalilinux/kali-rolling:latest
+    container_name: syndra-ctf-tools
+    stdin_open: true
+    tty: true
+    volumes:
+      - ${HOME}/syndra-workspace:/workspace
+    command: >
+      bash -c "apt update &&
+               apt install -y steghide binwalk foremost exiftool john hashcat sqlmap nmap netcat-traditional &&
+               bash"
+    profiles: ["setup"]

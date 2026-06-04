@@ -1,0 +1,30 @@
+name: syndra-custom
+
+# Profil personnalisé — base légère, à compléter selon tes besoins.
+# Ajoute tes propres services ci-dessous.
+
+services:
+  # Gestion Docker via interface web
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: syndra-portainer
+    ports:
+      - "9000:9000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+    restart: unless-stopped
+
+  # Boîte à outils générique (à adapter)
+  toolbox:
+    image: kalilinux/kali-rolling:latest
+    container_name: syndra-toolbox
+    stdin_open: true
+    tty: true
+    network_mode: host
+    volumes:
+      - ${HOME}/syndra-workspace:/workspace
+    profiles: ["shell"]
+
+volumes:
+  portainer_data:

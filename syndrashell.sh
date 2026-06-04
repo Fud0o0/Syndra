@@ -46,36 +46,36 @@ done
 PROFILE=$(python3 -c "import json,os; d=json.load(open(os.path.expanduser('~/.config/SyndraShell/config/config.json'))); print(d.get('syndra_profile','default'))" 2>/dev/null || echo "default")
 echo "[$(date '+%H:%M:%S')] Profil: $PROFILE"
 
-# ── Fond d'écran via swww ─────────────────────────────────────────
-if command -v awww &>/dev/null; then
-    # Démarrer awww init si pas encore actif
-    awww query &>/dev/null 2>&1 || awww init &
+# ── Fond d'écran par profil via awww ──────────────────────────────
+# Le fond d'écran du profil prime ; sinon on garde ~/.current.wall existant.
+PROFILE_WALL="$INSTALL_DIR/assets/wallpapers/${PROFILE}.png"
+WALL="$HOME/.current.wall"
 
-    # Attendre que le daemon soit prêt (max 10s)
+if [ -f "$PROFILE_WALL" ]; then
+    ln -sf "$PROFILE_WALL" "$WALL"
+    echo "[wallpaper] profil '$PROFILE' → $PROFILE_WALL"
+elif [ ! -e "$WALL" ] && [ -f "$INSTALL_DIR/assets/wallpapers/default.png" ]; then
+    ln -sf "$INSTALL_DIR/assets/wallpapers/default.png" "$WALL"
+    echo "[wallpaper] défaut → default.png"
+fi
+
+if command -v awww &>/dev/null; then
+    awww query &>/dev/null 2>&1 || awww init &
     for i in $(seq 1 20); do
         awww query &>/dev/null 2>&1 && break
         sleep 0.5
     done
 
-    # Créer le lien ~/.current.wall si absent
-    WALL="$HOME/.current.wall"
-    EXAMPLE="$INSTALL_DIR/assets/wallpapers_example/example-1.jpg"
-    if [ ! -e "$WALL" ] && [ -f "$EXAMPLE" ]; then
-        ln -sf "$EXAMPLE" "$WALL"
-        echo "[wallpaper] symlink créé → $EXAMPLE"
-    fi
-
-    # Appliquer le fond d'écran
     if [ -e "$WALL" ]; then
         REAL_WALL=$(realpath "$WALL" 2>/dev/null || readlink -f "$WALL")
         echo "[wallpaper] application de: $REAL_WALL"
         awww img "$REAL_WALL" --transition-type fade --transition-duration 2 && \
             echo "[wallpaper] OK" || echo "[wallpaper] ERREUR awww img"
     else
-        echo "[wallpaper] ERREUR: $WALL introuvable"
+        echo "[wallpaper] ERREUR: aucun fond d'écran trouvé"
     fi
 else
-    echo "[wallpaper] swww non installé — sudo pacman -S awww"
+    echo "[wallpaper] awww non installé — sudo pacman -S awww"
 fi
 
 echo "[$(date '+%H:%M:%S')] Lancement de python main.py..."

@@ -16,7 +16,7 @@ REPO_URL="https://github.com/Fud0o0/Syndra.git"
 INSTALL_DIR="$HOME/.config/SyndraShell"
 CONFIG_JSON="$INSTALL_DIR/config/config.json"
 
-VALID_PROFILES=("blue-team" "red-team" "purple" "green" "mono" "default")
+VALID_PROFILES=("blue-team" "red-team" "purple" "root-me" "custom" "default")
 VALID=false
 for p in "${VALID_PROFILES[@]}"; do [[ "$p" == "$PROFILE" ]] && VALID=true && break; done
 if ! $VALID; then
@@ -30,8 +30,8 @@ case "$PROFILE" in
     blue-team) PC="\033[0;34m" ;;
     red-team)  PC="\033[0;31m" ;;
     purple)    PC="\033[0;35m" ;;
-    green)     PC="\033[0;32m" ;;
-    mono)      PC="\033[0;37m" ;;
+    root-me)   PC="\033[0;37m" ;;
+    custom)    PC="\033[0;32m" ;;
     *)         PC="\033[0;36m" ;;
 esac
 R="\033[0m"; B="\033[1m"; G="\033[0;32m"; Y="\033[0;33m"; E="\033[0;31m"
@@ -268,6 +268,16 @@ if [ -f "$FONT_SRC" ]; then
     cp "$FONT_SRC" "$HOME/.fonts/tabler-icons/"
     fc-cache -f 2>/dev/null
     _ok "Police tabler-icons installée"
+fi
+
+# Fond d'écran du profil → ~/.current.wall (toujours forcé à l'install)
+PROFILE_WALL="$INSTALL_DIR/assets/wallpapers/${PROFILE}.png"
+if [ -f "$PROFILE_WALL" ]; then
+    ln -sf "$PROFILE_WALL" "$HOME/.current.wall"
+    _ok "Fond d'écran '$PROFILE' → ~/.current.wall"
+else
+    _warn "Pas de fond d'écran pour le profil '$PROFILE'"
+    ((WARNINGS++))
 fi
 
 # Docker

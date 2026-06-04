@@ -80,10 +80,10 @@ sudo systemctl enable --now docker 2>/dev/null || true
 sudo usermod -aG docker "$USER" 2>/dev/null || true
 
 # Python deps
-if [ -f "$INSTALL_DIR/requirements.txt" ] || [ -f /tmp/syndra-req.txt ]; then
-    pip install --user --break-system-packages \
-        requests pillow setproctitle 2>/dev/null || true
-fi
+pip install --break-system-packages \
+    requests pillow setproctitle watchdog ijson 2>/dev/null || \
+pip install --user \
+    requests pillow setproctitle watchdog ijson 2>/dev/null || true
 
 # ── Cloner / mettre à jour Syndra ─────────────────────────────────
 echo -e "${C}[4/6] Installation de Syndra Shell...${NC}"

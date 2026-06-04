@@ -383,16 +383,15 @@ class WallpaperSelector(Box):
         if os.path.isfile(current_wall) or os.path.islink(current_wall):
             os.remove(current_wall)
         os.symlink(full_path, current_wall)
-        if self.matugen_switcher.get_active():
-            # Matugen is enabled: run the normal command.
-            exec_shell_command_async(
-                f'matugen image "{full_path}" -t {selected_scheme}'
-            )
+        if self.matugen_switcher.get_active() and shutil.which("matugen"):
+            _subp.Popen(["matugen", "image", full_path, "-t", selected_scheme],
+                        stdout=_subp.DEVNULL, stderr=_subp.DEVNULL)
         else:
-            exec_shell_command_async("swww-daemon >/dev/null 2>&1 || true")
-            exec_shell_command_async(
-                f'swww img "{full_path}" --transition-type fade --transition-duration 1.5'
-            )
+            if shutil.which("swww"):
+                _subp.Popen(["swww-daemon"], stdout=_subp.DEVNULL, stderr=_subp.DEVNULL)
+                _subp.Popen(["swww", "img", full_path,
+                              "--transition-type", "fade", "--transition-duration", "1.5"],
+                             stdout=_subp.DEVNULL, stderr=_subp.DEVNULL)
 
     def on_scheme_changed(self, combo):
         selected_scheme = combo.get_active_id()
@@ -628,10 +627,10 @@ class WallpaperSelector(Box):
         hex_color = self.hsl_to_rgb_hex(hue_value)  # Convert HSL(hue, 1.0, 0.5) to HEX
         print(f"Applying color from slider: H={hue_value}, HEX={hex_color}")
         selected_scheme = self.scheme_dropdown.get_active_id()
-        # Run matugen with the chosen hex color and selected scheme
-        exec_shell_command_async(
-            f'matugen color hex "{hex_color}" -t {selected_scheme}'
-        )
+        # Run matugen with the chosen hex color (si installé)
+        if shutil.which("matugen"):
+            _subp.Popen(["matugen", "color", "hex", hex_color, "-t", selected_scheme],
+                        stdout=_subp.DEVNULL, stderr=_subp.DEVNULL)
         # Optionally save the chosen color to config if needed later
         # config.config.bind_vars["matugen_hex_color"] = hex_color
         # config.config.save_config() # Removed as save_config doesn't exist

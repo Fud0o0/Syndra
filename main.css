@@ -132,80 +132,38 @@
 }
 
 /* ════════════════════════════════════════════════════════════════════
-   ◍ SYNDRA — STYLE "ÎLOTS" (end-4 / Material You)
-   La barre devient 2 îlots arrondis (gauche/droite). Les widgets sont
-   transparents À L'INTÉRIEUR des îlots → un seul bloc cohérent par côté.
-   On ne touche AUCUNE marge de widget (pas de casse de layout).
-   Chargée en dernier → prioritaire. (Réversible.)
+   ◍ SYNDRA — NOTCH "DYNAMIC ISLAND" (iPhone)
+   On masque les connecteurs courbes (extrémités) qui rattachent le notch
+   à la barre, et on en fait une pastille arrondie autonome qui flotte.
    ════════════════════════════════════════════════════════════════════ */
 
-/* La barre n'est qu'un conteneur transparent */
-#bar-inner,
-#bar-inner.pills,
-#bar-inner.dense,
-#bar-inner.edge,
-#bar-inner.edgecenter.vertical {
-  background-color: transparent;
-  border: none;
+/* Masquer les connecteurs aux extrémités */
+#notch-corner-left,
+#notch-corner-right {
+  opacity: 0;
 }
 
-/* Les 2 îlots : pastilles arrondies pleines */
-#start-container,
-#end-container {
-  background-color: var(--surface);
+/* Léger flottement pour aligner l'île avec la barre (qui flotte à ~8px) */
+#notch-box {
+  margin-top: 4px;
+}
+
+/* Pastille flottante : hauteur 34px (= widgets barre), pleinement arrondie */
+#notch-content {
+  border-radius: 17px;
+  min-height: 34px;
+}
+#notch-content.open {
+  border-radius: 28px;
+}
+#notch-content.open.invert,
+#notch-content.invert {
   border-radius: 22px;
-  padding: 3px 8px;
 }
 
-/* Widgets DANS les îlots : transparents (fusionnent avec l'îlot) */
-#date-time,
-#weather,
-#language,
-#systray,
-#battery,
-#button-bar,
-#boxed-revealer,
-#workspaces-container {
-  background-color: transparent;
-}
-
-/* Survol d'un widget : pastille douce qui ressort */
-#date-time:hover,
-#weather:hover,
-#language:hover,
-#button-bar:hover {
-  background-color: var(--surface-bright);
-}
-
-/* Horloge accentuée, en gras */
-#date-time > label {
-  color: var(--primary);
-  font-weight: bold;
-}
-
-/* Lanceur (logo) : pastille pleine accent, ronde */
-#button-apps {
-  background-color: var(--primary);
-}
-#button-apps #button-bar-label,
-#button-apps label {
-  color: var(--on-primary);
-}
-
-/* Workspaces : points ronds, actif en accent */
-#workspaces > button {
-  border-radius: 16px;
-  background-color: var(--surface-bright);
-}
-#workspaces > button.active {
-  background-color: var(--primary);
-}
-#workspaces > button.empty {
-  background-color: var(--outline);
-}
-
-/* Panneaux : grandes cartes douces + ombre profonde (effet flottant) */
-#notch-content,
+/* Panneaux ouverts : TOUS les coins arrondis.
+   (l'original ne rondit que le bas → top carré = rectangle moche
+   maintenant que les connecteurs sont masqués) */
 #app-launcher,
 #power-menu,
 #toolbox,
@@ -215,20 +173,18 @@
 #clip-history,
 #tmux-manager {
   border-radius: 28px;
-  box-shadow: 0 8px 30px 0 var(--shadow);
 }
 
-/* Cartes internes du dashboard : plus rondes */
-#box-1,
-#box-2,
-#box-3,
-#box-x {
-  border-radius: 22px;
+/* Variante panel (si activée) : idem, tous coins ronds */
+#notch-content.panel,
+#notch-content.open.panel {
+  border-radius: 28px;
 }
-
-/* Focus recherche : fin liseré accent */
-#search-entry:focus,
-#search-entry-walls:focus,
-#search-entry-apps:focus {
-  border: 1px solid var(--primary);
+#notch-content.panel #app-launcher,
+#notch-content.panel #dashboard,
+#notch-content.panel #toolbox,
+#notch-content.panel #power-menu,
+#notch-content.panel #overview,
+#notch-content.panel #emoji {
+  border-radius: 28px;
 }

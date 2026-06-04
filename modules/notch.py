@@ -374,14 +374,14 @@ class Notch(Window):
         if is_panel_vertical or (
             data.PANEL_POSITION in ["Start", "End"] and data.PANEL_THEME == "Panel"
         ):
-            self.compact.set_size_request(260, 40)
+            self.compact.set_size_request(260, 34)
             self.launcher.set_size_request(320, 635)
             self.tmux.set_size_request(320, 635)
             self.cliphist.set_size_request(320, 635)
             self.dashboard.set_size_request(410, 900)
 
         else:
-            self.compact.set_size_request(260, 40)
+            self.compact.set_size_request(260, 34)
             self.launcher.set_size_request(480, 244)
             self.tmux.set_size_request(480, 244)
             self.cliphist.set_size_request(480, 244)

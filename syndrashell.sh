@@ -34,13 +34,26 @@ for FONT_DEST in "$HOME/.local/share/fonts/tabler-icons" "$HOME/.fonts/tabler-ic
 done
 fc-cache -f 2>/dev/null || true
 
-# Vérifier les dépendances Python critiques
-for mod in gi fabric setproctitle watchdog; do
+# Vérifier les modules pip uniquement (gi et fabric sont des paquets système)
+for mod in setproctitle watchdog; do
     python -c "import $mod" 2>/dev/null || {
-        echo "[WARN] Module Python manquant: $mod"
-        notify-send "SyndraShell" "Module manquant: $mod\nLancer: pip install --break-system-packages $mod" 2>/dev/null || true
+        echo "[WARN] $mod manquant — installation automatique..."
+        pip install --break-system-packages "$mod" 2>/dev/null || pip install --user "$mod" 2>/dev/null || true
     }
 done
+
+# Afficher le profil actif
+PROFILE=$(python3 -c "import json,os; d=json.load(open(os.path.expanduser('~/.config/SyndraShell/config/config.json'))); print(d.get('syndra_profile','default'))" 2>/dev/null || echo "default")
+echo "[$(date '+%H:%M:%S')] Profil: $PROFILE"
+
+# Attendre que swww-daemon soit prêt
+if command -v swww &>/dev/null; then
+    swww-daemon &
+    for i in $(seq 1 10); do
+        swww query &>/dev/null && break
+        sleep 0.3
+    done
+fi
 
 echo "[$(date '+%H:%M:%S')] Lancement de python main.py..."
 cd "$INSTALL_DIR" && exec python main.py

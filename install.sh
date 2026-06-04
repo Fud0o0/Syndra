@@ -211,21 +211,29 @@ else
     _ok "Dépôt à jour ($(git -C "$INSTALL_DIR" log -1 --format='%h %s' 2>/dev/null))"
 fi
 
-# Écrire le profil dans config.json
+# Écrire le profil dans config.json (jamais écrasé par git — .gitignore)
 mkdir -p "$(dirname "$CONFIG_JSON")"
 if [ -f "$CONFIG_JSON" ]; then
-    python - <<PYEOF
-import json
-with open("$CONFIG_JSON") as f:
-    d = json.load(f)
-d["syndra_profile"] = "$PROFILE"
-with open("$CONFIG_JSON", "w") as f:
+    python3 - "$CONFIG_JSON" "$PROFILE" <<'PYEOF'
+import json, sys
+path, profile = sys.argv[1], sys.argv[2]
+try:
+    with open(path) as f:
+        d = json.load(f)
+except Exception:
+    d = {}
+d["syndra_profile"] = profile
+with open(path, "w") as f:
     json.dump(d, f, indent=2)
+print(f"  profile={profile}")
 PYEOF
 else
     echo "{\"syndra_profile\": \"$PROFILE\"}" > "$CONFIG_JSON"
 fi
-_ok "Profil '$PROFILE' enregistré dans config.json"
+_ok "Profil '$PROFILE' → $CONFIG_JSON"
+# Vérification
+SAVED=$(python3 -c "import json; d=json.load(open('$CONFIG_JSON')); print(d.get('syndra_profile','?'))" 2>/dev/null)
+[ "$SAVED" = "$PROFILE" ] && _ok "Vérification profil: $SAVED ✓" || _warn "Profil lu: $SAVED (attendu: $PROFILE)"
 
 # ── Configuration ───────────────────────────────────────────────────
 _step "6/7" "Configuration"

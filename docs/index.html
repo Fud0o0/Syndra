@@ -25,39 +25,45 @@
         })();
     </script>
     <style>
-        /* Pre-render theme: color SVG paths via html data-theme attribute (fires before body class) */
-        html[data-theme='red'] .syndra-logo-inline path,
-        body.red-theme .syndra-logo-inline path { fill: #ff0066 !important; stroke: rgba(255,0,102,0.3) !important; }
+        /* Pre-render theme: color img via CSS filter instead of mask (fixes file:/// CORS issue) */
+        html[data-theme='red'] .syndra-logo-inline,
+        body.red-theme .syndra-logo-inline { filter: hue-rotate(60deg) saturate(150%) !important; }
 
-        html[data-theme='blue'] .syndra-logo-inline path,
-        body.blue-theme .syndra-logo-inline path { fill: #00d4ff !important; stroke: rgba(0,212,255,0.3) !important; }
+        html[data-theme='blue'] .syndra-logo-inline,
+        body.blue-theme .syndra-logo-inline { filter: hue-rotate(-80deg) saturate(150%) !important; }
 
-        html[data-theme='purple'] .syndra-logo-inline path,
-        body.purple-theme .syndra-logo-inline path { fill: #b366ff !important; stroke: rgba(179,102,255,0.3) !important; }
+        html[data-theme='purple'] .syndra-logo-inline,
+        body.purple-theme .syndra-logo-inline { filter: none !important; }
 
-        html[data-theme='root'] .syndra-logo-inline path,
-        body.root-theme .syndra-logo-inline path { fill: #ffffff !important; stroke: rgba(255,255,255,0.3) !important; }
+        html[data-theme='root'] .syndra-logo-inline,
+        body.root-theme .syndra-logo-inline { filter: saturate(0%) brightness(250%) contrast(150%) !important; }
 
-        html[data-theme='custom'] .syndra-logo-inline path,
-        body.custom-theme .syndra-logo-inline path { fill: #00ff88 !important; stroke: rgba(0,255,136,0.3) !important; }
+        html[data-theme='custom'] .syndra-logo-inline,
+        body.custom-theme .syndra-logo-inline { filter: hue-rotate(220deg) saturate(150%) !important; }
 
-        /* SVG outline (stroke) settings */
-        .syndra-logo-inline path {
-            stroke-width: 18;
-            stroke-linejoin: round;
-            stroke-linecap: round;
-            paint-order: stroke fill;
-            transition: fill 0.4s ease, stroke 0.4s ease, filter 0.4s ease;
+        .syndra-logo-wrapper {
+            transition: filter 0.4s ease;
+            width: 250px;
+            height: 250px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto;
         }
 
-        /* Glow filter per theme on the retro avatar (simplified for performance) */
-        body.red-theme    .retro-avatar.syndra-logo-inline { filter: drop-shadow(0 0 18px rgba(255,0,102,0.8)); }
-        body.blue-theme   .retro-avatar.syndra-logo-inline { filter: drop-shadow(0 0 18px rgba(0,212,255,0.8)); }
-        body.purple-theme .retro-avatar.syndra-logo-inline { filter: drop-shadow(0 0 18px rgba(179,102,255,0.8)); }
-        body.root-theme   .retro-avatar.syndra-logo-inline { filter: drop-shadow(0 0 18px rgba(255,255,255,0.6)); }
-        body.custom-theme .retro-avatar.syndra-logo-inline { filter: drop-shadow(0 0 18px rgba(0,255,136,0.8)); }
+        .syndra-logo-inline {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            transition: filter 0.4s ease;
+        }
 
-        .syndra-logo-inline { transition: filter 0.4s ease; }
+        /* Glow filter per theme on the wrapper to prevent mask clipping */
+        body.red-theme    .syndra-logo-wrapper { filter: drop-shadow(0 0 18px rgba(255,0,102,0.8)); }
+        body.blue-theme   .syndra-logo-wrapper { filter: drop-shadow(0 0 18px rgba(0,212,255,0.8)); }
+        body.purple-theme .syndra-logo-wrapper { filter: drop-shadow(0 0 18px rgba(179,102,255,0.8)); }
+        body.root-theme   .syndra-logo-wrapper { filter: drop-shadow(0 0 18px rgba(255,255,255,0.6)); }
+        body.custom-theme .syndra-logo-wrapper { filter: drop-shadow(0 0 18px rgba(0,255,136,0.8)); }
     </style>
 </head>
 <body class="purple-theme">
@@ -73,6 +79,14 @@
             <option value="ja">日本語</option>
             <option value="ko">한국어</option>
             <option value="it">Italiano</option>
+            <option value="pt">Português</option>
+            <option value="ru">Русский</option>
+            <option value="ar">العربية</option>
+            <option value="hi">हिन्दी</option>
+            <option value="tr">Türkçe</option>
+            <option value="nl">Nederlands</option>
+            <option value="pl">Polski</option>
+            <option value="vi">Tiếng Việt</option>
         </select>
         <!-- Custom styled dropdown -->
         <div class="lang-dropdown" id="lang-dropdown">
@@ -95,6 +109,14 @@
                 <li class="lang-option" data-value="ja" role="option">🇯🇵 <span>日本語</span></li>
                 <li class="lang-option" data-value="ko" role="option">🇰🇷 <span>한국어</span></li>
                 <li class="lang-option" data-value="it" role="option">🇮🇹 <span>Italiano</span></li>
+                <li class="lang-option" data-value="pt" role="option">🇵🇹 <span>Português</span></li>
+                <li class="lang-option" data-value="ru" role="option">🇷🇺 <span>Русский</span></li>
+                <li class="lang-option" data-value="ar" role="option">🇸🇦 <span>العربية</span></li>
+                <li class="lang-option" data-value="hi" role="option">🇮🇳 <span>हिन्दी</span></li>
+                <li class="lang-option" data-value="tr" role="option">🇹🇷 <span>Türkçe</span></li>
+                <li class="lang-option" data-value="nl" role="option">🇳🇱 <span>Nederlands</span></li>
+                <li class="lang-option" data-value="pl" role="option">🇵🇱 <span>Polski</span></li>
+                <li class="lang-option" data-value="vi" role="option">🇻🇳 <span>Tiếng Việt</span></li>
             </ul>
         </div>
     </div>
@@ -151,16 +173,9 @@
 
             <div class="hero-right">
                 <div class="retro-avatar-container">
-                    <svg class="syndra-logo-inline retro-avatar" xmlns="http://www.w3.org/2000/svg"
-                         viewBox="0 0 500 500"
-                         preserveAspectRatio="xMidYMid meet"
-                         aria-label="Syndra logo">
-                        <g transform="translate(0,500) scale(0.1,-0.1)">
-                            <path d="M2394 4050 c-267 -38 -488 -141 -631 -294 -73 -77 -113 -145 -148 -251 -24 -69 -27 -96 -27 -200 -1 -102 3 -130 24 -185 66 -178 214 -320 459 -440 l66 -33 54 35 c30 19 81 57 114 84 33 26 103 77 155 112 52 35 96 65 98 67 2 1 -37 24 -85 50 -254 137 -396 282 -424 430 -48 260 117 446 428 484 182 22 356 -27 443 -126 76 -86 85 -113 84 -240 l0 -112 35 21 c103 61 166 126 207 213 27 56 29 86 13 136 -35 104 -152 180 -354 230 -91 23 -403 35 -511 19z"/>
-                            <path d="M3690 3550 c-68 -54 -155 -118 -193 -142 -38 -24 -116 -76 -175 -117 -59 -41 -152 -106 -207 -144 -55 -38 -134 -99 -175 -136 -108 -97 -191 -158 -253 -185 -62 -28 -201 -121 -267 -178 -25 -22 -57 -59 -72 -83 -19 -30 -81 -83 -220 -187 -106 -80 -220 -164 -253 -186 -33 -23 -101 -74 -151 -114 -51 -40 -153 -121 -229 -180 -75 -60 -135 -108 -132 -108 11 0 359 200 452 260 33 22 103 63 155 93 176 100 364 217 455 283 50 36 152 105 227 154 76 49 166 117 201 152 34 35 108 95 162 134 111 80 233 188 254 226 7 14 120 126 250 250 198 188 315 309 299 308 -1 0 -59 -45 -128 -100z"/>
-                            <path d="M3565 2808 c-139 -94 -243 -156 -306 -184 -111 -48 -165 -81 -327 -201 -65 -47 -134 -94 -154 -104 -20 -10 -39 -23 -43 -28 -3 -6 21 -28 53 -49 138 -94 202 -214 202 -382 0 -267 -184 -503 -465 -597 -71 -24 -95 -27 -220 -27 -122 0 -147 3 -197 23 -123 48 -192 117 -239 239 -30 79 -32 223 -3 305 l21 57 -29 0 c-81 0 -251 -95 -302 -168 -63 -91 -82 -219 -47 -312 39 -105 173 -212 328 -263 231 -76 479 -86 753 -31 246 49 474 168 641 334 97 95 167 206 199 310 75 245 34 476 -114 650 -31 36 -56 68 -56 72 0 4 18 19 39 32 22 14 78 70 126 126 48 55 134 142 193 193 157 137 167 146 162 147 -3 0 -100 -64 -215 -142z"/>
-                        </g>
-                    </svg>
+                    <div class="syndra-logo-wrapper retro-avatar">
+                        <img src="logo.png" class="syndra-logo-inline" alt="Syndra logo">
+                    </div>
                 </div>
 
                 <!-- Glassmorphism Terminal Card -->

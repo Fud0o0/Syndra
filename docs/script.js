@@ -150,7 +150,15 @@ function updateToolsSection(team) {
         de: `Kategorisierte Toolsets, die dynamisch für das ${profileFormatted} Profil geladen werden.`,
         zh: `为 ${profileFormatted} 配置文件动态加载的分类工具集。`,
         ko: `${profileFormatted} 프로필용으로 동적 로드된 분류별 도구 모음.`,
-        it: `Set di strumenti caricati dinamicamente per il profilo ${profileFormatted}.`
+        it: `Set di strumenti caricati dinamicamente per il profilo ${profileFormatted}.`,
+        pt: `Conjuntos de ferramentas categorizados carregados dinamicamente para o perfil ${profileFormatted}.`,
+        ru: `Категоризированные наборы инструментов, динамически загружаемые для профиля ${profileFormatted}.`,
+        ar: `مجموعات أدوات مصنفة يتم تحميلها ديناميكيًا لملف ${profileFormatted}.`,
+        hi: `${profileFormatted} प्रोफ़ाइल के लिए गतिशील रूप से लोड किए गए श्रेणीबद्ध टूलसेट।`,
+        tr: `${profileFormatted} profili için dinamik olarak yüklenen kategorize edilmiş araç setleri.`,
+        nl: `Gecategoriseerde toolsets dynamisch geladen voor het ${profileFormatted} profiel.`,
+        pl: `Skategoryzowane zestawy narzędzi ładowane dynamicznie dla profilu ${profileFormatted}.`,
+        vi: `Các bộ công cụ được phân loại tải động cho cấu hình ${profileFormatted}.`
     };
 
     const catTranslations = {
@@ -487,7 +495,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!dropdown || !trigger) return;
 
     // Label map: value -> short label shown in trigger
-    const labelMap = { fr: 'FR', en: 'EN', es: 'ES', de: 'DE', zh: '中文', ja: '日本語', ko: '한국어', it: 'IT' };
+    const labelMap = { fr: 'FR', en: 'EN', es: 'ES', de: 'DE', zh: '中文', ja: '日本語', ko: '한국어', it: 'IT', pt: 'PT', ru: 'RU', ar: 'AR', hi: 'HI', tr: 'TR', nl: 'NL', pl: 'PL', vi: 'VI' };
 
     // Restore saved lang label
     const savedLang = localStorage.getItem('syndrashell-lang') || 'fr';

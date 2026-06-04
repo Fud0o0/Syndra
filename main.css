@@ -130,3 +130,29 @@
   background-color: var(--outline);
   border-radius: 8px;
 }
+
+/* ════════════════════════════════════════════════════════════════════
+   ◍ SYNDRA — NOTCH "DYNAMIC ISLAND" (iPhone)
+   On masque les connecteurs courbes (extrémités) qui rattachent le notch
+   à la barre, et on en fait une pastille arrondie autonome qui flotte.
+   ════════════════════════════════════════════════════════════════════ */
+
+/* Masquer les connecteurs aux extrémités */
+#notch-corner-left,
+#notch-corner-right {
+  opacity: 0;
+}
+
+/* Pastille flottante entièrement arrondie + détachée du bord + ombre */
+#notch-content {
+  border-radius: 22px;
+  margin-top: 6px;
+  box-shadow: 0 4px 18px 0 var(--shadow);
+}
+#notch-content.open {
+  border-radius: 28px;
+}
+#notch-content.open.invert,
+#notch-content.invert {
+  border-radius: 22px;
+}

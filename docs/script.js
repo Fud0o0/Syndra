@@ -52,6 +52,62 @@ const teamTools = {
     ]
 };
 
+// URLs for the tools
+const toolUrls = {
+    'Nmap': 'https://nmap.org/',
+    'Masscan': 'https://github.com/robertdavidgraham/masscan',
+    'Amass': 'https://github.com/owasp-amass/amass',
+    'Subfinder': 'https://github.com/projectdiscovery/subfinder',
+    'Metasploit': 'https://www.metasploit.com/',
+    'SQLmap': 'https://sqlmap.org/',
+    'Burp Suite': 'https://portswigger.net/burp',
+    'Mimikatz': 'https://github.com/gentilkiwi/mimikatz',
+    'BloodHound': 'https://github.com/BloodHoundAD/BloodHound',
+    'Empire': 'https://github.com/BC-SECURITY/Empire',
+    'LinPEAS': 'https://github.com/carlospolop/PEASS-ng',
+    'Wireshark': 'https://www.wireshark.org/',
+    'CrackMapExec': 'https://github.com/Porchetta-Industries/CrackMapExec',
+    'Hashcat': 'https://hashcat.net/hashcat/',
+    'John the Ripper': 'https://www.openwall.com/john/',
+    'Zeek': 'https://zeek.org/',
+    'Suricata': 'https://suricata.io/',
+    'Snort': 'https://www.snort.org/',
+    'Wazuh': 'https://wazuh.com/',
+    'Fail2Ban': 'https://github.com/fail2ban/fail2ban',
+    'ModSecurity': 'https://github.com/SpiderLabs/ModSecurity',
+    'UFW': 'https://help.ubuntu.com/community/UFW',
+    'AppArmor': 'https://gitlab.com/apparmor/apparmor',
+    'Splunk': 'https://www.splunk.com/',
+    'ELK Stack': 'https://www.elastic.co/elastic-stack',
+    'Autopsy': 'https://www.sleuthkit.org/autopsy/',
+    'Velociraptor': 'https://docs.velociraptor.app/',
+    'TheHive': 'https://thehive-project.org/',
+    'Cortex': 'https://thehive-project.org/',
+    'MISP': 'https://www.misp-project.org/',
+    'Caldera': 'https://caldera.mitre.org/',
+    'Atomic Red Team': 'https://atomicredteam.io/',
+    'Cobalt Strike': 'https://www.cobaltstrike.com/',
+    'Covenant': 'https://github.com/cobbr/Covenant',
+    'Ghidra': 'https://ghidra-sre.org/',
+    'IDA Free': 'https://hex-rays.com/ida-free/',
+    'Radare2': 'https://rada.re/n/',
+    'Binary Ninja': 'https://binary.ninja/',
+    'Pwntools': 'https://docs.pwntools.com/',
+    'GDB/GEF': 'https://hugsy.github.io/gef/',
+    'Ropper': 'https://github.com/sashs/Ropper',
+    'Volatility': 'https://volatilityfoundation.org/',
+    'Binwalk': 'https://github.com/ReFirmLabs/binwalk',
+    'Sleuth Kit': 'https://www.sleuthkit.org/',
+    'CyberChef': 'https://gchq.github.io/CyberChef/',
+    'RsaCtfTool': 'https://github.com/RsaCtfTool/RsaCtfTool',
+    'Hyprland': 'https://hyprland.org/',
+    'Waybar': 'https://github.com/Alexays/Waybar',
+    'Kitty': 'https://sw.kovidgoyal.net/kitty/',
+    'Rofi': 'https://github.com/davatorium/rofi',
+    'Docker Containers': 'https://www.docker.com/',
+    'Podman': 'https://podman.io/'
+};
+
 // Initialize theme - force apply immediately
 const savedTheme = localStorage.getItem('syndrashell-theme') || 'purple';
 
@@ -148,9 +204,20 @@ function updateToolsSection(team) {
         const ul = document.createElement('ul');
         group.tools.forEach(tool => {
             const li = document.createElement('li');
-            const span = document.createElement('span');
-            span.textContent = tool;
-            li.appendChild(span);
+            
+            if (toolUrls[tool]) {
+                const a = document.createElement('a');
+                a.href = toolUrls[tool];
+                a.target = '_blank';
+                a.rel = 'noopener noreferrer';
+                a.textContent = tool;
+                li.appendChild(a);
+            } else {
+                const span = document.createElement('span');
+                span.textContent = tool;
+                li.appendChild(span);
+            }
+            
             ul.appendChild(li);
         });
         

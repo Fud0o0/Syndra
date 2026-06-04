@@ -61,7 +61,7 @@ _step "1/5" "Arrêt des processus Syndra"
 
 pkill -f "python.*main\.py" 2>/dev/null && _ok "python main.py arrêté" || _skip "python main.py"
 pkill -f "syndrashell"      2>/dev/null && _ok "syndrashell arrêté"    || _skip "syndrashell"
-pkill -f "swww-daemon"      2>/dev/null && _ok "swww-daemon arrêté"    || _skip "swww-daemon"
+pkill -f "awww init"      2>/dev/null && _ok "awww init arrêté"    || _skip "awww init"
 sleep 0.5
 
 # ── 2. Fichiers Syndra ───────────────────────────────────────────────

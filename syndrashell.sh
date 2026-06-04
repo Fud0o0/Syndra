@@ -47,13 +47,13 @@ PROFILE=$(python3 -c "import json,os; d=json.load(open(os.path.expanduser('~/.co
 echo "[$(date '+%H:%M:%S')] Profil: $PROFILE"
 
 # ── Fond d'écran via swww ─────────────────────────────────────────
-if command -v swww &>/dev/null; then
-    # Démarrer swww-daemon si pas encore actif
-    swww query &>/dev/null 2>&1 || swww-daemon &
+if command -v awww &>/dev/null; then
+    # Démarrer awww init si pas encore actif
+    awww query &>/dev/null 2>&1 || awww init &
 
     # Attendre que le daemon soit prêt (max 10s)
     for i in $(seq 1 20); do
-        swww query &>/dev/null 2>&1 && break
+        awww query &>/dev/null 2>&1 && break
         sleep 0.5
     done
 
@@ -69,13 +69,13 @@ if command -v swww &>/dev/null; then
     if [ -e "$WALL" ]; then
         REAL_WALL=$(realpath "$WALL" 2>/dev/null || readlink -f "$WALL")
         echo "[wallpaper] application de: $REAL_WALL"
-        swww img "$REAL_WALL" --transition-type fade --transition-duration 2 && \
-            echo "[wallpaper] OK" || echo "[wallpaper] ERREUR swww img"
+        awww img "$REAL_WALL" --transition-type fade --transition-duration 2 && \
+            echo "[wallpaper] OK" || echo "[wallpaper] ERREUR awww img"
     else
         echo "[wallpaper] ERREUR: $WALL introuvable"
     fi
 else
-    echo "[wallpaper] swww non installé — sudo pacman -S swww"
+    echo "[wallpaper] swww non installé — sudo pacman -S awww"
 fi
 
 echo "[$(date '+%H:%M:%S')] Lancement de python main.py..."

@@ -132,23 +132,24 @@
 }
 
 /* ════════════════════════════════════════════════════════════════════
-   ◍ SYNDRA — BARRE FINE PLATE (inspiration end-4)
-   Une seule barre sombre translucide, fine, sur laquelle les widgets
-   se posent proprement (transparents). Accents discrets. Pas de gros
-   blocs, pas de marges ajoutées aux widgets → pas de casse de layout.
-   Chargée en dernier → prioritaire. (Réversible.)
+   ◍ SYNDRA — BARRE PLATE TRANSPARENTE (end-4)
+   Les éléments flottent DIRECTEMENT sur le fond d'écran : aucune grosse
+   pastille sombre derrière les groupes. Survol = légère pastille. Look
+   aéré et minimal comme end-4. (Réversible.)
    ════════════════════════════════════════════════════════════════════ */
 
-/* Barre = un seul bandeau sombre translucide, légèrement arrondi */
+/* Barre + conteneurs + widgets = totalement transparents */
 #bar-inner,
-#bar-inner.pills {
-  background-color: alpha(var(--shadow), 0.8);
-  border: 1px solid alpha(var(--outline), 0.4);
-  border-radius: 18px;
-}
-
-/* Widgets posés sur la barre : transparents, ils ne forment pas de
-   double-pastille. Le survol fait apparaître une pastille douce. */
+#bar-inner.pills,
+#bar-inner.dense,
+#bar-inner.edge,
+#bar-inner.edgecenter.vertical,
+#start-container,
+#end-container,
+#boxed-revealer,
+#bar-revealer-box,
+#workspaces-container,
+#workspaces,
 #date-time,
 #weather,
 #language,
@@ -156,35 +157,41 @@
 #battery,
 #button-bar {
   background-color: transparent;
+  border: none;
 }
+
+/* Survol d'un widget : pastille douce translucide */
 #date-time:hover,
 #weather:hover,
 #language:hover,
 #button-bar:hover {
-  background-color: alpha(var(--surface-bright), 0.8);
+  background-color: alpha(var(--surface-bright), 0.55);
 }
 
-/* Horloge accentuée */
+/* Horloge : texte clair, sobre (comme end-4) */
 #date-time > label {
-  color: var(--primary);
+  color: var(--foreground);
   font-weight: bold;
 }
 
-/* Lanceur (logo) : pastille pleine accent */
+/* Lanceur (logo) : juste l'icône en accent, sans pastille */
 #button-apps {
-  background-color: var(--primary);
+  background-color: transparent;
 }
 #button-apps #button-bar-label,
 #button-apps label {
-  color: var(--on-primary);
+  color: var(--primary);
 }
 
-/* Workspaces : actif en accent, vides discrets */
-#workspaces > button.active {
-  background-color: var(--primary);
+/* Workspaces : points discrets, actif en accent allongé */
+#workspaces > button {
+  background-color: alpha(var(--foreground), 0.45);
 }
 #workspaces > button.empty {
-  background-color: var(--surface-bright);
+  background-color: alpha(var(--foreground), 0.22);
+}
+#workspaces > button.active {
+  background-color: var(--primary);
 }
 
 /* Panneaux : grandes cartes arrondies + ombre profonde (flottant) */
@@ -212,7 +219,7 @@
 /* Dock (bas) : pastille translucide arrondie façon end-4 */
 #dock,
 #dock-box {
-  background-color: alpha(var(--shadow), 0.8);
+  background-color: alpha(var(--shadow), 0.75);
   border-radius: 22px;
 }
 

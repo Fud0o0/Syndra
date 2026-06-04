@@ -1,202 +1,160 @@
-﻿#!/bin/bash
-# Syndra Installation Script - Main Installer
-# This script guides you through the Syndra Shell installation process
+#!/bin/bash
+# ╔══════════════════════════════════════════════════════════════╗
+# ║              SYNDRA SHELL — INSTALLER                        ║
+# ║   bash install.sh [blue-team|red-team|purple|green|mono]     ║
+# ║   curl -sL https://raw.githubusercontent.com/               ║
+# ║        Fud0o0/Syndra/main/install.sh | bash -s -- blue-team  ║
+# ╚══════════════════════════════════════════════════════════════╝
 
-set -e
-
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-
-echo "╔═══════════════════════════════════════════════════════════════╗"
-echo "║                  SYNDRA SHELL - INSTALLATEUR                  ║"
-echo "║              Installation modulaire en 2 étapes               ║"
-echo "╚═══════════════════════════════════════════════════════════════╝"
-echo ""
-echo "Bienvenue dans l'installateur Syndra Shell!"
-echo ""
-echo "L'installation se fait maintenant en 2 étapes:"
-echo ""
-echo "  1️⃣  Installation de BASE (Syndra Shell + Hyprland)"
-echo "      → Interface, fonctionnalités core, environnement Wayland"
-echo ""
-echo "  2️⃣  Installation TEAM (Outils spécifiques)"
-echo "      → Blue Team  : Outils défensifs (IDS, firewall, SIEM...)"
-echo "      → Red Team   : Outils offensifs (pentest, exploitation...)"
-echo "      → Purple Team: Couverture complète (Red + Blue)"
-echo "      → Root Me    : Outils CTF et challenges"
-echo "      → Custom     : Configuration personnalisée"
-echo ""
-echo "════════════════════════════════════════════════════════════════"
-echo ""
-
-# Check if base installation exists
+PROFILE="${1:-default}"
+REPO_URL="https://github.com/Fud0o0/Syndra.git"
 INSTALL_DIR="$HOME/.config/SyndraShell"
+CONFIG_JSON="$INSTALL_DIR/config/config.json"
 
-if [ -d "$INSTALL_DIR" ] && [ -f "$INSTALL_DIR/main.py" ]; then
-    echo "✅ Syndra base est déjà installé!"
-    echo ""
-    echo "Voulez-vous:"
-    echo "  1) Réinstaller la base (update)"
-    echo "  2) Installer/changer les outils team"
-    echo "  3) Quitter"
-    echo ""
-    read -p "Votre choix [1-3]: " choice
-    
-    case $choice in
-        1)
-            echo ""
-            echo "🔄 Réinstallation de la base Syndra..."
-            bash "$SCRIPT_DIR/scripts/install-syndra-base.sh"
-            ;;
-        2)
-            # Continue to team selection below
-            ;;
-        3)
-            echo "Installation annulée."
-            exit 0
-            ;;
-        *)
-            echo "❌ Choix invalide."
-            exit 1
-            ;;
-    esac
-else
-    echo "📦 Étape 1/2: Installation de la base Syndra"
-    echo ""
-    echo "Cette étape installe:"
-    echo "  • Hyprland (compositeur Wayland)"
-    echo "  • Syndra Shell (interface)"
-    echo "  • Waybar, Kitty, Wofi, Dunst"
-    echo "  • Dépendances Python"
-    echo "  • Configuration de base"
-    echo ""
-    read -p "Continuer avec l'installation de base? [Y/n]: " -n 1 -r
-    echo
-    
-    if [[ ! $REPLY =~ ^[Yy]$ ]] && [[ ! -z $REPLY ]]; then
-        echo "Installation annulée."
-        exit 0
-    fi
-    
-    echo ""
-    bash "$SCRIPT_DIR/scripts/install-syndra-base.sh"
-    
-    echo ""
-    echo "════════════════════════════════════════════════════════════════"
-    echo ""
+# ── Validation du profil ──────────────────────────────────────────
+VALID_PROFILES=("blue-team" "red-team" "purple" "green" "mono" "default")
+VALID=false
+for p in "${VALID_PROFILES[@]}"; do [[ "$p" == "$PROFILE" ]] && VALID=true; done
+if ! $VALID; then
+    echo "❌  Profil inconnu: $PROFILE"
+    echo "    Profils valides: ${VALID_PROFILES[*]}"
+    exit 1
 fi
 
-# Team selection
-echo "📦 Étape 2/2: Choix des outils team"
-echo ""
-echo "Choisissez votre profil d'outils:"
-echo ""
-echo "  1) 🔵 Blue Team   - Défensif (~8 GB)"
-echo "     IDS/IPS, Firewall, Antivirus, Monitoring, SIEM"
-echo ""
-echo "  2) 🔴 Red Team    - Offensif (~10 GB)"
-echo "     Pentest, Exploitation, Password cracking, Reverse"
-echo ""
-echo "  3) 🟣 Purple Team - Complet (~20 GB)"
-echo "     Tous les outils Red + Blue"
-echo ""
-echo "  4) ⚫ Root Me     - CTF (~13 GB)"
-echo "     Reverse, Pwn, Crypto, Forensics, Web exploitation"
-echo ""
-echo "  5) 🎨 Custom      - Personnalisé"
-echo "     Configuration à la carte"
-echo ""
-echo "  6) 🧱 Outils isolés (Docker/Podman)"
-echo "     GUI sur l'hôte, outils en conteneur avec volumes partagés"
-echo ""
-echo "  7) ⏭️  Passer      - Installer plus tard"
-echo ""
-read -p "Votre choix [1-7]: " team_choice
-
-case $team_choice in
-    1)
-        echo ""
-        echo "🔵 Installation Blue Team..."
-        bash "$SCRIPT_DIR/scripts/install-blue.sh"
-        ;;
-    2)
-        echo ""
-        echo "🔴 Installation Red Team..."
-        bash "$SCRIPT_DIR/scripts/install-red.sh"
-        ;;
-    3)
-        echo ""
-        echo "🟣 Installation Purple Team..."
-        bash "$SCRIPT_DIR/scripts/install-purple.sh"
-        ;;
-    4)
-        echo ""
-        echo "⚫ Installation Root Me/CTF..."
-        bash "$SCRIPT_DIR/scripts/install-root.sh"
-        ;;
-    5)
-        echo ""
-        echo "🎨 Installation Custom..."
-        if [ -f "$SCRIPT_DIR/scripts/install-custom.sh" ]; then
-            bash "$SCRIPT_DIR/scripts/install-custom.sh"
-        else
-            echo "⚠️  Le script install-custom.sh n'existe pas encore."
-            echo "   Vous pouvez le créer dans scripts/ en vous basant sur les autres."
-        fi
-        ;;
-    6)
-        echo ""
-        echo "🧱 Lancement du mode outils conteneurisés..."
-        echo ""
-        read -p "Profil conteneur [blue/red/purple/root] (defaut: purple): " container_profile
-        container_profile=${container_profile:-purple}
-        read -p "Mode [run/build/shell] (defaut: run): " container_mode
-        container_mode=${container_mode:-run}
-        echo "Volumes partages: ~/.local/share/syndra-tools/{workspace,reports,wordlists,loot}"
-        bash "$SCRIPT_DIR/scripts/container-tools.sh" "$container_profile" "$container_mode"
-        ;;
-    7)
-        echo ""
-        echo "Installation des outils passée."
-        echo "Vous pouvez lancer un script team plus tard depuis scripts/"
-        ;;
-    *)
-        echo "❌ Choix invalide."
-        exit 1
-        ;;
+# ── Couleurs terminal ──────────────────────────────────────────────
+case "$PROFILE" in
+    blue-team) C="\033[0;34m" ;;   # bleu
+    red-team)  C="\033[0;31m" ;;   # rouge
+    purple)    C="\033[0;35m" ;;   # violet
+    green)     C="\033[0;32m" ;;   # vert
+    mono)      C="\033[0;37m" ;;   # gris
+    *)         C="\033[0;36m" ;;   # cyan (default)
 esac
+NC="\033[0m"
+BOLD="\033[1m"
 
-echo ""
-echo "╔═══════════════════════════════════════════════════════════════╗"
-echo "║              🎉 INSTALLATION SYNDRA TERMINÉE! 🎉              ║"
-echo "╠═══════════════════════════════════════════════════════════════╣"
-echo "║  Pour démarrer Syndra Shell:                                  ║"
-echo "║                                                               ║"
-echo "║  1. Déconnectez-vous de votre session                        ║"
-echo "║  2. Sélectionnez 'Hyprland' comme environnement              ║"
-echo "║  3. Connectez-vous                                            ║"
-echo "║                                                               ║"
-echo "║  Raccourcis clavier principaux:                               ║"
-echo "║  • SUPER + D      → Dashboard Syndra                          ║"
-echo "║  • SUPER + R      → Lanceur d'applications                    ║"
-echo "║  • SUPER + Enter  → Terminal (Kitty)                          ║"
-echo "║  • SUPER + Q      → Fermer fenêtre                            ║"
-echo "║                                                               ║"
-echo "║  Documentation: https://github.com/Fud0o0/Syndra              ║"
-echo "╚═══════════════════════════════════════════════════════════════╝"
-echo ""
+echo -e "${C}${BOLD}"
+echo "╔══════════════════════════════════════════════════════════════╗"
+echo "║              SYNDRA SHELL — $(printf '%-34s' "${PROFILE^^}")║"
+echo "╚══════════════════════════════════════════════════════════════╝"
+echo -e "${NC}"
 
-# Proposer de lancer l'interface provisoire
-INSTALL_DIR="$HOME/.config/SyndraShell"
-if [ -f "$INSTALL_DIR/provisional_interface.py" ]; then
-    echo ""
-    read -p "Voulez-vous lancer l'interface provisoire de test maintenant? [Y/n]: " -n 1 -r
-    echo
-    if [[ ! $REPLY =~ ^[Nn]$ ]]; then
-        echo "Lancement de l'interface provisoire..."
-        echo ""
-        python "$INSTALL_DIR/provisional_interface.py" &
-        echo "✓ Interface lancée en arrière-plan"
-        echo "  (Vous pouvez la relancer avec: python ~/.config/SyndraShell/provisional_interface.py)"
-        echo ""
-    fi
+# ── Pré-requis ─────────────────────────────────────────────────────
+if [ ! -f /etc/arch-release ]; then
+    echo "❌  Ce script nécessite Arch Linux."
+    exit 1
 fi
+
+echo -e "${C}[1/6] Vérification de l'espace disque...${NC}"
+AVAIL=$(df -BG / | awk 'NR==2{print $4}' | tr -d G)
+if [ "$AVAIL" -lt 5 ]; then
+    echo "⚠️   Espace insuffisant (${AVAIL}G disponible, 5G requis)"
+    read -rp "Continuer quand même? [y/N] " yn
+    [[ "$yn" =~ ^[Yy]$ ]] || exit 1
+fi
+
+# ── AUR helper ─────────────────────────────────────────────────────
+echo -e "${C}[2/6] Vérification de l'AUR helper...${NC}"
+if ! command -v yay &>/dev/null && ! command -v paru &>/dev/null; then
+    echo "  → Installation de yay..."
+    sudo pacman -S --needed --noconfirm git base-devel
+    git clone https://aur.archlinux.org/yay.git /tmp/yay-install
+    (cd /tmp/yay-install && makepkg -si --noconfirm)
+    rm -rf /tmp/yay-install
+fi
+AUR=$(command -v yay 2>/dev/null || command -v paru 2>/dev/null)
+
+# ── Dépendances base ───────────────────────────────────────────────
+echo -e "${C}[3/6] Installation des dépendances Syndra...${NC}"
+$AUR -S --needed --noconfirm \
+    python python-gobject python-pywayland python-fabric-git \
+    hyprland swww dunst kitty wofi wl-clipboard \
+    xdg-desktop-portal-hyprland qt6-wayland \
+    docker docker-compose \
+    playerctl brightnessctl \
+    imagemagick ffmpeg \
+    2>&1 | grep -E "error:|warning:|installed|skipping" || true
+
+# Activer Docker
+sudo systemctl enable --now docker 2>/dev/null || true
+sudo usermod -aG docker "$USER" 2>/dev/null || true
+
+# Python deps
+if [ -f "$INSTALL_DIR/requirements.txt" ] || [ -f /tmp/syndra-req.txt ]; then
+    pip install --user --break-system-packages \
+        requests pillow setproctitle 2>/dev/null || true
+fi
+
+# ── Cloner / mettre à jour Syndra ─────────────────────────────────
+echo -e "${C}[4/6] Installation de Syndra Shell...${NC}"
+if [ ! -d "$INSTALL_DIR/.git" ]; then
+    git clone "$REPO_URL" "$INSTALL_DIR"
+else
+    cd "$INSTALL_DIR" && git pull --ff-only 2>/dev/null || true
+fi
+cd "$INSTALL_DIR"
+
+# Écrire le profil dans config.json (crée le fichier si absent)
+mkdir -p "$(dirname "$CONFIG_JSON")"
+if [ -f "$CONFIG_JSON" ]; then
+    python3 -c "
+import json
+with open('$CONFIG_JSON') as f:
+    d = json.load(f)
+d['syndra_profile'] = '$PROFILE'
+with open('$CONFIG_JSON', 'w') as f:
+    json.dump(d, f, indent=2)
+print('  → Profil $PROFILE enregistré dans config.json')
+"
+else
+    echo "{\"syndra_profile\": \"$PROFILE\"}" > "$CONFIG_JSON"
+    echo "  → config.json créé avec profil $PROFILE"
+fi
+
+# ── Conteneurs Docker par profil ──────────────────────────────────
+echo -e "${C}[5/6] Préparation des conteneurs $PROFILE...${NC}"
+COMPOSE_FILE="$INSTALL_DIR/containers/${PROFILE}/docker-compose.yml"
+if [ -f "$COMPOSE_FILE" ]; then
+    echo "  → Téléchargement des images Docker..."
+    docker compose -f "$COMPOSE_FILE" pull 2>/dev/null || \
+    docker-compose -f "$COMPOSE_FILE" pull 2>/dev/null || \
+    echo "  ⚠️  Pull des images échoué (continuons, elles seront téléchargées au 1er lancement)"
+else
+    echo "  ⚠️  Pas de docker-compose.yml pour le profil $PROFILE (normal pour 'default')"
+fi
+
+# ── Configuration Hyprland ────────────────────────────────────────
+echo -e "${C}[6/6] Configuration de l'environnement...${NC}"
+HYPR_DIR="$HOME/.config/hypr"
+mkdir -p "$HYPR_DIR" ~/Pictures/Wallpapers ~/Pictures/Screenshots
+
+# Lier la config Hyprland si pas déjà fait
+if [ ! -f "$HYPR_DIR/hyprland.conf" ]; then
+    ln -sf "$INSTALL_DIR/config/hypr/hyprland.conf" "$HYPR_DIR/hyprland.conf"
+    echo "  → hyprland.conf lié"
+fi
+
+# Police tabler-icons
+FONT_SRC="$INSTALL_DIR/assets/fonts/tabler-icons/tabler-icons.ttf"
+if [ -f "$FONT_SRC" ]; then
+    mkdir -p "$HOME/.local/share/fonts/tabler-icons"
+    cp "$FONT_SRC" "$HOME/.local/share/fonts/tabler-icons/"
+    fc-cache -f 2>/dev/null || true
+    echo "  → Police tabler-icons installée"
+fi
+
+# ── Résumé ────────────────────────────────────────────────────────
+echo ""
+echo -e "${C}${BOLD}╔══════════════════════════════════════════════════════════════╗"
+echo "║           ✅  SYNDRA SHELL INSTALLÉ — ${PROFILE^^}$(printf '%*s' $((27-${#PROFILE})) '')║"
+echo "╠══════════════════════════════════════════════════════════════╣"
+echo "║  Profil        : $PROFILE$(printf '%*s' $((44-${#PROFILE})) '')║"
+echo "║  Répertoire    : $INSTALL_DIR$(printf '%*s' $((62-${#INSTALL_DIR}-18)) '')║"
+echo "╠══════════════════════════════════════════════════════════════╣"
+echo "║  Pour lancer maintenant :                                    ║"
+echo "║    cd $INSTALL_DIR                                            ║"
+echo "║    python main.py                                             ║"
+echo "║                                                               ║"
+echo "║  Hyprland démarre Syndra automatiquement via exec-once.       ║"
+echo "╚══════════════════════════════════════════════════════════════╝"
+echo -e "${NC}"

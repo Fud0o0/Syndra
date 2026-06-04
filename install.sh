@@ -16,7 +16,7 @@ REPO_URL="https://github.com/Fud0o0/Syndra.git"
 INSTALL_DIR="$HOME/.config/SyndraShell"
 CONFIG_JSON="$INSTALL_DIR/config/config.json"
 
-VALID_PROFILES=("blue-team" "red-team" "purple" "green" "mono" "default")
+VALID_PROFILES=("blue-team" "red-team" "purple" "root-me" "custom" "default")
 VALID=false
 for p in "${VALID_PROFILES[@]}"; do [[ "$p" == "$PROFILE" ]] && VALID=true && break; done
 if ! $VALID; then
@@ -30,8 +30,8 @@ case "$PROFILE" in
     blue-team) PC="\033[0;34m" ;;
     red-team)  PC="\033[0;31m" ;;
     purple)    PC="\033[0;35m" ;;
-    green)     PC="\033[0;32m" ;;
-    mono)      PC="\033[0;37m" ;;
+    root-me)   PC="\033[0;37m" ;;
+    custom)    PC="\033[0;32m" ;;
     *)         PC="\033[0;36m" ;;
 esac
 R="\033[0m"; B="\033[1m"; G="\033[0;32m"; Y="\033[0;33m"; E="\033[0;31m"
@@ -270,6 +270,16 @@ if [ -f "$FONT_SRC" ]; then
     _ok "Police tabler-icons installée"
 fi
 
+# Fond d'écran du profil → ~/.current.wall (toujours forcé à l'install)
+PROFILE_WALL="$INSTALL_DIR/assets/wallpapers/${PROFILE}.png"
+if [ -f "$PROFILE_WALL" ]; then
+    ln -sf "$PROFILE_WALL" "$HOME/.current.wall"
+    _ok "Fond d'écran '$PROFILE' → ~/.current.wall"
+else
+    _warn "Pas de fond d'écran pour le profil '$PROFILE'"
+    ((WARNINGS++))
+fi
+
 # Docker
 if command -v docker &>/dev/null; then
     sudo systemctl enable --now docker 2>/dev/null || true
@@ -277,18 +287,82 @@ if command -v docker &>/dev/null; then
     _ok "Docker configuré"
 fi
 
-# ── Conteneurs du profil ────────────────────────────────────────────
-_step "7/7" "Conteneurs ($PROFILE)"
+# ── Outils conteneurisés du profil ──────────────────────────────────
+_step "7/7" "Outils conteneurisés ($PROFILE)"
 
-COMPOSE="$INSTALL_DIR/containers/${PROFILE}/docker-compose.yml"
-if [ -f "$COMPOSE" ] && command -v docker &>/dev/null; then
-    _info "Téléchargement des images Docker (peut prendre du temps)..."
-    docker compose -f "$COMPOSE" pull --quiet 2>/dev/null || \
-    docker-compose -f "$COMPOSE" pull 2>/dev/null || \
-    { _warn "Pull Docker reporté au premier lancement"; ((WARNINGS++)); }
-    _ok "Images Docker prêtes"
+# Installer le lanceur syndra-tools dans ~/.local/bin
+mkdir -p "$HOME/.local/bin"
+cp "$INSTALL_DIR/scripts/syndra-tools.sh" "$HOME/.local/bin/syndra-tools"
+chmod +x "$HOME/.local/bin/syndra-tools"
+_ok "Lanceur 'syndra-tools' installé dans ~/.local/bin"
+
+# S'assurer que ~/.local/bin est dans le PATH (bashrc + zshrc)
+for RC in "$HOME/.bashrc" "$HOME/.zshrc"; do
+    [ -f "$RC" ] || continue
+    if ! grep -q 'HOME/.local/bin' "$RC"; then
+        echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$RC"
+    fi
+done
+export PATH="$HOME/.local/bin:$PATH"
+
+# Profil custom : sélection interactive des outils
+if [ "$PROFILE" = "custom" ]; then
+    CUSTOM_CONF="$HOME/.config/SyndraShell/custom-tools.conf"
+    echo ""
+    _info "Profil personnalisé — choisis tes outils :"
+    echo ""
+    # Noms + descriptions depuis le catalogue
+    mapfile -t CAT_LINES < <(bash "$INSTALL_DIR/scripts/syndra-tools.sh" __catalog 2>/dev/null | awk -F'|' 'NF>=6{print $1"|"$6}')
+    i=1
+    CAT_NAMES=()
+    for line in "${CAT_LINES[@]}"; do
+        nm="${line%%|*}"; ds="${line#*|}"
+        CAT_NAMES+=("$nm")
+        printf "  %2d) %-14s %s\n" "$i" "$nm" "$ds"
+        i=$((i+1))
+    done
+    echo ""
+    echo "  Numéros séparés par espaces (ex: 1 3 8), ou 'all' :"
+    read -r SEL </dev/tty 2>/dev/null || SEL=""
+    : > "$CUSTOM_CONF"
+    if [ "$SEL" = "all" ]; then
+        printf '%s\n' "${CAT_NAMES[@]}" > "$CUSTOM_CONF"
+    elif [ -n "$SEL" ]; then
+        for num in $SEL; do
+            idx=$((num-1))
+            [ -n "${CAT_NAMES[$idx]:-}" ] && echo "${CAT_NAMES[$idx]}" >> "$CUSTOM_CONF"
+        done
+    fi
+    grep -qx "kali" "$CUSTOM_CONF" 2>/dev/null || echo "kali" >> "$CUSTOM_CONF"
+    _ok "Outils custom : $(tr '\n' ' ' < "$CUSTOM_CONF")"
+fi
+
+# Télécharger les images Docker du profil (sudo car groupe docker pas encore actif)
+if command -v docker &>/dev/null; then
+    _info "Téléchargement des images Docker du profil (peut être long)..."
+    DOCKER_CMD="docker"
+    docker info &>/dev/null 2>&1 || DOCKER_CMD="sudo docker"
+    sudo systemctl start docker 2>/dev/null || true
+
+    # Extraire les images uniques du manifeste et les pull
+    PULLED=0; FAILED=0; SEEN_IMAGES=""
+    while IFS='|' read -r _name image _flags _pkg _bin _desc; do
+        [ -z "$image" ] && continue
+        [ "$image" = "kali" ] && image="kalilinux/kali-rolling"
+        echo "$SEEN_IMAGES" | grep -qF "$image" && continue
+        SEEN_IMAGES="$SEEN_IMAGES $image"
+        _info "pull $image ..."
+        if $DOCKER_CMD pull "$image" >/dev/null 2>&1; then
+            _ok "$image"
+            PULLED=$((PULLED+1))
+        else
+            _warn "$image (sera retenté au 1er usage)"
+            FAILED=$((FAILED+1)); ((WARNINGS++))
+        fi
+    done < <(bash "$INSTALL_DIR/scripts/syndra-tools.sh" __manifest "$PROFILE" 2>/dev/null)
+    _ok "Images: $PULLED téléchargées, $FAILED reportées"
 else
-    _warn "Conteneurs non disponibles pour le profil '$PROFILE'"
+    _warn "Docker absent — outils conteneurisés indisponibles"
     ((WARNINGS++))
 fi
 
@@ -309,5 +383,10 @@ echo "  ╠═══════════════════════
 echo "  ║   Pour démarrer Syndra :                                 ║"
 echo "  ║     • Déconnectez-vous et sélectionnez Hyprland          ║"
 echo "  ║     • OU tapez : Hyprland  (depuis un TTY)               ║"
+echo "  ╠══════════════════════════════════════════════════════════╣"
+echo "  ║   Outils conteneurisés :                                 ║"
+echo "  ║     • syndra-tools          (liste les outils)           ║"
+echo "  ║     • syndra-tools <outil>  (lance un outil)             ║"
+echo "  ║     • syndra-tools shell    (shell Kali + workspace)     ║"
 echo "  ╚══════════════════════════════════════════════════════════╝"
 echo -e "${R}"

@@ -384,11 +384,23 @@ if __name__ == "__main__":
         colors_file = get_relative_path("styles/colors.css")
         _load_colors_from_css(colors_file)
 
-        # 2. Profil de sécurité — priorité absolue sur tout le reste
+        # 2. Profil de sécurité (couleurs de base / fallback)
         from config.themes import get_theme
         import config.data as _data
         _THEME.update(get_theme(_data.SYNDRA_PROFILE))
-        print(f"[Syndra] Profil: {_data.SYNDRA_PROFILE} | shadow={_THEME.get('--shadow','?')}")
+
+        # 3. Couleurs dérivées du fond d'écran actuel — priorité (suit le wallpaper)
+        try:
+            from config.wallpaper_theme import generate as _wall_gen
+            _wall = os.path.realpath(os.path.expanduser("~/.current.wall"))
+            wall_colors = _wall_gen(_wall) if os.path.isfile(_wall) else {}
+            if wall_colors:
+                _THEME.update(wall_colors)
+                print(f"[Syndra] Thème depuis fond d'écran: {os.path.basename(_wall)} | primary={_THEME.get('--primary','?')}")
+            else:
+                print(f"[Syndra] Profil: {_data.SYNDRA_PROFILE} | primary={_THEME.get('--primary','?')}")
+        except Exception as e:
+            print(f"[Syndra] wallpaper theme skip: {e}")
 
         # Inline tous les @imports + préprocesser (remplace var() par hex)
         main_css_path = get_relative_path("main.css")
@@ -410,5 +422,21 @@ if __name__ == "__main__":
 
     app.set_css = set_css
     app.set_css()
+
+    # Recolorer l'interface automatiquement quand le fond d'écran change
+    try:
+        from gi.repository import Gio
+        _wall_path = os.path.expanduser("~/.current.wall")
+        _wall_file = Gio.File.new_for_path(_wall_path)
+        _wall_monitor = _wall_file.monitor_file(Gio.FileMonitorFlags.WATCH_HARD_LINKS, None)
+
+        def _on_wall_changed(monitor, f, other, event):
+            # Re-applique le CSS (qui re-dérive la couleur du nouveau fond)
+            GLib.timeout_add(400, lambda: (set_css(), False)[1])
+
+        _wall_monitor.connect("changed", _on_wall_changed)
+        app._wall_monitor = _wall_monitor  # garder une référence vivante
+    except Exception as e:
+        print(f"[Syndra] wallpaper monitor skip: {e}")
 
     app.run()

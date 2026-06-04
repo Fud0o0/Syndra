@@ -129,7 +129,7 @@ set_image_wallpaper() {
     
     # Essayer swww
     if command -v awww &> /dev/null; then
-        awww init >/dev/null 2>&1 || true
+        awww-daemon >/dev/null 2>&1 || true
         sleep 1
         awww img "$image_path" --transition-type fade --transition-duration 2
         print_success "Fond d'écran défini avec awww"

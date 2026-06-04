@@ -58,6 +58,29 @@ def _ensure_tabler_icons_font():
 
 _ensure_tabler_icons_font()
 
+def _load_tabler_icons_css():
+    """
+    Charge la police tabler-icons via un CssProvider GTK avec chemin absolu.
+    Appelé APRÈS init GTK (après Application()), donc Gdk.Screen est disponible.
+    """
+    try:
+        gi.require_version("Gtk", "3.0")
+        gi.require_version("Gdk", "3.0")
+        from gi.repository import Gdk, Gtk
+        font_path = os.path.join(_script_dir, "assets", "fonts", "tabler-icons", "tabler-icons.ttf")
+        if not os.path.isfile(font_path):
+            return
+        css = f'@font-face {{ font-family: "tabler-icons"; src: url("{font_path}"); }}'
+        provider = Gtk.CssProvider()
+        provider.load_from_data(css.encode())
+        screen = Gdk.Screen.get_default()
+        if screen:
+            Gtk.StyleContext.add_provider_for_screen(
+                screen, provider, Gtk.STYLE_PROVIDER_PRIORITY_USER + 1
+            )
+    except Exception as e:
+        print(f"[font] tabler-icons load failed: {e}")
+
 try:
     import setproctitle
     from fabric import Application
@@ -312,6 +335,9 @@ if __name__ == "__main__":
         app.set_stylesheet_from_file(
             get_relative_path("main.css"),
         )
+        # Charger la police tabler-icons via GTK CSS avec chemin absolu
+        # (après init GTK, chemin absolu = aucune ambiguïté)
+        _load_tabler_icons_css()
 
     app.set_css = set_css
     app.set_css()

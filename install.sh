@@ -101,7 +101,7 @@ _step "3/7" "Paquets système"
 
 declare -A PKG_DESC=(
     [hyprland]="Compositeur Wayland"
-    [swww]="Fond d'écran Wayland"
+    [swww]="Fond d'écran Wayland (requis)"
     [dunst]="Notifications"
     [kitty]="Terminal"
     [wofi]="Lanceur d'applications"

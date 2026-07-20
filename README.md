@@ -106,6 +106,7 @@ syndra-tools shell
 **Sélection par profil**
 
 - **blue-team** — nmap, tshark, tcpdump, wireshark, suricata, zeek, clamav, trivy, grype, lynis, nuclei
+ajouter le nom de l'outil à la liste du profil, ex: ..., sqlmap, nuclei, darkmoon, ...
 - **red-team** — kali, nmap, rustscan, metasploit, nikto, sqlmap, gobuster, ffuf, feroxbuster, wpscan, nuclei, whatweb, hydra, john, hashcat
 - **purple** — Red + Blue réunis (metasploit, wireshark, suricata, sqlmap, hashcat, zap…)
 - **root-me** — kali, nmap, radare2, gdb, ghidra, binwalk, steghide, exiftool, foremost, volatility3, john, hashcat, sqlmap, hydra
